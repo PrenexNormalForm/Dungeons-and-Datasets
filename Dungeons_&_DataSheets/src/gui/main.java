@@ -21,7 +21,7 @@ public class main extends Application {
 
             stage = primaryStage;
             stage.setTitle(title);
-            Controller.setStage(stage);
+            constants.stage = stage;
 
             Scene scene = new Scene(root);
             stage.setScene(scene);
