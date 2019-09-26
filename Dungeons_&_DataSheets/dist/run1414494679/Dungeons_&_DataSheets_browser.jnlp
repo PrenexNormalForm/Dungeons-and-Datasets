@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Dungeons_&_DataSheets.jnlp">
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Dungeons_&_DataSheets_browser.jnlp">
   <information>
     <title>Dungeons_&_DataSheets</title>
     <vendor>jodba5</vendor>
@@ -8,9 +8,9 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Dungeons_&_DataSheets.jar" size="7222" download="eager" />
+    <jar href="Dungeons_&_DataSheets.jar" size="7223" download="eager" />
   </resources>
-  <application-desc main-class="gui.Main"  name="Dungeons_&_DataSheets" >
-  </application-desc>
+  <applet-desc  width="800" height="600" main-class="gui.Main"  name="Dungeons_&_DataSheets" >
+  </applet-desc>
   <update check="always"/>
 </jnlp>
