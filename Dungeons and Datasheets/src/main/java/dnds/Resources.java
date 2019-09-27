@@ -4,7 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- *
+ * hello
  * @author Eva Moniz
  */
 public final class Resources {
@@ -24,7 +24,7 @@ public final class Resources {
      * @throws MalformedURLException
      */
     public static URL getFxmlUrl(String _name) throws MalformedURLException {
-        return Resources.getResourceUrl(_name + ".fxml");
+        return Resources.getResourceUrl("fxml/" + _name + ".fxml");
     }
 
     /**
