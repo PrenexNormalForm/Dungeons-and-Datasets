@@ -1,4 +1,13 @@
 package dnds.gui;
+/*
+Last updated 9/27/2019
+
+java.application.Application child for javafx. Initializes and starts the GUI.
+
+Contributors:
+Jonathan Bacon
+Eva Moniz
+ */
 
 import dnds.Resources;
 import java.io.IOException;

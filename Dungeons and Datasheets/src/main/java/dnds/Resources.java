@@ -1,10 +1,21 @@
 package dnds;
+/*
+Last updated 9/27/2019
+
+Manages the access of resources used by the program.
+
+Contributors:
+Eva Moniz
+ */
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * hello
+ * Manages the access of resources used by the program.
+ *
+ * This class cannot be instantiated.
+ *
  * @author Eva Moniz
  */
 public final class Resources {
@@ -15,8 +26,8 @@ public final class Resources {
     private static final String RESOURCE_DIR = "./resources/";
 
     /**
-     * Retrieve a {@code URL} object pointing to the FXML resource file with the
-     * given name.
+     * Retrieve a {@link java.net.URL} object pointing to the FXML resource file
+     * with the given name.
      *
      * @param _name The name (without the file extension) of the desired FXML
      * file
@@ -28,8 +39,8 @@ public final class Resources {
     }
 
     /**
-     * Retrieve a {@code URL} object pointing to the given resource. Not
-     * recommended to call directly.
+     * Retrieve a {@link java.net.URL} object pointing to the given resource.
+     * Not recommended to call directly.
      *
      * @param _res_path The relative path to the resource from the resource root
      * directory

@@ -1,9 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dnds.gui;
+/*
+Last updated 9/27/2019
+
+Controls the switching of different scenes in the gui.
+
+Contributors:
+Jonathan Bacon
+Eva Moniz
+ */
 
 import dnds.Resources;
 import java.io.IOException;
