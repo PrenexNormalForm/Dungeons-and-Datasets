@@ -1,4 +1,4 @@
-package items;
+package DandD.items;
 
  public class Weapon extends Item {
 
@@ -7,11 +7,11 @@ package items;
         private String[] damageType = {"Bludgeoning", "Piercing", "Slashing"};
         private String[] weaponProperties = {"Light", "Heavy", "Finesse", "Versatile", "Two-Handed", "One-Handed"};
 
-        public Weapon(int _itemCost, int _itemWeight, String _weaponType, String _damageAttackRoll, String _damageType, String _weaponProperties ) {
+        public Weapon(int _itemCost, int _itemWeight, String[] _weaponType, String[] _damageAttackRoll, String[] _damageType, String[] _weaponProperties ) {
             super(_itemCost, _itemWeight);
-            this.weaponType = weaponType;
-            this.damageAttackRoll = damageAttackRoll;
-            this.damageType = damageType;
-            this.weaponProperties = weaponProperties;
+            this.weaponType = _weaponType;
+            this.damageAttackRoll = _damageAttackRoll;
+            this.damageType = _damageType;
+            this.weaponProperties = _weaponProperties;
         }
  }
