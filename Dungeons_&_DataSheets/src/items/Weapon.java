@@ -1,4 +1,4 @@
-package DandD.items;
+package items;
 
  public class Weapon extends Item {
 

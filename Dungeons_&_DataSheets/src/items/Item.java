@@ -1,6 +1,4 @@
-package DandD.items;
-
-import DandD.items.Item;
+package items;
 
 public class Item {
 

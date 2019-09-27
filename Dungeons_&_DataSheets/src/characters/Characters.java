@@ -1,4 +1,4 @@
-package DandD.characters;
+package characters;
 
 public class Characters {
     

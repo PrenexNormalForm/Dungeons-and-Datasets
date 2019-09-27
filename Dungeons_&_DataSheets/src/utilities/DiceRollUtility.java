@@ -1,4 +1,4 @@
-package DandD.utilities;
+package utilities;
 
 import java.util.concurrent.ThreadLocalRandom;
 

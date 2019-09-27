@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Dungeons_&_DataSheets.jar" size="7222" download="eager" />
+    <jar href="Dungeons_&_DataSheets.jar" size="9617" download="eager" />
   </resources>
   <application-desc main-class="gui.Main"  name="Dungeons_&_DataSheets" >
   </application-desc>
