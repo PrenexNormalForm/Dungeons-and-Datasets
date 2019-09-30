@@ -2,8 +2,6 @@ package dnds.characters;
 
 public class Characters {
     
-    
-    private String[] CLASSES = {"Barbarian", "Bard", "Cleric", "Druid", "Fighter", "Monk", "Paladin", "Ranger", "Rouge", "Sorcerer", "Warlock", "Wizard"};
     private int[] STATS;
     private int STRENGTH = 0;
     private int DEXTERITY = 1;
@@ -19,7 +17,7 @@ public class Characters {
     private int STANDARD_CHARISMA = 8;
 
     public Characters(String[] _class, int[] stats, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma) {
-        this.CLASSES = _class;
+        //this.CLASSES = _class;
         this.STATS[STRENGTH] = _strength;
         this.STATS[DEXTERITY] = _dex;
         this.STATS[CONSTITUTION] = _constitution;
