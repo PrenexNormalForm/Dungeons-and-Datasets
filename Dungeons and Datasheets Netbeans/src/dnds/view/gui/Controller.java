@@ -25,4 +25,11 @@ public class Controller {
         Constants.stage.setScene(scene);
         Constants.stage.show();
     }
+    public void loadPreviousScreen(String _current) throws IOException{
+        load(Constants.PREVIOUS_WINDOW);
+        setPrevious(_current);
+    }
+    public void setPrevious(String _Previous){
+        Constants.PREVIOUS_WINDOW = _Previous;
+    }
 }
