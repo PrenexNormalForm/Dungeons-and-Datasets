@@ -1,4 +1,4 @@
-package dnds.items;
+package dnds.model.items;
 /*
 Last Updated: September 26, 2019
 

@@ -1,4 +1,4 @@
-package dnds.gui;
+package dnds.view.gui;
 
 import javafx.stage.Stage;
 

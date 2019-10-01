@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" fx:id="startWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="dnds.gui.StartWindowController">
+<AnchorPane id="AnchorPane" fx:id="startWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="dnds.view.gui.StartWindowController">
   <children>
     <Label layoutX="470.0" layoutY="14.0" prefHeight="-1.0" prefWidth="297.0" text="Dungeons&#10;&amp;&#10;DataSheets" textAlignment="CENTER" />
     <Button fx:id="btn1" layoutX="417.0" layoutY="118.0" mnemonicParsing="false" onAction="#serverLaunchHelper" prefWidth="174.0" text="Start/Join Server" textAlignment="CENTER" wrapText="true" />

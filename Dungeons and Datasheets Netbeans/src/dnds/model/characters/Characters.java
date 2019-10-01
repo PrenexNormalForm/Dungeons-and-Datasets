@@ -1,19 +1,22 @@
-package dnds.characters;
+package dnds.model.characters;
 /*
 Last Updated: October 1, 2019
+=======
+package dnds.model.characters;
+>>>>>>> 7c3c39c524ffb500631d1448bd470a12f4b25b02:Dungeons and Datasheets Netbeans/src/dnds/model/characters/Characters.java
 
 The Character class that will be used for Character Creation and updating
 character stats and information throughout a campaign.
 
-Contributors: 
+Contributors:
 Brandon Pozil
 */
 
 /**
  * The Characters class (God forbid you actually call it Character) that will a
- * player will start and update throughout a campaign. 
- * Includes all stats needed for 
- * basic character creation baring some more complex Strings to be 
+ * player will start and update throughout a campaign.
+ * Includes all stats needed for
+ * basic character creation baring some more complex Strings to be
  * integrated at a later point in time.
  * Declared class constants are used
  * for default character creation (Discussed below).
@@ -55,11 +58,11 @@ public class Characters {
      * wants to get started in a campaign. This method creates a default
      * Barbarian named "YEEEEEHAWWWWWW" (This will be updated with a random
      * name generator at a later date) with standard stat rolls.
-     * @return The default Character information found in the class 
+     * @return The default Character information found in the class
      * constants listed above.
      */
     public Characters createDefaultCharacter(String _class,String _name, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma) {
-        Characters defaultCharacter = new Characters(CharacterClass.BARBARIAN.name(),Characters.DEFAULT_NAME, Characters.STANDARD_STRENGTH, Characters.STANDARD_DEXTERITY,Characters.STANDARD_CONSTITUTION,Characters.STANDARD_INTELLIGENCE,Characters.STANDARD_WISDOM,Characters.STANDARD_CHARISMA);     
+        Characters defaultCharacter = new Characters(CharacterClass.BARBARIAN.name(),Characters.DEFAULT_NAME, Characters.STANDARD_STRENGTH, Characters.STANDARD_DEXTERITY,Characters.STANDARD_CONSTITUTION,Characters.STANDARD_INTELLIGENCE,Characters.STANDARD_WISDOM,Characters.STANDARD_CHARISMA);
         return defaultCharacter;
     }
     /**
@@ -70,68 +73,68 @@ public class Characters {
     public String toString(Characters _character) {
         return "Class:" + _character.getCharacterClass() + "Name:" + _character.getName() + "Strength:" + _character.getStrength() + "Dex:" + _character.getDex() + "Constitution:" + _character.getConstitution() + "Intelligence:" + _character.getIntelligence() + "Wisdom:" + _character.getWisdom() + "Charisma:" + _character.getCharisma();
     }
-    
+
     // =================== GETTERS & SETTERS ===============================//
-    
+
     public String getCharacterClass() {
         return this.CLASS;
     }
-    
+
     public String getName() {
         return this.NAME;
     }
-    
+
     public int getStrength() {
         return this.STRENGTH;
     }
-    
+
     public int getDex() {
         return this.DEXTERITY;
     }
     public int getConstitution() {
         return this.CONSTITUTION;
     }
-    
+
     public int getIntelligence() {
         return this.INTELLIGENCE;
     }
-    
+
     public int getWisdom() {
         return this.WISDOM;
     }
-    
+
     public int getCharisma() {
         return this.CHARISMA;
     }
-    
+
     public void setCharacterClass(String _class) {
         this.CLASS = _class;
     }
-    
+
     public void setName(String _name) {
         this.NAME = _name;
     }
-    
+
     public void setStrength(int _strength) {
         this.STRENGTH = _strength;
     }
-    
+
     public void setDex(int _dex) {
         this.DEXTERITY = _dex;
     }
-    
+
     public void setConstitution(int _constitution) {
         this.CONSTITUTION = _constitution;
     }
-    
+
     public void setIntelligence(int _intelligence) {
         this.INTELLIGENCE = _intelligence;
     }
-    
+
     public void setWisdom(int _wisdom) {
         this.WISDOM = _wisdom;
     }
-    
+
     public void setCharisma(int _charisma) {
         this.CHARISMA = _charisma;
     }
