@@ -20,6 +20,6 @@ import javafx.application.Application;
 public class DungeonsAndDatasets {
 
     public static void main(String[] args) {
-        Application.launch(DNDSApplication.class, args);
+       Application.launch(DNDSApplication.class, args);
     }
 }
