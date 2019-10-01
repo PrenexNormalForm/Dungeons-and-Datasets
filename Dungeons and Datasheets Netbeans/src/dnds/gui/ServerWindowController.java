@@ -4,9 +4,9 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 
 public class ServerWindowController extends Controller{
+    String currentScreen = Constants.SERVER_WINDOW;
     @FXML
     private void goBack() throws IOException{
-        Constants.PREVIOUS_WINDOW = Constants.SERVER_WINDOW;
-        super.load(Constants.PREVIOUS_WINDOW);
+        super.loadPreviousScreen(currentScreen);
     }
 }
