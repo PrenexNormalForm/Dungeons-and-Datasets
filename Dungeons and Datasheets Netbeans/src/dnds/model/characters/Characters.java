@@ -1,4 +1,4 @@
-package dnds.characters;
+package dnds.model.characters;
 
 public class Characters {
     

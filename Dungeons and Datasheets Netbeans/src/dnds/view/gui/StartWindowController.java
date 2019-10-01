@@ -1,4 +1,4 @@
-package dnds.gui;
+package dnds.view.gui;
 
 import java.io.IOException;
 import javafx.fxml.FXML;

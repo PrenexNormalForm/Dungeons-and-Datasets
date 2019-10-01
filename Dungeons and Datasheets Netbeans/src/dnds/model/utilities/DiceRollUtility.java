@@ -1,4 +1,4 @@
-package dnds.utilities;
+package dnds.model.utilities;
 
 import java.util.concurrent.ThreadLocalRandom;
 

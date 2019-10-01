@@ -1,4 +1,4 @@
-package dnds.items;
+package dnds.model.items;
 
  public class Weapon extends Item {
 

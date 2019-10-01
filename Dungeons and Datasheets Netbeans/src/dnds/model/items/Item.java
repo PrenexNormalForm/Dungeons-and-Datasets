@@ -1,6 +1,6 @@
-package dnds.items;
+package dnds.model.items;
 
-import dnds.items.Item;
+import dnds.model.items.Item;
 
 public class Item {
 

@@ -1,4 +1,4 @@
-package dnds.gui;
+package dnds.view.gui;
 /*
 Last updated 9/27/2019
 
@@ -9,7 +9,7 @@ Jonathan Bacon
 Eva Moniz
  */
 
-import dnds.Resources;
+import dnds.model.utilities.Resources;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
