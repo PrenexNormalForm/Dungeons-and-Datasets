@@ -13,21 +13,26 @@ import dnds.model.utilities.Resources;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class DNDSApplication extends Application {
 
-    Parent root;
-    Stage stage;
-    String title = "Dungeons & DataSheets";
+    private Pane root;
+    private Stage stage;
+    private String title = "Dungeons & DataSheets";
+    private AnchorPane serverPaneAnchor;
+    private AnchorPane contentPaneAnchor;
+    private AnchorPane controlPaneAnchor;
 
     @Override
     public void start(Stage primaryStage) {
 
         try {
-            root = FXMLLoader.load(Resources.getFxmlUrl(Constants.START_WINDOW));
+            this.root = FXMLLoader.load(Resources.getFxmlUrl(Constants.START_WINDOW));
 
             stage = primaryStage;
             stage.setTitle(title);
@@ -36,10 +41,30 @@ public class DNDSApplication extends Application {
 
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setResizable(false);
             stage.show();
+
+            this.serverPaneAnchor = (AnchorPane) this.root.lookup("#server_pane");
+
+            System.out.println(this.serverPaneAnchor);
+
+            loadServerPane(Constants.DEFAULT_SERVER_PANE);
+
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void loadServerPane(String _serverPane) {
+        try {
+            Node serverPaneNode = FXMLLoader.load(Resources.getFxmlUrl(_serverPane));
+            AnchorPane.setTopAnchor(serverPaneNode, 0.0);
+            AnchorPane.setBottomAnchor(serverPaneNode, 0.0);
+            AnchorPane.setLeftAnchor(serverPaneNode, 0.0);
+            AnchorPane.setRightAnchor(serverPaneNode, 0.0);
+            this.serverPaneAnchor.getChildren().clear();
+            this.serverPaneAnchor.getChildren().add(serverPaneNode);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }
