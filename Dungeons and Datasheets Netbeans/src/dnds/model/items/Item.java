@@ -15,7 +15,7 @@ public class Item {
    private static int itemWeight;
 
     public Item(int _itemCost, int _itemWeight) {
-        Item.itemCost = _itemCost;
-        Item.itemWeight = _itemWeight;
+        this.itemCost = _itemCost;
+        this.itemWeight = _itemWeight;
     }
 }

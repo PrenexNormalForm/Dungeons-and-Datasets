@@ -5,19 +5,15 @@ package dnds.model.items;
  * @author Brandon Pozil
  */
 public enum DamageAttackRoll {
-    1D4("1D4"),
-    2D4("2D4"),
-    1D6("1D6"),
-    2D6("2D6"),
-    1D8("1D8"),
-    1D10("1D10"),
-    1D12("1D12");
+    ONED4("1D4"),
+    TWOD4("2D4"),
+    ONED6("1D6"),
+    TWOD6("2D6"),
+    ONED8("1D8"),
+    ONED10("1D10"),
+    ONED12("1D12");
     private String damageAttackRoll;
 
-/**
- * Returns the type of weapon.
- * @return The type of weapon.
- */
     @Override
     public String toString() {
         return damageAttackRoll;
