@@ -28,7 +28,7 @@ public enum CharacterClass {
     /**
      * The printable name of the Character Class
      */
-    private String name;
+    private final String name;
 
     /**
      * Returns a string representation of the character class.
