@@ -55,6 +55,7 @@ public class DNDSApplication extends Application {
     }
 
     public void loadServerPane(String _serverPane) {
+        //no, bad, don't do this, delete this method, implement custom control that extends AnchorPane
         try {
             Node serverPaneNode = FXMLLoader.load(Resources.getFxmlUrl(_serverPane));
             AnchorPane.setTopAnchor(serverPaneNode, 0.0);
