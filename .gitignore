@@ -1,5 +1,4 @@
-/Dungeons and Datasheets/.gradle/
-/Dungeons and Datasheets/build/
-/Dungeons and Datasheets/bin/
-/Dungeons and Datasheets Netbeans/nbproject/private/
-/Dungeons and Datasheets Netbeans/build/
+/nbproject/
+/build/
+build.xml
+manifest.mf
