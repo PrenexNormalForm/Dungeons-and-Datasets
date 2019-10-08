@@ -1,9 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dnds.view.gui;
+/*
+Last updated 10/8/2019
+
+This class is a custom JFX control for the server selection/hosting/chat pane
+component of the main window.
+
+Contributors:
+Eva Moniz
+ */
+
 import dnds.model.utilities.Resources;
 import java.io.IOException;
 import java.net.MalformedURLException;

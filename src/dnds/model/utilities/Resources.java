@@ -1,6 +1,6 @@
 package dnds.model.utilities;
 /*
-Last updated 9/27/2019
+Last updated 10/08/2019
 
 Manages the access of resources used by the program.
 
