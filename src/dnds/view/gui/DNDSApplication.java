@@ -36,7 +36,6 @@ public class DNDSApplication extends Application {
 
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

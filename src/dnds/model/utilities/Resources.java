@@ -23,7 +23,7 @@ public final class Resources {
     /**
      * The root directory of the resource structure.
      */
-    private static final String RESOURCE_DIR = "./resources/";
+    private static final String RESOURCE_DIR = "/resources/";
 
     /**
      * Retrieve a {@link java.net.URL} object pointing to the FXML resource file
@@ -48,7 +48,7 @@ public final class Resources {
      * @throws MalformedURLException
      */
     public static URL getResourceUrl(String _res_path) throws MalformedURLException {
-        return new URL("file:" + RESOURCE_DIR + _res_path);
+        return Resources.class.getResource(RESOURCE_DIR + _res_path);
     }
 
     private Resources() {
