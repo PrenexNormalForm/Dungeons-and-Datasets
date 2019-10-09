@@ -13,8 +13,8 @@ Brandon Pozil
 import dnds.model.characters.Characters;
 
 /**
- * A proficiency modifier can be calculated by taking the character's
- * stat subtracting it by 10 and dividing the final number by 2 and rounding
+ * A proficiency modifier can be calculated by taking the character's relative
+ * stat and subtracting it by 10 and dividing the final number by 2 and rounding
  * down. These methods account for any modifier needed in a campaign.
  * @author Brandon Pozil
  */
