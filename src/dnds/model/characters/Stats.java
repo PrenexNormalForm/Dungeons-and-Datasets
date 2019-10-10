@@ -24,6 +24,7 @@ public class Stats {
     private static final int STANDARD_WISDOM = 10;
     private static final int STANDARD_CHARISMA = 8;
     
+    //method for creating stats object with given values
     public Stats(int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma){
         this.STRENGTH = _strength;
         this.DEXTERITY = _dex;
@@ -32,7 +33,7 @@ public class Stats {
         this.WISDOM = _wisdom;
         this.CHARISMA = _charisma;
     }
-    
+    //Method for creating stats object with default values
     public Stats(){
         this.STRENGTH = STANDARD_STRENGTH;
         this.DEXTERITY = STANDARD_DEXTERITY;
