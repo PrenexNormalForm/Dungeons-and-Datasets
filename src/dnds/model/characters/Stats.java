@@ -1,13 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dnds.model.characters;
+/*
+Last updated Oct 10, 2019
+
+Represents the different character stats of a DnD character.
+
+Contributors:
+Brandon Pozil
+Jonathan Bacon
+ */
 
 /**
- *
- * @author jodba5
+ * The Stats class is used to store and handle the different stats of a character for the character class 
+ * 
  */
 public class Stats {
     private int STRENGTH;

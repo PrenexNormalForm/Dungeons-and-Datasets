@@ -1,15 +1,13 @@
 package dnds.model.characters;
 /*
-Last Updated: October 1, 2019
-=======
-package dnds.model.characters;
->>>>>>> 7c3c39c524ffb500631d1448bd470a12f4b25b02:Dungeons and Datasheets Netbeans/src/dnds/model/characters/Characters.java
+Last Updated: October 10, 2019
 
 The Character class that will be used for Character Creation and updating
 character stats and information throughout a campaign.
 
 Contributors:
 Brandon Pozil
+Jonathan Bacon
 */
 
 /**

@@ -1,11 +1,12 @@
 package dnds.model.characters;
 /*
-Last updated Sept 30, 2019
+Last updated Oct 10, 2019
 
 Represents the different character classes of a DnD character.
 
 Contributors:
-Eva Moniz
+Brandon Pozil
+Jonathan Bacon
  */
 
 /**
