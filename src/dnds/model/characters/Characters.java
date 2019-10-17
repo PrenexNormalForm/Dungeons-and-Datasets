@@ -1,15 +1,13 @@
 package dnds.model.characters;
 /*
-Last Updated: October 1, 2019
-=======
-package dnds.model.characters;
->>>>>>> 7c3c39c524ffb500631d1448bd470a12f4b25b02:Dungeons and Datasheets Netbeans/src/dnds/model/characters/Characters.java
+Last Updated: October 10, 2019
 
 The Character class that will be used for Character Creation and updating
 character stats and information throughout a campaign.
 
 Contributors:
 Brandon Pozil
+Jonathan Bacon
 */
 
 /**
@@ -25,19 +23,8 @@ Brandon Pozil
 public class Characters {
     private String CLASS;
     private String NAME;
-    private int STRENGTH;
-    private int DEXTERITY;
-    private int CONSTITUTION;
-    private int INTELLIGENCE;
-    private int WISDOM;
-    private int CHARISMA;
+    private Stats STATS;
     private static final String DEFAULT_NAME = "YEEEEEHAWWWWWW";
-    private static final int STANDARD_STRENGTH = 15;
-    private static final int STANDARD_DEXTERITY = 14;
-    private static final int STANDARD_CONSTITUTION = 13;
-    private static final int STANDARD_INTELLIGENCE = 12;
-    private static final int STANDARD_WISDOM = 10;
-    private static final int STANDARD_CHARISMA = 8;
 
     /**
      * The overridden constructor for creating a basic character (Will update
@@ -46,35 +33,29 @@ public class Characters {
     public Characters(String _class, String _name, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma) {
         this.CLASS = _class;
         this.NAME = _name;
-        this.STRENGTH = _strength;
-        this.DEXTERITY = _dex;
-        this.CONSTITUTION = _constitution;
-        this.INTELLIGENCE = _intelligence;
-        this.WISDOM = _wisdom;
-        this.CHARISMA = _charisma;
+        this.STATS = new Stats(_strength, _dex, _constitution, _intelligence, _wisdom, _charisma);
     }
     /**
      * The default character creation for someone just starting and just
      * wants to get started in a campaign. This method creates a default
      * Barbarian named "YEEEEEHAWWWWWW" (This will be updated with a random
      * name generator at a later date) with standard stat rolls.
-     * @return The default Character information found in the class
-     * constants listed above.
      */
-    public Characters createDefaultCharacter(String _class,String _name, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma) {
-        Characters defaultCharacter = new Characters(CharacterClass.BARBARIAN.name(),Characters.DEFAULT_NAME, Characters.STANDARD_STRENGTH, Characters.STANDARD_DEXTERITY,Characters.STANDARD_CONSTITUTION,Characters.STANDARD_INTELLIGENCE,Characters.STANDARD_WISDOM,Characters.STANDARD_CHARISMA);
-        return defaultCharacter;
+    public Characters(){
+        this.CLASS = CharacterClass.BARBARIAN.name();
+        this.NAME = DEFAULT_NAME;
+        this.STATS = new Stats();
     }
     /**
      * Method to print all fields of the Characters class.
-     * @param _character
      * @return The character details.
      */
-    public String toString(Characters _character) {
-        return "Class:" + _character.getCharacterClass() + "Name:" + _character.getName() + "Strength:" + _character.getStrength() + "Dex:" + _character.getDex() + "Constitution:" + _character.getConstitution() + "Intelligence:" + _character.getIntelligence() + "Wisdom:" + _character.getWisdom() + "Charisma:" + _character.getCharisma();
+    @Override
+    public String toString() {
+        return "Class:" + this.getCharacterClass() + "\nName:" + this.getName() + "\nStrength:" + this.getStrength() + "\nDex:" + this.getDex() + "\nConstitution:" + this.getConstitution() + "\nIntelligence:" + this.getIntelligence() + "\nWisdom:" + this.getWisdom() + "\nCharisma:" + this.getCharisma();
     }
 
-    // =================== GETTERS & SETTERS ===============================//
+    // =================== GETTERS ===============================//
 
     public String getCharacterClass() {
         return this.CLASS;
@@ -85,27 +66,29 @@ public class Characters {
     }
 
     public int getStrength() {
-        return this.STRENGTH;
+        return this.STATS.getStrength();
     }
 
     public int getDex() {
-        return this.DEXTERITY;
+        return this.STATS.getDex();
     }
     public int getConstitution() {
-        return this.CONSTITUTION;
+        return this.STATS.getConstitution();
     }
 
     public int getIntelligence() {
-        return this.INTELLIGENCE;
+        return this.STATS.getIntelligence();
     }
 
     public int getWisdom() {
-        return this.WISDOM;
+        return this.STATS.getWisdom();
     }
 
     public int getCharisma() {
-        return this.CHARISMA;
+        return this.STATS.getCharisma();
     }
+    
+    // =================== SETTERS ===============================//
 
     public void setCharacterClass(String _class) {
         this.CLASS = _class;
@@ -116,26 +99,26 @@ public class Characters {
     }
 
     public void setStrength(int _strength) {
-        this.STRENGTH = _strength;
+        this.STATS.setStrength(_strength);
     }
 
     public void setDex(int _dex) {
-        this.DEXTERITY = _dex;
+        this.STATS.setDex(_dex);
     }
 
     public void setConstitution(int _constitution) {
-        this.CONSTITUTION = _constitution;
+        this.STATS.setConstitution(_constitution);
     }
 
     public void setIntelligence(int _intelligence) {
-        this.INTELLIGENCE = _intelligence;
+        this.STATS.setIntelligence(_intelligence);
     }
 
     public void setWisdom(int _wisdom) {
-        this.WISDOM = _wisdom;
+        this.STATS.setWisdom(_wisdom);
     }
 
     public void setCharisma(int _charisma) {
-        this.CHARISMA = _charisma;
+        this.STATS.setCharisma(_charisma);
     }
 }
