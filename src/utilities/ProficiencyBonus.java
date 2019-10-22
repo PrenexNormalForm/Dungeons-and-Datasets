@@ -1,4 +1,4 @@
-package dnds.model.utilities;
+package utilities;
 
 /* Last updated: October 1, 2019
 
@@ -10,7 +10,7 @@ Brandon Pozil
 
 */
 
-import dnds.model.characters.Characters;
+import characters.Characters;
 
 /**
  * A proficiency modifier can be calculated by taking the character's

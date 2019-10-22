@@ -1,4 +1,4 @@
-package dnds.model.items;
+package items;
 /*
 Last Updated: October 1, 2019
 Represents the different types of weapons.

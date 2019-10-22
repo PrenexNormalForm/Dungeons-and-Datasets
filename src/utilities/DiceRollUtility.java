@@ -1,4 +1,4 @@
-package dnds.model.utilities;
+package utilities;
 /*
 Last updated: October 1, 2019
 

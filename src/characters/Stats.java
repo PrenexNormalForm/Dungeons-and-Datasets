@@ -1,6 +1,6 @@
-package dnds.model.characters;
+package characters;
 /*
-Last updated Oct 10, 2019
+Last updated Oct 22, 2019
 
 Represents the different character stats of a DnD character.
 
@@ -10,8 +10,8 @@ Jonathan Bacon
  */
 
 /**
- * The Stats class is used to store and handle the different stats of a character for the character class 
- * 
+ * The Stats class is used to store and handle the different stats of a character for the character class
+ *
  */
 public class Stats {
     private int STRENGTH;
@@ -27,7 +27,7 @@ public class Stats {
     private static final int STANDARD_INTELLIGENCE = 12;
     private static final int STANDARD_WISDOM = 10;
     private static final int STANDARD_CHARISMA = 8;
-    
+
     //method for creating stats object with given values
     public Stats(int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma){
         this.STRENGTH = _strength;
@@ -47,55 +47,60 @@ public class Stats {
         this.CHARISMA = STANDARD_CHARISMA;
     }
     
+    @Override
+    public String toString(){
+        return "\nStats:" + "\nStrength:" + this.STRENGTH + "\nDex:" + this.DEXTERITY + "\nConstitution:" + this.CONSTITUTION + "\nIntelligence:" + this.INTELLIGENCE + "\nWisdom:" + this.WISDOM + "\nCharisma:" + this.CHARISMA;
+    }
+
     // =================== GETTERS ===============================//
 
-    public int getStrength() {
+    protected int getStrength() {
         return this.STRENGTH;
     }
 
-    public int getDex() {
+    protected int getDex() {
         return this.DEXTERITY;
     }
-    public int getConstitution() {
+    protected int getConstitution() {
         return this.CONSTITUTION;
     }
 
-    public int getIntelligence() {
+    protected int getIntelligence() {
         return this.INTELLIGENCE;
     }
 
-    public int getWisdom() {
+    protected int getWisdom() {
         return this.WISDOM;
     }
 
-    public int getCharisma() {
+    protected int getCharisma() {
         return this.CHARISMA;
     }
-    
+
     // =================== SETTERS ===============================//
 
-    public void setStrength(int _strength) {
+    protected void setStrength(int _strength) {
         this.STRENGTH = _strength;
     }
 
-    public void setDex(int _dex) {
+    protected void setDex(int _dex) {
         this.DEXTERITY = _dex;
     }
 
-    public void setConstitution(int _constitution) {
+    protected void setConstitution(int _constitution) {
         this.CONSTITUTION = _constitution;
     }
 
-    public void setIntelligence(int _intelligence) {
+    protected void setIntelligence(int _intelligence) {
         this.INTELLIGENCE = _intelligence;
     }
 
-    public void setWisdom(int _wisdom) {
+    protected void setWisdom(int _wisdom) {
         this.WISDOM = _wisdom;
     }
 
-    public void setCharisma(int _charisma) {
+    protected void setCharisma(int _charisma) {
         this.CHARISMA = _charisma;
     }
-    
+
 }

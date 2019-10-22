@@ -1,4 +1,4 @@
-package dnds.view.gui;
+package gui;
 /*
 Last updated 10/8/2019
 
@@ -9,7 +9,7 @@ Contributors:
 Eva Moniz
  */
 
-import dnds.model.utilities.Resources;
+import utilities.Resources;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;

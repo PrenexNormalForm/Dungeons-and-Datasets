@@ -1,4 +1,4 @@
-package dnds.model.items;
+package items;
 
 /**
  *
