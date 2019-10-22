@@ -1,4 +1,4 @@
-package characters;
+package model.characters;
 import java.util.Arrays;
 
 /*
@@ -14,31 +14,39 @@ Jonathan Bacon
 Inventory class is used to create and manage a players inventory
 */
 public class Inventory {
-    private Object[][] BAG;
+    private Object[] BAG;
+    private int BAG_SIZE;
     private int WEIGHT_CAPACITY;
     //default values for bag size
-    private static final int BAG_COLUMNS = 5;
-    private static final int DEFAULT_ROWS = 4;
+    private static final int DEFAULT_BAG_SIZE = 20;
     private static final int WEIGHT_MULTIPLIER = 15;
 
     //default constructor creates an inventory
     public Inventory(int _strength){
-        this.BAG = new Object[BAG_COLUMNS][DEFAULT_ROWS];
+        this.BAG = new Object[DEFAULT_BAG_SIZE];
         this.WEIGHT_CAPACITY = _strength * WEIGHT_MULTIPLIER;
     }
 
     //constructor for creating an inventory of passed in size
     public Inventory(int _bagSize, int _strength){
-        //divides the desired size by 5 to create multiple rows of 5
-        int rows = _bagSize/BAG_COLUMNS;
-        this.BAG = new Object[BAG_COLUMNS][rows];
+        this.BAG = new Object[_bagSize];
         this.WEIGHT_CAPACITY = _strength * WEIGHT_MULTIPLIER;
     }
 
     //method used for adjusting bag size
     private void adjustBag(int _bagSize){
-        int rows = _bagSize/BAG_COLUMNS;
-        this.BAG = new Object[BAG_COLUMNS][rows];
+        this.BAG = new Object[_bagSize];
+    }
+
+    //method used for adding items to inventory
+    private void addItem(){
+        if(this.BAG.length < BAG_SIZE) {
+            //increases the bag size by 1
+            Object[] expandedBag = new Object[this.BAG.length+1];
+            //copys current bag to expandedBag
+            System.arraycopy(this.BAG, 0, expandedBag, 0, this.BAG.length);
+            this.BAG = expandedBag;
+        }
     }
 
     @Override
@@ -47,7 +55,7 @@ public class Inventory {
     }
 
     // =================== GETTERS ===============================//
-    protected Object[][] getBag(){
+    protected Object[] getBag(){
         return this.BAG;
     }
 

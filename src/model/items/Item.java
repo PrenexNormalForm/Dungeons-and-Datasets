@@ -1,4 +1,4 @@
-package items;
+package model.items;
 /*
 Last Updated: September 28, 2019
 

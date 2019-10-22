@@ -1,4 +1,4 @@
-package characters;
+package model.characters;
 /*
 Last Updated: October 22, 2019
 
@@ -100,7 +100,7 @@ public class Characters {
         return this.STATS.getCharisma();
     }
     
-    public Object[][] getBag() {
+    public Object[] getBag() {
         return this.INVENTORY.getBag();
     }
 

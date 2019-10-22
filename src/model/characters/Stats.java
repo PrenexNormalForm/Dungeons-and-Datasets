@@ -1,4 +1,4 @@
-package characters;
+package model.characters;
 /*
 Last updated Oct 22, 2019
 

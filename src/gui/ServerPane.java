@@ -9,7 +9,7 @@ Contributors:
 Eva Moniz
  */
 
-import utilities.Resources;
+import model.utilities.Resources;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
