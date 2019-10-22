@@ -1,4 +1,4 @@
-package gui;
+package view;
 /*
 Last updated 10/8/2019
 

@@ -1,4 +1,4 @@
-package dnds.view.gui.event;
+package view.event;
 /*
 Last updated 10/10/2019
 
