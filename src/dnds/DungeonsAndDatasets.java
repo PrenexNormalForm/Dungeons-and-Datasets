@@ -9,7 +9,7 @@ Contributors:
 Eva Moniz
  */
 
-import dnds.view.gui.DNDSApplication;
+import gui.DNDSApplication;
 import javafx.application.Application;
 
 /**
