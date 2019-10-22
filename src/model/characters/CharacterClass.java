@@ -1,4 +1,4 @@
-package dnds.model.characters;
+package model.characters;
 /*
 Last updated Oct 10, 2019
 

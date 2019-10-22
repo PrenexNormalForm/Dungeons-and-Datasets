@@ -1,4 +1,4 @@
-package dnds.view.gui;
+package gui;
 /*
 Last updated 10/08/2019
 
