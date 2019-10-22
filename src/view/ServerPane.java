@@ -1,6 +1,6 @@
 package view;
 /*
-Last updated 10/8/2019
+Last updated 2019-10-22
 
 This class is a custom JFX control for the server selection/hosting/chat
 component of the main window.
@@ -17,7 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.layout.AnchorPane;
 
 /**
  * This class is a custom JFX control for the server selection/hosting/chat pane
@@ -25,12 +24,17 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author Eva Moniz
  */
-public class ServerPane extends AnchorPane {
+public class ServerPane extends SwitchPane {
 
     // FXML resource locations
     private static final String DISCONNECTED_PANE_FXML = "components/server_pane/disconnected";
     private static final String HOST_PANE_FXML = "components/server_pane/host";
     private static final String CLIENT_PANE_FXML = "components/server_pane/client";
+
+    // View String identifiers
+    private static final String DISCONNECTED = "disconnected";
+    private static final String HOST = "host";
+    private static final String CLIENT = "client";
 
     // Different views this ServerPane can show
     private Node disconnectedView;
@@ -47,7 +51,7 @@ public class ServerPane extends AnchorPane {
             this.initializeHostView();
 
             // Set the view to the default on startup.
-            this.switchView(this.disconnectedView);
+            this.switchView(ServerPane.DISCONNECTED);
         } catch (MalformedURLException ex) {
             Logger.getLogger(ServerPane.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -72,11 +76,11 @@ public class ServerPane extends AnchorPane {
         this.disconnectedView = disconnectedLoader.load();
         this.disconnectedController = disconnectedLoader.getController();
 
+        //Add the view to this SwitchPane as a switchable view
+        this.addView(ServerPane.DISCONNECTED, this.disconnectedView);
+
         //Register event handlers with the view.
         this.disconnectedController.setStartServerAction(event -> startServerInput());
-
-        // Make sure the view fills the entire server pane.
-        ServerPane.anchorFillNode(this.disconnectedView);
     }
 
     /**
@@ -94,8 +98,8 @@ public class ServerPane extends AnchorPane {
         // Initialize the node and controller fields.
         this.hostView = hostLoader.load();
 
-        // Make sure the view fills the entire server pane.
-        ServerPane.anchorFillNode(this.hostView);
+        //Add the view to this SwitchPane as a switchable view
+        this.addView(ServerPane.HOST, this.hostView);
     }
 
     /**
@@ -104,31 +108,9 @@ public class ServerPane extends AnchorPane {
      * the server.
      */
     private void startServerInput() {
-        this.switchView(this.hostView);
+        this.switchView(ServerPane.HOST);
         //TODO: notify program controller that the user wishes to start the
         //server.
     }
 
-    /**
-     * Switches the currently displayed view of the ServerPane.
-     *
-     * @param _view the view to switch to
-     */
-    private void switchView(Node _view) {
-        this.getChildren().clear();
-        this.getChildren().add(_view);
-    }
-
-    /**
-     * Sets the anchors of the {@code _node} to fill an entire
-     * {@code AnchorPane}
-     *
-     * @param _node the node to fill
-     */
-    private static void anchorFillNode(Node _node) {
-        AnchorPane.setBottomAnchor(_node, 0.0);
-        AnchorPane.setTopAnchor(_node, 0.0);
-        AnchorPane.setLeftAnchor(_node, 0.0);
-        AnchorPane.setRightAnchor(_node, 0.0);
-    }
 }
