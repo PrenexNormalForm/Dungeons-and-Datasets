@@ -47,8 +47,6 @@ public class ServerPaneDisconnectedController {
      */
     @FXML
     private void initialize() {
-        //TODO: initialize event listeners
-        this.startServerButton.setOnAction(event -> System.out.println("Button pressed!"));
 
     }
 
