@@ -1,5 +1,6 @@
 package model.characters;
 import java.util.Arrays;
+import java.util.List;
 
 /*
 Last updated Oct 22, 2019
@@ -14,7 +15,7 @@ Jonathan Bacon
 Inventory class is used to create and manage a players inventory
 */
 public class Inventory {
-    private Object[] BAG;
+    private List<Object> BAG ;
     private int BAG_SIZE;
     private int WEIGHT_CAPACITY;
     //default values for bag size
@@ -23,45 +24,35 @@ public class Inventory {
 
     //default constructor creates an inventory
     public Inventory(int _strength){
-        this.BAG = new Object[DEFAULT_BAG_SIZE];
+        this.BAG_SIZE = DEFAULT_BAG_SIZE;
         this.WEIGHT_CAPACITY = _strength * WEIGHT_MULTIPLIER;
     }
 
     //constructor for creating an inventory of passed in size
     public Inventory(int _bagSize, int _strength){
-        this.BAG = new Object[_bagSize];
+        this.BAG_SIZE = _bagSize;
         this.WEIGHT_CAPACITY = _strength * WEIGHT_MULTIPLIER;
     }
 
-    //method used for adjusting bag size
-    private void adjustBag(int _bagSize){
-        this.BAG = new Object[_bagSize];
+    //method used for adding items to inventory
+    protected void addItem(Object _item){
+        if(this.BAG.size() < BAG_SIZE){
+        this.BAG.add(_item);
+        }
     }
 
-    //method used for adding items to inventory
-    private void addItem(){
-        if(this.BAG.length < BAG_SIZE) {
-            //increases the bag size by 1
-            Object[] expandedBag = new Object[this.BAG.length+1];
-            //copys current bag to expandedBag
-            System.arraycopy(this.BAG, 0, expandedBag, 0, this.BAG.length);
-            this.BAG = expandedBag;
-        }
+    //method used for removing item from inventory
+    protected void removeItem(Object _item) {
+        this.BAG.remove(_item);
     }
 
     @Override
     public String toString(){
-        return "\nInventory:\n" + Arrays.toString(this.BAG);
+        return "\nInventory:\n" + this.BAG.toString();
     }
 
     // =================== GETTERS ===============================//
-    protected Object[] getBag(){
+    protected List getBag(){
         return this.BAG;
     }
-
-    // =================== SETTERS ===============================//
-    protected void setBag(int _bagSize){
-       adjustBag(_bagSize);
-    }
-
 }

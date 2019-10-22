@@ -1,4 +1,7 @@
 package model.characters;
+
+import java.util.List;
+
 /*
 Last Updated: October 22, 2019
 
@@ -99,8 +102,8 @@ public class Characters {
     public int getCharisma() {
         return this.STATS.getCharisma();
     }
-    
-    public Object[] getBag() {
+
+    public List getBag() {
         return this.INVENTORY.getBag();
     }
 
@@ -136,9 +139,5 @@ public class Characters {
 
     public void setCharisma(int _charisma) {
         this.STATS.setCharisma(_charisma);
-    }
-    
-    public void setBag(int _bagSize){
-        this.INVENTORY.setBag(_bagSize);
     }
 }

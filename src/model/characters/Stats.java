@@ -46,7 +46,7 @@ public class Stats {
         this.WISDOM = STANDARD_WISDOM;
         this.CHARISMA = STANDARD_CHARISMA;
     }
-    
+
     @Override
     public String toString(){
         return "\nStats:" + "\nStrength:" + this.STRENGTH + "\nDex:" + this.DEXTERITY + "\nConstitution:" + this.CONSTITUTION + "\nIntelligence:" + this.INTELLIGENCE + "\nWisdom:" + this.WISDOM + "\nCharisma:" + this.CHARISMA;
