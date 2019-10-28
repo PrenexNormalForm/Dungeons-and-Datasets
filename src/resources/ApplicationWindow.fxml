@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TabPane prefHeight="315.0" prefWidth="600.0" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS">
+        <tabs>
+          <Tab fx:id="settingsTab" closable="false" style="-fx-font-size: 16px;" text="Settings" />
+          <Tab fx:id="serverTab" closable="false" style="-fx-font-size: 16px;" text="Server" />
+            <Tab fx:id="welcomeTab" style="-fx-font-size: 16px;" text="Welcome">
+               <content>
+                  <WebView fx:id="welcomeWebView" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <Separator prefWidth="200.0" />
+      <HBox prefHeight="0.0" prefWidth="200.0" spacing="8.0" VBox.vgrow="NEVER">
+         <children>
+            <Label text="Roll Dice:">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Spinner fx:id="diceRepetitionSpinner" editable="true" prefHeight="25.0" prefWidth="50.0" />
+            <Button fx:id="d4Button" mnemonicParsing="false" text="D4" />
+            <Button fx:id="d6Button" mnemonicParsing="false" text="D6" />
+            <Button fx:id="d8Button" mnemonicParsing="false" text="D8" />
+            <Button fx:id="d10Button" mnemonicParsing="false" text="D10" />
+            <Button fx:id="d12Button" mnemonicParsing="false" text="D12" />
+            <Button fx:id="d20Button" mnemonicParsing="false" text="D20" />
+            <Label fx:id="diceResultLabel">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </padding>
+      </HBox>
+   </children>
+</VBox>
