@@ -8,18 +8,11 @@ class extends javafx.application.Application.
 Contributors:
 Eva Moniz
  */
-
-import gui.DNDSApplication;
-import javafx.application.Application;
-
-/**
- * This class starts the program.
- *
- * @author Eva Moniz
- */
 public class DungeonsAndDatasets {
 
     public static void main(String[] args) {
-       Application.launch(DNDSApplication.class, args);
+       //Application.launch(DNDSApplication.class, args);
+       
+       TestCases.test01();
     }
 }
