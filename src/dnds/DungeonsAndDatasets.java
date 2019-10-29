@@ -1,11 +1,4 @@
 package dnds;
-
-import java.io.IOException;
-import view.DNDSApplication;
-import javafx.application.Application;
-
-
-
 /*
 Last updated Oct 29, 2019
 
@@ -17,10 +10,18 @@ Jonathan Bacon
 Brandon Pozil
 Eva Moniz
  */
+import view.DNDSApplication;
+import javafx.application.Application;
+import java.io.IOException;
+
+/**
+ * This class starts the program.
+ */
 public class DungeonsAndDatasets {
 
     public static void main(String[] args) throws IOException {
        Application.launch(DNDSApplication.class, args);
-
+       TestCases.test01();
+       TestCases.test02();
     }
 }

@@ -1,4 +1,4 @@
-package gui;
+package view;
 /*
 Last updated 9/27/2019
 
@@ -12,6 +12,7 @@ Eva Moniz
 import model.utilities.Resources;
 import java.io.IOException;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -58,8 +59,9 @@ public class DNDSApplication extends Application {
             this.stage.setMinWidth(DNDSApplication.MIN_WINDOW_WIDTH);
 
             Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            this.stage.setScene(scene);
+            this.stage.setOnCloseRequest(e -> Platform.exit());
+            this.stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
