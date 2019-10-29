@@ -1,10 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dnds;
+/*
+Last updated Oct 29, 2019
 
+A collection of test cases to prove the logic works.
+
+Contributors:
+Jonathan Bacon
+Brandon Pozil
+ */
+import java.io.IOException;
+import java.util.Arrays;
 import model.characters.Characters;
 
 /**
@@ -13,8 +18,20 @@ import model.characters.Characters;
 public class TestCases {
     
     //test 01 case
-    public static void test01() {
+    public static void test01() throws IOException {
         Characters test = TestController.createCharacter();
         System.out.println(test.toString());
+        TestCRUD.createSave(test);
+    }
+    //test 02 case
+    public static void test02(){
+        String name = TestController.promptForCharacter();
+        String save = TestCRUD.read(name);
+        save.replace("\n","");
+        String[] arr = save.split("!");
+        System.out.println(Arrays.toString(arr));
+        Characters test = TestController.savedCharacter(arr);
+        System.out.println(test.toString());
+        
     }
 }

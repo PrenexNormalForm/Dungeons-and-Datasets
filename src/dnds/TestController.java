@@ -1,10 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dnds;
+/*
+Last updated Oct 29, 2019
 
+A test design for our controllers which will be linked to the UI
+
+Contributors:
+Jonathan Bacon
+Brandon Pozil
+ */
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,7 +22,17 @@ import static model.utilities.DiceRollUtility.rollD6;
  * Class to hold controller methods THIS IS A TESTING CONTROLLER
  */
 public class TestController {
+// <editor-fold defaultstate="collapsed" desc="CRUD"> 
+    public static String promptForCharacter(){
+        Scanner kb = new Scanner(System.in);
+        System.out.println("Please enter the name of the character you want to load:");
+        String input = kb.nextLine();
+        return input;
+    }
     
+// </editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="character creation">    
     //method for creating a new character
     public static Characters createCharacter(){
         HashMap<String, Object> map = getInput();
@@ -33,7 +46,18 @@ public class TestController {
         int charisma = (int) map.get("charisma");
         return new Characters(klass,name,strength,dexterity,constitution,intelligence,wisdom,charisma);
     }
-    
+    //method for creating a character from a save
+    public static Characters savedCharacter(String[] _vals){
+        String name = (String) _vals[0];
+        String klass = (String) _vals[1];
+        int strength = Integer.parseInt(_vals[2]);
+        int dexterity = Integer.parseInt(_vals[3]);
+        int constitution = Integer.parseInt(_vals[4]);
+        int intelligence = Integer.parseInt(_vals[5]);
+        int wisdom = Integer.parseInt(_vals[6]);
+        int charisma = Integer.parseInt(_vals[7]);
+        return new Characters(klass,name,strength,dexterity,constitution,intelligence,wisdom,charisma);
+    }
     //method for gathering input about character creation
     private static HashMap <String, Object> getInput(){
         HashMap<String, Object> map = new HashMap<>();
@@ -132,4 +156,5 @@ public class TestController {
         }
         return stats;
     }
+    // </editor-fold>
 }

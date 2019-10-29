@@ -68,6 +68,10 @@ public class Characters {
     public String toString() {
         return "\nName:" + this.getName()+ "\nClass:" + this.getCharacterClass() + this.STATS.toString();
     }
+    //method used to return the values of the character
+    public String SaveString() {
+        return this.getName() + '!' + this.getCharacterClass() + '!' + this.getStrength() + '!' + this.getDex() + '!' + this.getConstitution() + '!' + this.getIntelligence() + '!' + this.getWisdom() + '!' + this.getCharisma();
+    }
 
     // =================== GETTERS ===============================//
 
