@@ -41,7 +41,7 @@ public class TestCRUD {
             CSVWriter writer = new CSVWriter(output, '!', CSVWriter.NO_ESCAPE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER, "");
             writer.writeAll(characterData);
             writer.close();
-
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
