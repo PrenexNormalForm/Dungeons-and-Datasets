@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.WebView?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainViewController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="772.0" prefWidth="800.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainViewController">
    <children>
       <MenuBar>
         <menus>
@@ -77,9 +77,9 @@
             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
          </padding>
       </HBox>
-      <VBox fx:id="chatPane" prefHeight="200.0" prefWidth="100.0">
+      <VBox fx:id="chatPane" prefHeight="175.0" prefWidth="800.0">
          <children>
-            <ListView fx:id="chatListView" prefHeight="200.0" prefWidth="200.0" />
+            <ListView fx:id="chatListView" prefHeight="200.0" prefWidth="784.0" />
             <HBox spacing="8.0">
                <children>
                   <Label prefHeight="58.0" prefWidth="106.0" text="Send Message:">
