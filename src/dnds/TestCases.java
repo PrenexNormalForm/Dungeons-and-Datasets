@@ -9,14 +9,13 @@ Jonathan Bacon
 Brandon Pozil
  */
 import java.io.IOException;
-import java.util.Arrays;
 import model.characters.Characters;
 
 /**
  * class to house all the test cases
  */
 public class TestCases {
-    
+
     //test 01 case
     public static void test01() throws IOException {
         Characters test = TestController.createCharacter();
@@ -27,11 +26,9 @@ public class TestCases {
     public static void test02(){
         String name = TestController.promptForCharacter();
         String save = TestCRUD.read(name);
-        save.replace("\n","");
         String[] arr = save.split("!");
-        System.out.println(Arrays.toString(arr));
         Characters test = TestController.savedCharacter(arr);
         System.out.println(test.toString());
-        
+
     }
 }

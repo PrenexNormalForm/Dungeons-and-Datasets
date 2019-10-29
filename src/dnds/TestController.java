@@ -22,17 +22,17 @@ import static model.utilities.DiceRollUtility.rollD6;
  * Class to hold controller methods THIS IS A TESTING CONTROLLER
  */
 public class TestController {
-// <editor-fold defaultstate="collapsed" desc="CRUD"> 
+// <editor-fold defaultstate="collapsed" desc="CRUD">
     public static String promptForCharacter(){
         Scanner kb = new Scanner(System.in);
         System.out.println("Please enter the name of the character you want to load:");
         String input = kb.nextLine();
         return input;
     }
-    
+
 // </editor-fold>
-    
-// <editor-fold defaultstate="collapsed" desc="character creation">    
+
+// <editor-fold defaultstate="collapsed" desc="character creation">
     //method for creating a new character
     public static Characters createCharacter(){
         HashMap<String, Object> map = getInput();
@@ -68,11 +68,11 @@ public class TestController {
         String input = kb.nextLine();
         map.put("name", input);
         //calls the method to get the desired class
-        do { 
+        do {
             input = classGrabber(kb);
             attempts++;
         } while(input.equals("invalid") && attempts < 4);
-        
+
         if(attempts == 4){
             System.out.println("Ya cant choose that as a class ya nerd.");
             System.exit(0);
@@ -82,7 +82,7 @@ public class TestController {
         map.putAll(stats);
         return map;
     }
-    
+
     //method used for getting the class from the user
     private static String classGrabber(Scanner _kb){
         String input;
@@ -91,7 +91,7 @@ public class TestController {
         System.out.println(Arrays.toString(CharacterClass.values()).toLowerCase());
         System.out.print(": ");
         input = _kb.nextLine();
-        
+
         for(CharacterClass k : CharacterClass.values()){
             klasses.add(k.toString().toLowerCase());
         }
