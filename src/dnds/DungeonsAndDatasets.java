@@ -1,6 +1,10 @@
 package dnds;
 
 import java.io.IOException;
+import view.DNDSApplication;
+import javafx.application.Application;
+
+
 
 /*
 Last updated Oct 29, 2019
@@ -16,8 +20,7 @@ Eva Moniz
 public class DungeonsAndDatasets {
 
     public static void main(String[] args) throws IOException {
-       //Application.launch(DNDSApplication.class, args);
-       TestCases.test01();
-       TestCases.test02();
+       Application.launch(DNDSApplication.class, args);
+
     }
 }
