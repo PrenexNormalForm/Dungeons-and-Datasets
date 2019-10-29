@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.WebView?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainViewController">
    <children>
       <MenuBar>
         <menus>
@@ -33,7 +33,7 @@
           <Menu mnemonicParsing="false" text="Help" />
         </menus>
       </MenuBar>
-      <TabPane prefHeight="315.0" prefWidth="600.0" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS">
+      <TabPane fx:id="tabs" prefHeight="315.0" prefWidth="600.0" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS">
         <tabs>
           <Tab fx:id="settingsTab" closable="false" style="-fx-font-size: 16px;" text="Settings" />
           <Tab fx:id="serverTab" closable="false" style="-fx-font-size: 16px;" text="Server" />
@@ -57,7 +57,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <Spinner fx:id="diceRepetitionSpinner" prefHeight="37.0" prefWidth="69.0" />
+            <Spinner fx:id="diceRepetitionSpinner" prefHeight="37.0" prefWidth="80.0" />
             <Button fx:id="d4Button" mnemonicParsing="false" text="D4" />
             <Button fx:id="d6Button" mnemonicParsing="false" text="D6" />
             <Button fx:id="d8Button" mnemonicParsing="false" text="D8" />
