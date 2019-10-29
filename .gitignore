@@ -3,3 +3,6 @@
 /manifest.mf
 /Dungeons and Datasheets Netbeans
 /build/
+/dist/
+build.xml
+manifest.mf
