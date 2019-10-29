@@ -41,13 +41,12 @@ public class Characters {
      * @param _intelligence - indicates the intelligence of the character
      * @param _wisdom - indicates the wisdom of the character
      * @param _charisma - indicates the charisma of the character
-     * @param _bagSize - indicates the size of bag desired
      */
-    public Characters(String _class, String _name, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma, int _bagSize) {
+    public Characters(String _class, String _name, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma) {
         this.CLASS = _class;
         this.NAME = _name;
         this.STATS = new Stats(_strength, _dex, _constitution, _intelligence, _wisdom, _charisma);
-        this.INVENTORY = new Inventory(_bagSize, _strength);
+        this.INVENTORY = new Inventory(_strength);
     }
     /**
      * The default character creation for someone just starting and just
@@ -67,7 +66,11 @@ public class Characters {
      */
     @Override
     public String toString() {
-        return "Class:" + this.getCharacterClass() + "\nName:" + this.getName() + this.STATS.toString();
+        return "\nName:" + this.getName()+ "\nClass:" + this.getCharacterClass() + this.STATS.toString();
+    }
+    //method used to return the values of the character
+    public String SaveString() {
+        return this.getName() + '!' + this.getCharacterClass() + '!' + this.getStrength() + '!' + this.getDex() + '!' + this.getConstitution() + '!' + this.getIntelligence() + '!' + this.getWisdom() + '!' + this.getCharisma();
     }
 
     // =================== GETTERS ===============================//
