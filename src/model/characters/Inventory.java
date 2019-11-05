@@ -1,5 +1,4 @@
 package model.characters;
-import java.util.Arrays;
 import java.util.List;
 
 /*
