@@ -17,7 +17,7 @@ import model.items.Item;
  */
 public class TestCases {
 
-    //test 01 case
+    //test case 01
     public static void test01() throws IOException {
         Characters test = TestController.createCharacter();
         System.out.println("Initial Character Creation Readout");
@@ -26,7 +26,7 @@ public class TestCases {
         TestGson.saveCharacter(test, test.getName());
         System.out.println("Test case 01 finished");
     }
-    //test 02 case
+    //test case 02
     public static void test02() throws IOException{
         String name = TestController.promptForCharacter();
         System.out.println("Loading Character");
@@ -34,7 +34,7 @@ public class TestCases {
         System.out.println(loaded.toString());
         System.out.println("Test case 02 finished");
     }
-    //test 03 case
+    //test case 03
     public static void test03() throws IOException{
         System.out.println("Gathering character to add item to");
         String name = TestController.promptForCharacter();
@@ -46,6 +46,6 @@ public class TestCases {
         System.out.println("Item added. Saving Character");
         TestGson.saveCharacter(loaded, loaded.getName());
         System.out.println("Test case 03 finished");
-
     }
+    //test case 04
 }
