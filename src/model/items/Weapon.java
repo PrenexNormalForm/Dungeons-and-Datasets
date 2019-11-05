@@ -14,14 +14,13 @@ Brandon Pozil
 */
 
 public class Weapon extends Item {
-
     private String weaponType;
     private String damageAttackRoll;
     private String damageType;
     private String weaponProperties;
 
-    public Weapon(int _itemCost, int _itemWeight, String _weaponType, String _damageAttackRoll, String _damageType, String _weaponProperties) {
-        super(_itemCost, _itemWeight);
+    public Weapon(String _name, int _itemCost, int _itemWeight, String _weaponType, String _damageAttackRoll, String _damageType, String _weaponProperties) {
+        super(_name, _itemCost, _itemWeight);
         this.weaponType = _weaponType;
         this.damageAttackRoll = _damageAttackRoll;
         this.damageType = _damageType;

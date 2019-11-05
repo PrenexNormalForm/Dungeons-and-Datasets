@@ -10,12 +10,39 @@ Contributors:
 Brandon Pozil
 */
 public class Item {
+   private String NAME;
+   private int ITEM_COST;
+   private int ITEM_WEIGHT;
 
-   private static int itemCost;
-   private static int itemWeight;
+    public Item(String _name, int _itemCost, int _itemWeight) {
+        this.NAME = _name;
+        this.ITEM_COST = _itemCost;
+        this.ITEM_WEIGHT = _itemWeight;
+    }
 
-    public Item(int _itemCost, int _itemWeight) {
-        this.itemCost = _itemCost;
-        this.itemWeight = _itemWeight;
+     // =================== GETTERS ===============================//
+    public String getName(){
+        return this.NAME;
+    }
+
+    public int getCost(){
+        return this.ITEM_COST;
+    }
+
+    public int getWeight(){
+        return this.ITEM_WEIGHT;
+    }
+
+     // =================== SETTERS ===============================//
+    public void setName(String _name){
+        this.NAME = _name;
+    }
+
+    public void setCost(int _cost){
+        this.ITEM_COST = _cost;
+    }
+
+    public void setWeight(int _weight){
+        this.ITEM_WEIGHT = _weight;
     }
 }

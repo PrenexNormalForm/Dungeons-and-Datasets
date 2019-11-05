@@ -1,6 +1,9 @@
 package model.characters;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
+import model.items.Item;
 
 /*
 Last Updated: October 22, 2019
@@ -24,6 +27,7 @@ Jonathan Bacon
  */
 
 public class Characters {
+    private UUID ID;
     private String CLASS;
     private String NAME;
     private Stats STATS;
@@ -47,6 +51,7 @@ public class Characters {
         this.NAME = _name;
         this.STATS = new Stats(_strength, _dex, _constitution, _intelligence, _wisdom, _charisma);
         this.INVENTORY = new Inventory(_strength);
+        this.ID = UUID.randomUUID();
     }
     /**
      * The default character creation for someone just starting and just
@@ -59,6 +64,7 @@ public class Characters {
         this.NAME = DEFAULT_NAME;
         this.STATS = new Stats();
         this.INVENTORY = new Inventory(getStrength());
+        this.ID = UUID.randomUUID();
     }
     /**
      * Method to print all fields of the Characters class.
@@ -66,13 +72,16 @@ public class Characters {
      */
     @Override
     public String toString() {
-        return "\nName:" + this.getName()+ "\nClass:" + this.getCharacterClass() + this.STATS.toString();
+        return "\nName:" + this.getName()+ "\nClass:" + this.getCharacterClass() + this.STATS.toString() + this.INVENTORY.toString();
     }
-    //method used to return the values of the character
-    public String SaveString() {
-        return this.getName() + '!' + this.getCharacterClass() + '!' + this.getStrength() + '!' + this.getDex() + '!' + this.getConstitution() + '!' + this.getIntelligence() + '!' + this.getWisdom() + '!' + this.getCharisma();
+    // =================== Inventory Managers ===============================//
+    public void addItem(Item _item){
+        this.INVENTORY.addItem(_item);
     }
 
+    public void removeItem(Item _item){
+        this.INVENTORY.removeItem(_item);
+    }
     // =================== GETTERS ===============================//
 
     public String getCharacterClass() {
@@ -106,7 +115,7 @@ public class Characters {
         return this.STATS.getCharisma();
     }
 
-    public List getBag() {
+    public HashMap getBag() {
         return this.INVENTORY.getBag();
     }
 
