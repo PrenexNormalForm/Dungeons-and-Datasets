@@ -13,16 +13,10 @@ Jonathan Bacon
  * Represents the different character classes of a DnD character.
  */
 public enum CharacterClass {
-    BARBARIAN,
-    BARD,
-    CLERIC,
-    DRUID,
-    FIGHTER,
-    MONK,
-    PALADIN,
-    RANGER,
-    ROUGE,
-    SORCERER,
-    WARLOCK,
-    WIZARD;
+    BARBARIAN,BARD,
+    CLERIC,DRUID,
+    FIGHTER,MONK,
+    PALADIN,RANGER,
+    ROUGE,SORCERER,
+    WARLOCK,WIZARD;
 }
