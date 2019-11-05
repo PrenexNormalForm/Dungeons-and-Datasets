@@ -11,10 +11,17 @@ Brandon Pozil
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Scanner;
 import model.characters.CharacterClass;
 import model.characters.Characters;
+import model.items.Armor;
+import model.items.DamageType;
+import model.items.Item;
+import model.items.Weapon;
+import model.items.WeaponProperties;
+import model.items.WeaponType;
 import static model.utilities.DiceRollUtility.rollD6;
 
 /**
@@ -22,10 +29,12 @@ import static model.utilities.DiceRollUtility.rollD6;
  * Class to hold controller methods THIS IS A TESTING CONTROLLER
  */
 public class TestController {
+    //static Scanner SCANNER = new Scanner(System.in);
+    final static int MAX_RETRIES = 4;
 // <editor-fold defaultstate="collapsed" desc="CRUD">
     public static String promptForCharacter(){
         Scanner kb = new Scanner(System.in);
-        System.out.println("Please enter the name of the character you want to load:");
+        System.out.println("Please enter the name of the character you want to load: ");
         String input = kb.nextLine();
         return input;
     }
@@ -46,18 +55,6 @@ public class TestController {
         int charisma = (int) map.get("charisma");
         return new Characters(klass,name,strength,dexterity,constitution,intelligence,wisdom,charisma);
     }
-    //method for creating a character from a save
-    public static Characters savedCharacter(String[] _vals){
-        String name = (String) _vals[0];
-        String klass = (String) _vals[1];
-        int strength = Integer.parseInt(_vals[2]);
-        int dexterity = Integer.parseInt(_vals[3]);
-        int constitution = Integer.parseInt(_vals[4]);
-        int intelligence = Integer.parseInt(_vals[5]);
-        int wisdom = Integer.parseInt(_vals[6]);
-        int charisma = Integer.parseInt(_vals[7]);
-        return new Characters(klass,name,strength,dexterity,constitution,intelligence,wisdom,charisma);
-    }
     //method for gathering input about character creation
     private static HashMap <String, Object> getInput(){
         HashMap<String, Object> map = new HashMap<>();
@@ -71,9 +68,9 @@ public class TestController {
         do {
             input = classGrabber(kb);
             attempts++;
-        } while(input.equals("invalid") && attempts < 4);
+        } while(input.equals("invalid") && attempts < MAX_RETRIES);
 
-        if(attempts == 4){
+        if(attempts == MAX_RETRIES){
             System.out.println("Ya cant choose that as a class ya nerd.");
             System.exit(0);
         }
@@ -104,13 +101,22 @@ public class TestController {
     private static HashMap rollHelper(Scanner _kb, HashMap _stats){
         System.out.println("Would you like to manually role or have us roll? (manuel or auto)");
         String rollType = _kb.nextLine();
-        if(rollType.toLowerCase().equals("auto")){
-            _stats = autoRolls();
-        } else if(rollType.toLowerCase().equals("manuel")){
-            _stats = userRolls(_kb);
-        } else {
-            System.out.println("you failed. try again");
+        int counter = 0;
+        while(!rollType.toLowerCase().equals("auto") && !rollType.toLowerCase().equals("manuel") && counter < MAX_RETRIES){
+            System.out.println("Invalid choice. please choose auto or manuel");
+            rollType = _kb.nextLine();
+            counter++;
+        }
+        if(counter == MAX_RETRIES){
+            System.out.println("Maximum retries exeeded. Exiting program");
             System.exit(0);
+        }
+        switch(rollType.toLowerCase()){
+            case "auto":
+                _stats = autoRolls();
+                break;
+            case "manuel":
+                _stats = userRolls(_kb);
         }
         return _stats;
     }
@@ -142,19 +148,142 @@ public class TestController {
             System.out.print("Please enter your roll for " + statNames[i] +": ");
             Integer roll = _kb.nextInt();
             //allows for repeated attempts at rolls
-            while(roll > 18 && attempts < 5 || roll < 3 && attempts < 4){
+            while(roll > 18 && attempts < 5 || roll < 3 && attempts < MAX_RETRIES){
                 attempts++;
                 System.out.println("Invalid roll please enter a number between 3-18");
                 roll = _kb.nextInt();
             }
             //triggers if someone is being a meme
-            if(attempts == 4){
+            if(attempts == MAX_RETRIES){
                 System.out.println("Fine have it your way. everyone went to mordor and died. the end. are you happy?");
                 System.exit(0);
             }
             stats.put(statNames[i], roll);
         }
         return stats;
+    }
+    // </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="item creation">
+    public static Item promptForItem(){
+        Scanner kb = new Scanner(System.in);
+        String[] types = {"armor","weapon","item"};
+        System.out.println("What type of item do you want? (Armor, Weapon, Item");
+        String input = kb.next().toLowerCase();
+        int counter = 0;
+        Item created;
+        //checks if the input is weapon armor or item and if the counter is less than the max retries
+        while((!(input.equalsIgnoreCase(types[0])) && !(input.equalsIgnoreCase(types[1])) && !(input.equalsIgnoreCase(types[2]))) && counter < MAX_RETRIES){
+            System.out.println("Invalid choice please choose either weapon or armor or item");
+            counter++;
+            input = kb.next().toLowerCase();
+        }
+        //prints an error message if max retries has been hit then exits the program
+        if(counter == MAX_RETRIES){
+            System.out.println("That is not an item type, try again next time.");
+            System.exit(0);
+        }
+        //switch case for calling the appropriate methods
+        switch(input){
+            case "weapon":
+                created = createWeapon(kb);
+                break;
+            case "armor":
+                created = createArmor(kb);
+                break;
+            default:
+                created = createItem(kb);
+    }
+        kb.close();
+        return created;
+    }
+    // <editor-fold defaultstate="collapsed" desc="weapons">
+    //master method for handling weapon creation
+    private static Weapon createWeapon(Scanner _kb){
+        System.out.print("Enter your weapons name: ");
+        //this line exists to expend the extra new line. the input gathering breaks otherwise
+        _kb.nextLine();
+        String name = _kb.nextLine();
+        System.out.print("Item Weight: ");
+        int weight = _kb.nextInt();
+        System.out.print("Item Cost: ");
+        int cost = _kb.nextInt();
+        System.out.println("What is your weapons type: ");
+        String type = getProperty(_kb, WeaponType.class);
+        System.out.print("What is your weapons damage attack roll: ");
+        String attackRoll = _kb.next();
+        System.out.println("What type of damage does your weapon do: ");
+        String damageType = getProperty(_kb, DamageType.class);
+        System.out.println("What properties does your weapon have: ");
+        String properties = getProperty(_kb, WeaponProperties.class);
+        //creates a new weapon and returns it
+        return new Weapon(name, cost, weight, type, attackRoll, damageType, properties);
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="armor">
+    private static Armor createArmor(Scanner _kb){
+        System.out.print("Enter your armors name: ");
+        //this line exists to expend the extra new line. the input gathering breaks otherwise
+        _kb.nextLine();
+        String name = _kb.nextLine();
+        System.out.print("Weight: ");
+        int weight = _kb.nextInt();
+        System.out.print("Cost: ");
+        int cost = _kb.nextInt();
+        System.out.print("Armor class: ");
+        int armorClass = _kb.nextInt();
+        //creates a new armor item and returns it
+        return new Armor(name, cost, weight, armorClass);
+    }
+
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="items">
+    private static Item createItem(Scanner _kb){
+        System.out.print("Item name: ");
+        //this line exists to expend the extra new line. the input gathering breaks otherwise
+        _kb.nextLine();
+        String name = _kb.nextLine();
+        System.out.print("Cost: ");
+        int cost = _kb.nextInt();
+        System.out.print("Weight: ");
+        int weight = _kb.nextInt();
+        //creates a new item and returns it
+        return new Item(name, cost, weight);
+    }
+
+
+    // </editor-fold>
+    //method used for checking of an enum contains a value
+    public static <E extends Enum<E>> boolean contains(Class<E> _enumClass,
+      String value) {
+    try {
+      return EnumSet.allOf(_enumClass)
+          .contains(Enum.valueOf(_enumClass, value));
+    } catch (Exception e) {
+      return false;
+    }
+  }
+    //generic method for getting property choices that match given enums
+    private static<E extends Enum<E>> String getProperty(Scanner _kb, Class<E> _enumClass){
+        System.out.println(EnumSet.allOf(_enumClass));
+        String property = _kb.next().toUpperCase();
+        int counter = 0;
+        //checks if the enum contains the property and if the counter is less than the max retries
+        while(!contains(_enumClass,property.toUpperCase()) && counter < MAX_RETRIES){
+            System.out.println("That is not a valid option");
+            System.out.println("Choose one of the below types");
+            System.out.println(EnumSet.allOf(_enumClass));
+            property = _kb.next().toUpperCase();
+            counter++;
+        }
+        if(counter == MAX_RETRIES){
+            System.out.println("maximum tries exceeded");
+            System.exit(0);
+        }
+        return property;
     }
     // </editor-fold>
 }

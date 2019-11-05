@@ -10,20 +10,7 @@ package model.items;
  * @author Brandon Pozil
  */
 public enum WeaponProperties {
-    LIGHT("Light"),
-    HEAVY("Heavy"),
-    FINESSE("Finesse"),
-    VERSATILE("Versatile"),
-    TWO_HANDED("Two-Handed"),
-    ONE_HANDED("One-Handed");
-    private String weaponProperties;
-
-    @Override
-    public String toString() {
-        return weaponProperties;
-    }
-
-    private WeaponProperties(String _weaponProperties) {
-        this.weaponProperties = weaponProperties;
-    }
+    LIGHT,HEAVY,
+    FINESSE,VERSATILE,
+    TWO_HANDED,ONE_HANDED;
 }
