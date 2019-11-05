@@ -1,4 +1,12 @@
 package view;
+/*
+Last updated November 4, 2019
+
+This is the view controller for the primary application window.
+
+Contributors:
+Eva Moniz
+ */
 
 import java.net.MalformedURLException;
 import java.util.logging.Level;
@@ -24,6 +32,8 @@ public class MainViewController {
     @FXML
     private WebView welcomeWebView;
     @FXML
+    private Tab newCharacterTab;
+    @FXML
     private Spinner diceRepetitionSpinner;
 
     @FXML
@@ -34,8 +44,8 @@ public class MainViewController {
         try {
             // Set the welcome tab to display the welcome page
             WebEngine engine = this.welcomeWebView.getEngine();
-            String url = Resources.getResourceUrl(Constants.WELCOME_PAGE).toString();
-            engine.load(url);
+            String urlString = Resources.getResourceUrl(Constants.WELCOME_PAGE).toString();
+            engine.load(urlString);
         } catch (MalformedURLException ex) {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -43,5 +53,10 @@ public class MainViewController {
         // Set dice repetiton spinner to only allow values 1 to 10
         SpinnerValueFactory spinnerValFac = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1);
         this.diceRepetitionSpinner.setValueFactory(spinnerValFac);
+    }
+
+    private void createCharacter() {
+
+        Tab characterTab = new Tab();
     }
 }
