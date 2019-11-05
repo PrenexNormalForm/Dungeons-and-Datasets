@@ -1,9 +1,6 @@
 package model.characters;
-
-import java.util.List;
-
 /*
-Last Updated: October 22, 2019
+Last Updated: November 5, 2019
 
 The Character class that will be used for Character Creation and updating
 character stats and information throughout a campaign.
@@ -11,19 +8,22 @@ character stats and information throughout a campaign.
 Contributors:
 Brandon Pozil
 Jonathan Bacon
-*/
+Eva Moniz
+ */
+
+import java.util.List;
+import model.utilities.UUID;
 
 /**
  * The Characters class (God forbid you actually call it Character) that will a
- * player will start and update throughout a campaign.
- * Includes all stats needed for
- * basic character creation baring some more complex Strings to be
- * integrated at a later point in time.
- * Declared class constants are used
- * for default character creation (Discussed below).
+ * player will start and update throughout a campaign. Includes all stats needed
+ * for basic character creation baring some more complex Strings to be
+ * integrated at a later point in time. Declared class constants are used for
+ * default character creation (Discussed below).
  */
-
 public class Characters {
+
+    private final String uuid;
     private String CLASS;
     private String NAME;
     private Stats STATS;
@@ -33,6 +33,7 @@ public class Characters {
     /**
      * The overridden constructor for creating a basic character (Will update
      * with more complex fields such as background, etc. at a later date.)
+     *
      * @param _class - indicates the class chosen
      * @param _name - indicates the name chosen
      * @param _strength - indicates the strength of the character
@@ -43,38 +44,43 @@ public class Characters {
      * @param _charisma - indicates the charisma of the character
      */
     public Characters(String _class, String _name, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma) {
+        this();
         this.CLASS = _class;
         this.NAME = _name;
         this.STATS = new Stats(_strength, _dex, _constitution, _intelligence, _wisdom, _charisma);
         this.INVENTORY = new Inventory(_strength);
     }
+
     /**
-     * The default character creation for someone just starting and just
-     * wants to get started in a campaign. This method creates a default
-     * Barbarian named "YEEEEEHAWWWWWW" (This will be updated with a random
-     * name generator at a later date) with standard stat rolls.
+     * The default character creation for someone just starting and just wants
+     * to get started in a campaign. This method creates a default Barbarian
+     * named "YEEEEEHAWWWWWW" (This will be updated with a random name generator
+     * at a later date) with standard stat rolls.
      */
-    public Characters(){
+    public Characters() {
+        this.uuid = UUID.generateUUID();
         this.CLASS = CharacterClass.BARBARIAN.name();
         this.NAME = DEFAULT_NAME;
         this.STATS = new Stats();
         this.INVENTORY = new Inventory(getStrength());
     }
+
     /**
      * Method to print all fields of the Characters class.
+     *
      * @return The character details.
      */
     @Override
     public String toString() {
-        return "\nName:" + this.getName()+ "\nClass:" + this.getCharacterClass() + this.STATS.toString();
+        return "\nName:" + this.getName() + "\nClass:" + this.getCharacterClass() + this.STATS.toString();
     }
+
     //method used to return the values of the character
     public String SaveString() {
         return this.getName() + '!' + this.getCharacterClass() + '!' + this.getStrength() + '!' + this.getDex() + '!' + this.getConstitution() + '!' + this.getIntelligence() + '!' + this.getWisdom() + '!' + this.getCharisma();
     }
 
     // =================== GETTERS ===============================//
-
     public String getCharacterClass() {
         return this.CLASS;
     }
@@ -90,6 +96,7 @@ public class Characters {
     public int getDex() {
         return this.STATS.getDex();
     }
+
     public int getConstitution() {
         return this.STATS.getConstitution();
     }
@@ -110,8 +117,11 @@ public class Characters {
         return this.INVENTORY.getBag();
     }
 
-    // =================== SETTERS ===============================//
+    public String getUUID() {
+        return this.uuid;
+    }
 
+    // =================== SETTERS ===============================//
     public void setCharacterClass(String _class) {
         this.CLASS = _class;
     }

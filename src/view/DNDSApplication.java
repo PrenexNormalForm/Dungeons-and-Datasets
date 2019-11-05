@@ -9,6 +9,7 @@ Jonathan Bacon
 Eva Moniz
  */
 
+import controller.JFXViewConnector;
 import model.utilities.Resources;
 import java.io.IOException;
 import javafx.application.Application;
@@ -42,6 +43,8 @@ public class DNDSApplication extends Application {
      */
     private String title = "Dungeons & DataSheets";
 
+    private static JFXViewConnector viewConnector;
+
     /**
      * Starts the application, and the logic thread.
      *
@@ -51,7 +54,11 @@ public class DNDSApplication extends Application {
     public void start(Stage primaryStage) {
 
         try {
-            this.root = FXMLLoader.load(Resources.getFxmlUrl(Constants.START_WINDOW));
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Resources.getFxmlUrl(Constants.START_WINDOW));
+            this.root = loader.load();
+
+            DNDSApplication.setViewConnector(new JFXViewConnector(loader.getController()));
 
             this.stage = primaryStage;
             this.stage.setTitle(title);
@@ -65,5 +72,13 @@ public class DNDSApplication extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    protected static JFXViewConnector getViewConnector() {
+        return DNDSApplication.viewConnector;
+    }
+
+    private static void setViewConnector(JFXViewConnector _viewConnector) {
+        DNDSApplication.viewConnector = _viewConnector;
     }
 }
