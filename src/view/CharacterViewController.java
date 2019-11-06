@@ -113,9 +113,18 @@ public class CharacterViewController {
 
     @FXML
     private void initialize() {
+        //////////////////////////////////////////////////////////////
+        ///////////TODO: genericize this standard property-editing initialization code
+        //////////////////////////////////////////////////////////////
         //Initialize the content of the character view.
         this.classChoiceBox.getItems().addAll(CharacterClass.values());
         this.levelSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
+        this.strengthSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
+        this.dexteritySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
+        this.constitutionSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
+        this.intelligenceSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
+        this.wisdomSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
+        this.charismaSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
 
         //Connect event listening code.
         ViewConnector viewConnector = DNDSApplication.getViewConnector();
@@ -153,7 +162,7 @@ public class CharacterViewController {
                     Object listeningObject = field.get(this);
                     CharacterProperty listenedProperty = listenAnnotation.value();
                     Object propertyValue = _data.getProperty(listenedProperty);
-                    this.updatePropertyListeningObject(listeningObject, listenedProperty, propertyValue);
+                    this.updatePropertyLinkedObject(listeningObject, listenedProperty, propertyValue);
                 }
             } catch (IllegalArgumentException | ReflectiveOperationException | SecurityException ex) {
                 Logger.getLogger(CharacterViewController.class.getName()).log(Level.SEVERE, null, ex);
@@ -161,7 +170,7 @@ public class CharacterViewController {
         }
     }
 
-    private void updatePropertyListeningObject(Object _object, CharacterProperty _property, Object _propertyValue)
+    private void updatePropertyLinkedObject(Object _object, CharacterProperty _property, Object _propertyValue)
             throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         if (_object.getClass().isAssignableFrom(Spinner.class)) {
             Spinner spinner = (Spinner) _object;
