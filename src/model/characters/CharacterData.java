@@ -1,8 +1,8 @@
 package model.characters;
 /*
-Last updated November 5, 2019
+Last updated November 6, 2019
 
-Represents a snapshot of the collection of primitive information necessary to
+Represents a snapshot of the collection of property information necessary to
 display a DND Character. This class serves as an intermediary data type between
 the model and view.
 
@@ -10,13 +10,17 @@ Contributors:
 Eva Moniz
  */
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.characters.Characters;
 
 /**
- * This immutable data type represents a snapshot of the collection of strings
- * necessary to display a DND Character.
+ * This immutable data type represents a snapshot of the collection of
+ * properties necessary to display a DND Character.
  *
  * @author Eva Moniz
  */
@@ -25,12 +29,11 @@ public class CharacterData {
     /**
      * The UUID of the Character
      */
-    private final String uuid;
+    private final UUID uuid;
     /**
      * The string data representing the character
      */
-    private final String name, characterClass, strength, dexterity,
-            constitution, intelligence, wisdom, charisma;
+    private final Map<CharacterProperty, Object> data;
 
     /**
      * Creates a character data object using the current state of the given
@@ -40,51 +43,38 @@ public class CharacterData {
      */
     public CharacterData(Characters _character) {
         this.uuid = _character.getUUID();
-        this.name = _character.getName();
-        this.characterClass = _character.getCharacterClass().toString();
-        this.strength = Integer.toString(_character.getStrength());
-        this.dexterity = Integer.toString(_character.getDex());
-        this.constitution = Integer.toString(_character.getConstitution());
-        this.intelligence = Integer.toString(_character.getIntelligence());
-        this.wisdom = Integer.toString(_character.getWisdom());
-        this.charisma = Integer.toString(_character.getCharisma());
+        this.data = new HashMap<>();
+
+        //Read the public properties of the character as defined in
+        //CharacterProperty and record them in the data map.
+        for (CharacterProperty property : CharacterProperty.values()) {
+            String getterName = property.getGetterName();
+            Class type = property.getType();
+            try {
+                Method getter = Characters.class.getMethod(getterName);
+                Object propertyValue = getter.invoke(_character);
+                this.data.put(property, propertyValue);
+            } catch (ReflectiveOperationException | SecurityException ex) {
+                Logger.getLogger(CharacterData.class.getName()).log(Level.SEVERE, "Failed to find method " + getterName, ex);
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        String s = "CharacterData{UUID=" + this.getUuid();
+        s += ", data=" + this.data;
+        s += "}";
+        return s;
     }
 
     //=========GETTERS==========================================================
-    public String getUuid() {
+    public UUID getUuid() {
         return this.uuid;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getCharacterClass() {
-        return characterClass;
-    }
-
-    public String getStrength() {
-        return strength;
-    }
-
-    public String getDexterity() {
-        return dexterity;
-    }
-
-    public String getConstitution() {
-        return constitution;
-    }
-
-    public String getIntelligence() {
-        return intelligence;
-    }
-
-    public String getWisdom() {
-        return wisdom;
-    }
-
-    public String getCharisma() {
-        return charisma;
+    public <T> T getProperty(CharacterProperty _property) {
+        return (T) this.data.get(_property);
     }
 
 }

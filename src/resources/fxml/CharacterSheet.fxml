@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
@@ -39,15 +41,15 @@
                           </rowConstraints>
                            <children>
                               <Label text="Character Name" />
-                              <TextField GridPane.columnIndex="1" />
+                              <TextField fx:id="nameTextField" GridPane.columnIndex="1" />
                               <Label text="Race" GridPane.rowIndex="3" />
                               <Label text="Class" GridPane.rowIndex="1" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="raceTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                               <Label text="Level" GridPane.rowIndex="2" />
                               <Label text="Alignment" GridPane.rowIndex="4" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <TextField fx:id="alignmentTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <ChoiceBox fx:id="classChoiceBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Spinner fx:id="levelSpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                            </children>
                            <padding>
                               <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
@@ -59,7 +61,41 @@
             </Tab>
           <Tab text="Stats">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <GridPane hgap="8.0" vgap="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <columnConstraints>
+                              <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="30.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Strength" />
+                              <Label text="Intelligence" GridPane.rowIndex="3" />
+                              <Label text="Dexterity" GridPane.rowIndex="1" />
+                              <Label text="Constitution" GridPane.rowIndex="2" />
+                              <Label text="Wisdom" GridPane.rowIndex="4" />
+                              <Spinner fx:id="constitutionSpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label text="Charisma" GridPane.rowIndex="5" />
+                              <Spinner fx:id="strengthSpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
+                              <Spinner fx:id="dexteritySpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Spinner fx:id="intelligenceSpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Spinner fx:id="wisdomSpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Spinner fx:id="charismaSpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                           </children>
+                           <padding>
+                              <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                           </padding>
+                        </GridPane>
+                     </children></AnchorPane>
             </content>
           </Tab>
           <Tab text="Inventory">
@@ -82,8 +118,15 @@
                   <Image url="@../img/silhouette.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" text="Character Name" />
-            <Label text="Level 1 Fighter" />
+            <Label fx:id="nameLabel" alignment="CENTER" text="Character Name" />
+            <HBox alignment="CENTER">
+               <children>
+                  <Label text="Level " />
+                  <Label fx:id="levelLabel" text="1" />
+                  <Label text=" " />
+                  <Label fx:id="classLabel" text="Fighter" />
+               </children>
+            </HBox>
             <GridPane alignment="TOP_CENTER" hgap="8.0" minHeight="-Infinity">
               <columnConstraints>
                 <ColumnConstraints fillWidth="false" hgrow="NEVER" />
@@ -99,17 +142,17 @@
               </rowConstraints>
                <children>
                   <Label text="Strength" />
-                  <Label text="10" GridPane.columnIndex="1" />
+                  <Label fx:id="strengthLabel" text="10" GridPane.columnIndex="1" />
                   <Label text="Dexterity" GridPane.rowIndex="1" />
-                  <Label text="10" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="dexterityLabel" text="10" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Constitution" GridPane.rowIndex="2" />
-                  <Label text="10" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="constitutionLabel" text="10" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 				  <Label text="Intelligence" GridPane.rowIndex="3" />
-                  <Label text="10" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label fx:id="intelligenceLabel" text="10" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Label text="Wisdom" GridPane.rowIndex="4" />
-                  <Label text="10" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label fx:id="wisdomLabel" text="10" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Label text="Charisma" GridPane.rowIndex="5" />
-                  <Label text="10" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <Label fx:id="charismaLabel" text="10" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                </children>
             </GridPane>
          </children>

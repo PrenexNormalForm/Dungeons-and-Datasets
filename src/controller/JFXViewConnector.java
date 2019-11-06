@@ -1,4 +1,6 @@
 package controller;
+import model.characters.CharacterProperty;
+import java.util.UUID;
 import javafx.application.Platform;
 import model.characters.CharacterData;
 import view.MainViewController;
@@ -22,6 +24,11 @@ public class JFXViewConnector extends ViewConnector {
     @Override
     public void inputCreateCharacter() {
         Controller.createNewCharacter();
+    }
+
+    @Override
+    public <T> void inputCharacterProperty(UUID _uuid, CharacterProperty _property, T _value) {
+        Controller.updateCharacterProperty(_uuid, _property, _value);
     }
 
 }

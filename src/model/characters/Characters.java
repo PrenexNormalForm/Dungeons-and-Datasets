@@ -27,12 +27,16 @@ import java.util.List;
  */
 public class Characters {
 
+    private static final int MAX_LEVEL = 20;
+    private static final int DEFAULT_LEVEL = 7;
+    private static final String DEFAULT_NAME = "default name";
+
     private UUID uuid;
     private CharacterClass characterClass;
+    private int level;
     private String name;
     private Stats stats;
     private Inventory inventory;
-    private static final String DEFAULT_NAME = "YEEEEEHAWWWWWW";
 
     /**
      * The overridden constructor for creating a basic character (Will update
@@ -63,6 +67,7 @@ public class Characters {
      */
     public Characters() {
         this.uuid = UUID.randomUUID();
+        this.setLevel(Characters.DEFAULT_LEVEL);
         this.characterClass = CharacterClass.BARBARIAN;
         this.name = DEFAULT_NAME;
         this.stats = new Stats();
@@ -95,6 +100,10 @@ public class Characters {
 
     public String getName() {
         return this.name;
+    }
+
+    public int getLevel() {
+        return this.level;
     }
 
     public int getStrength() {
@@ -136,6 +145,13 @@ public class Characters {
 
     public void setName(String _name) {
         this.name = _name;
+    }
+
+    public void setLevel(int _level) {
+        if (_level < 1 || _level > Characters.MAX_LEVEL) {
+            throw new IllegalArgumentException("Invalid level");
+        }
+        this.level = _level;
     }
 
     public void setStrength(int _strength) {

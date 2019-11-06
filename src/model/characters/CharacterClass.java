@@ -1,10 +1,11 @@
 package model.characters;
 /*
-Last updated Oct 10, 2019
+Last updated November 6, 2019
 
 Represents the different character classes of a DnD character.
 
 Contributors:
+Eva Moniz
 Brandon Pozil
 Jonathan Bacon
  */
@@ -13,10 +14,27 @@ Jonathan Bacon
  * Represents the different character classes of a DnD character.
  */
 public enum CharacterClass {
-    BARBARIAN,BARD,
-    CLERIC,DRUID,
-    FIGHTER,MONK,
-    PALADIN,RANGER,
-    ROUGE,SORCERER,
-    WARLOCK,WIZARD;
+    BARBARIAN("Barbarian"),
+    BARD("Bard"),
+    CLERIC("Cleric"),
+    DRUID("Druid"),
+    FIGHTER("Fighter"),
+    MONK("Monk"),
+    PALADIN("Paladin"),
+    RANGER("Ranger"),
+    ROGUE("Rogue"),
+    SORCERER("Sorcerer"),
+    WARLOCK("Warlock"),
+    WIZARD("Wizard");
+
+    private final String string;
+
+    private CharacterClass(String _string) {
+        this.string = _string;
+    }
+
+    @Override
+    public String toString() {
+        return this.string;
+    }
 }

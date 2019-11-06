@@ -1,6 +1,6 @@
 package view;
 /*
-Last updated November 4, 2019
+Last updated November 6, 2019
 
 This is the view controller for the primary application window.
 
@@ -13,6 +13,7 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.Event;
@@ -47,7 +48,7 @@ public class MainViewController {
     /**
      * Stores the open character views mapped by uuid
      */
-    private Map<String, CharacterViewController> openCharacters;
+    private Map<UUID, CharacterViewController> openCharacters;
 
     @FXML
     private void initialize() {
@@ -60,8 +61,8 @@ public class MainViewController {
         // Set behavior for "plus" tab
         this.newCharacterTab.setOnSelectionChanged(e -> this.plusTabSelected(e));
 
+        // Set the welcome tab to display the welcome page
         try {
-            // Set the welcome tab to display the welcome page
             WebEngine engine = this.welcomeWebView.getEngine();
             String urlString = Resources.getResourceUrl(Constants.WELCOME_PAGE).toString();
             engine.load(urlString);
@@ -75,23 +76,24 @@ public class MainViewController {
     }
 
     public void receiveCharacterData(CharacterData _characterData) {
-        //create the character tab if it's not already open
+        //Create the character tab if it doesn't already exist.
         if (!this.openCharacters.containsKey(_characterData.getUuid())) {
             try {
                 CharacterViewController character;
                 character = this.createCharacterTab(_characterData.getUuid());
+                character.setUUID(_characterData.getUuid());
                 this.openCharacters.put(_characterData.getUuid(), character);
             } catch (IOException ex) {
-                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, _characterData.toString(), ex);
                 return;
             }
         }
-        //update the associated character view
+        //Update the associated character view.
         CharacterViewController character = this.openCharacters.get(_characterData.getUuid());
         character.receiveCharacterData(_characterData);
     }
 
-    private CharacterViewController createCharacterTab(String _uuid) throws MalformedURLException, IOException {
+    private CharacterViewController createCharacterTab(UUID _uuid) throws MalformedURLException, IOException {
         //Load Character view fxml.
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Resources.getFxmlUrl(Constants.CHARACTER_FXML));
@@ -100,12 +102,14 @@ public class MainViewController {
 
         //Create a new tab and insert it into the second-to-last position in the
         //tab pane, just behind the 'plus' tab.
-        Tab tab = new Tab("temp", characterNode);
+        Tab tab = new Tab("", characterNode);
         int tabPos = this.tabs.getTabs().size() - 1;
         this.tabs.getTabs().add(tabPos, tab);
         this.tabs.getSelectionModel().select(tab);
 
+        //Select the tab.
         characterViewController.setTab(tab);
+
         return characterViewController;
     }
 
