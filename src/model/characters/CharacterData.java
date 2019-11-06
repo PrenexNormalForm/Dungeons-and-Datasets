@@ -39,8 +39,7 @@ public class CharacterData {
      * @param _character The character to extract data from
      */
     public CharacterData(Characters _character) {
-        //this.uuid = _character.getUuid();
-        this.uuid = "uuid";
+        this.uuid = _character.getUUID();
         this.name = _character.getName();
         this.characterClass = _character.getCharacterClass().toString();
         this.strength = Integer.toString(_character.getStrength());

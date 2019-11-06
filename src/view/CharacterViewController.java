@@ -32,7 +32,7 @@ public class CharacterViewController {
 
     protected void receiveCharacterData(CharacterData _data) {
         //stub
-        System.out.println("Received character data " + _data);
+        System.out.println("Received character data " + _data + " with uuid " + _data.getUuid());
     }
 
     protected void setTab(Tab _tab) {

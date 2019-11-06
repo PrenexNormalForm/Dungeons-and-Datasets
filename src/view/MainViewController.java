@@ -48,14 +48,11 @@ public class MainViewController {
      * Stores the open character views mapped by uuid
      */
     private Map<String, CharacterViewController> openCharacters;
-    private FXMLLoader fxmlLoader;
 
     @FXML
     private void initialize() {
         //initialize openCharacters to an empty map
         this.openCharacters = new HashMap<>();
-        //initialize the fxmlLoader
-        this.fxmlLoader = new FXMLLoader();
 
         // Set default open tab to the welcome tab
         this.tabs.getSelectionModel().select(this.welcomeTab);
@@ -79,25 +76,35 @@ public class MainViewController {
 
     public void receiveCharacterData(CharacterData _characterData) {
         //create the character tab if it's not already open
-        if (!this.openCharacters.containsKey(_characterData)) {
+        if (!this.openCharacters.containsKey(_characterData.getUuid())) {
             try {
-                this.createCharacterTab(_characterData.getUuid());
+                CharacterViewController character;
+                character = this.createCharacterTab(_characterData.getUuid());
+                this.openCharacters.put(_characterData.getUuid(), character);
             } catch (IOException ex) {
                 Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
                 return;
             }
         }
         //update the associated character view
-        this.openCharacters.get(_characterData.getUuid()).receiveCharacterData(_characterData);
+        CharacterViewController character = this.openCharacters.get(_characterData.getUuid());
+        character.receiveCharacterData(_characterData);
     }
 
     private CharacterViewController createCharacterTab(String _uuid) throws MalformedURLException, IOException {
-        this.fxmlLoader.setLocation(Resources.getFxmlUrl(Constants.CHARACTER_FXML));
-        Node characterNode = this.fxmlLoader.load();
-        CharacterViewController characterViewController = this.fxmlLoader.getController();
+        //Load Character view fxml.
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Resources.getFxmlUrl(Constants.CHARACTER_FXML));
+        Node characterNode = loader.load();
+        CharacterViewController characterViewController = loader.getController();
+
+        //Create a new tab and insert it into the second-to-last position in the
+        //tab pane, just behind the 'plus' tab.
         Tab tab = new Tab("temp", characterNode);
-        this.tabs.getTabs().add(tab);
+        int tabPos = this.tabs.getTabs().size() - 1;
+        this.tabs.getTabs().add(tabPos, tab);
         this.tabs.getSelectionModel().select(tab);
+
         characterViewController.setTab(tab);
         return characterViewController;
     }

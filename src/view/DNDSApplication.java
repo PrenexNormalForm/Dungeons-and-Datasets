@@ -80,5 +80,6 @@ public class DNDSApplication extends Application {
 
     private static void setViewConnector(JFXViewConnector _viewConnector) {
         DNDSApplication.viewConnector = _viewConnector;
+        controller.Controller.setViewConnector(_viewConnector);
     }
 }
