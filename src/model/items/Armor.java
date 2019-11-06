@@ -14,8 +14,8 @@ public class Armor extends Item {
     private int armorClass;
     public static final int HIGHEST_AC = 29;
 
-    public Armor(int _itemCost, int _itemWeight, int _armorClass) {
-        super(_itemCost, _itemWeight);
+    public Armor(String _name, int _itemCost, int _itemWeight, int _armorClass) {
+        super(_name, _itemCost, _itemWeight);
         this.armorClass = _armorClass;
     }
 

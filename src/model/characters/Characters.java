@@ -10,6 +10,13 @@ Brandon Pozil
 Jonathan Bacon
 Eva Moniz
  */
+ 
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+import model.items.Item;
+
+
 
 import java.util.List;
 import model.utilities.UUID;
@@ -23,7 +30,7 @@ import model.utilities.UUID;
  */
 public class Characters {
 
-    private final String uuid;
+    private UUID ID;
     private String CLASS;
     private String NAME;
     private Stats STATS;
@@ -49,6 +56,7 @@ public class Characters {
         this.NAME = _name;
         this.STATS = new Stats(_strength, _dex, _constitution, _intelligence, _wisdom, _charisma);
         this.INVENTORY = new Inventory(_strength);
+        this.ID = UUID.randomUUID();
     }
 
     /**
@@ -63,6 +71,7 @@ public class Characters {
         this.NAME = DEFAULT_NAME;
         this.STATS = new Stats();
         this.INVENTORY = new Inventory(getStrength());
+        this.ID = UUID.randomUUID();
     }
 
     /**
@@ -72,14 +81,16 @@ public class Characters {
      */
     @Override
     public String toString() {
-        return "\nName:" + this.getName() + "\nClass:" + this.getCharacterClass() + this.STATS.toString();
+        return "\nName:" + this.getName()+ "\nClass:" + this.getCharacterClass() + this.STATS.toString() + this.INVENTORY.toString();
+    }
+    // =================== Inventory Managers ===============================//
+    public void addItem(Item _item){
+        this.INVENTORY.addItem(_item);
     }
 
-    //method used to return the values of the character
-    public String SaveString() {
-        return this.getName() + '!' + this.getCharacterClass() + '!' + this.getStrength() + '!' + this.getDex() + '!' + this.getConstitution() + '!' + this.getIntelligence() + '!' + this.getWisdom() + '!' + this.getCharisma();
+    public void removeItem(Item _item){
+        this.INVENTORY.removeItem(_item);
     }
-
     // =================== GETTERS ===============================//
     public String getCharacterClass() {
         return this.CLASS;
@@ -113,7 +124,7 @@ public class Characters {
         return this.STATS.getCharisma();
     }
 
-    public List getBag() {
+    public HashMap getBag() {
         return this.INVENTORY.getBag();
     }
 
