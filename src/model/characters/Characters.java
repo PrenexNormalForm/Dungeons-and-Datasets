@@ -10,16 +10,13 @@ Brandon Pozil
 Jonathan Bacon
 Eva Moniz
  */
- 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import model.items.Item;
 
-
-
 import java.util.List;
-import model.utilities.UUID;
 
 /**
  * The Characters class (God forbid you actually call it Character) that will a
@@ -30,11 +27,11 @@ import model.utilities.UUID;
  */
 public class Characters {
 
-    private UUID ID;
-    private String CLASS;
-    private String NAME;
-    private Stats STATS;
-    private Inventory INVENTORY;
+    private UUID uuid;
+    private CharacterClass characterClass;
+    private String name;
+    private Stats stats;
+    private Inventory inventory;
     private static final String DEFAULT_NAME = "YEEEEEHAWWWWWW";
 
     /**
@@ -50,13 +47,12 @@ public class Characters {
      * @param _wisdom - indicates the wisdom of the character
      * @param _charisma - indicates the charisma of the character
      */
-    public Characters(String _class, String _name, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma) {
+    public Characters(CharacterClass _class, String _name, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma) {
         this();
-        this.CLASS = _class;
-        this.NAME = _name;
-        this.STATS = new Stats(_strength, _dex, _constitution, _intelligence, _wisdom, _charisma);
-        this.INVENTORY = new Inventory(_strength);
-        this.ID = UUID.randomUUID();
+        this.characterClass = _class;
+        this.name = _name;
+        this.stats = new Stats(_strength, _dex, _constitution, _intelligence, _wisdom, _charisma);
+        this.inventory = new Inventory(_strength);
     }
 
     /**
@@ -66,12 +62,11 @@ public class Characters {
      * at a later date) with standard stat rolls.
      */
     public Characters() {
-        this.uuid = UUID.generateUUID();
-        this.CLASS = CharacterClass.BARBARIAN.name();
-        this.NAME = DEFAULT_NAME;
-        this.STATS = new Stats();
-        this.INVENTORY = new Inventory(getStrength());
-        this.ID = UUID.randomUUID();
+        this.uuid = UUID.randomUUID();
+        this.characterClass = CharacterClass.BARBARIAN;
+        this.name = DEFAULT_NAME;
+        this.stats = new Stats();
+        this.inventory = new Inventory(getStrength());
     }
 
     /**
@@ -81,87 +76,89 @@ public class Characters {
      */
     @Override
     public String toString() {
-        return "\nName:" + this.getName()+ "\nClass:" + this.getCharacterClass() + this.STATS.toString() + this.INVENTORY.toString();
-    }
-    // =================== Inventory Managers ===============================//
-    public void addItem(Item _item){
-        this.INVENTORY.addItem(_item);
+        return "\nName:" + this.getName() + "\nClass:" + this.getCharacterClass() + this.stats.toString() + this.inventory.toString();
     }
 
-    public void removeItem(Item _item){
-        this.INVENTORY.removeItem(_item);
+    // =================== Inventory Managers ===============================//
+    public void addItem(Item _item) {
+        this.inventory.addItem(_item);
     }
+
+    public void removeItem(Item _item) {
+        this.inventory.removeItem(_item);
+    }
+
     // =================== GETTERS ===============================//
-    public String getCharacterClass() {
-        return this.CLASS;
+    public CharacterClass getCharacterClass() {
+        return this.characterClass;
     }
 
     public String getName() {
-        return this.NAME;
+        return this.name;
     }
 
     public int getStrength() {
-        return this.STATS.getStrength();
+        return this.stats.getStrength();
     }
 
     public int getDex() {
-        return this.STATS.getDex();
+        return this.stats.getDex();
     }
 
     public int getConstitution() {
-        return this.STATS.getConstitution();
+        return this.stats.getConstitution();
     }
 
     public int getIntelligence() {
-        return this.STATS.getIntelligence();
+        return this.stats.getIntelligence();
     }
 
     public int getWisdom() {
-        return this.STATS.getWisdom();
+        return this.stats.getWisdom();
     }
 
     public int getCharisma() {
-        return this.STATS.getCharisma();
+        return this.stats.getCharisma();
     }
 
     public HashMap getBag() {
-        return this.INVENTORY.getBag();
+        return this.inventory.getBag();
     }
 
-    public String getUUID() {
+    public UUID getUUID() {
         return this.uuid;
     }
 
     // =================== SETTERS ===============================//
-    public void setCharacterClass(String _class) {
-        this.CLASS = _class;
+    public void setCharacterClass(CharacterClass _class) {
+        this.characterClass = _class;
     }
 
     public void setName(String _name) {
-        this.NAME = _name;
+        this.name = _name;
     }
 
     public void setStrength(int _strength) {
-        this.STATS.setStrength(_strength);
+        this.stats.setStrength(_strength);
     }
 
     public void setDex(int _dex) {
-        this.STATS.setDex(_dex);
+        this.stats.setDex(_dex);
     }
 
     public void setConstitution(int _constitution) {
-        this.STATS.setConstitution(_constitution);
+        this.stats.setConstitution(_constitution);
     }
 
     public void setIntelligence(int _intelligence) {
-        this.STATS.setIntelligence(_intelligence);
+        this.stats.setIntelligence(_intelligence);
     }
 
     public void setWisdom(int _wisdom) {
-        this.STATS.setWisdom(_wisdom);
+        this.stats.setWisdom(_wisdom);
     }
 
     public void setCharisma(int _charisma) {
-        this.STATS.setCharisma(_charisma);
+        this.stats.setCharisma(_charisma);
     }
 }
