@@ -82,6 +82,9 @@ public class Characters {
         this.INVENTORY.removeItem(_item);
     }
     // =================== GETTERS ===============================//
+    public UUID getID(){
+        return this.ID;
+    }
 
     public String getCharacterClass() {
         return this.CLASS;

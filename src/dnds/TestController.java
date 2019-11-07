@@ -9,14 +9,11 @@ Contributors:
 Jonathan Bacon
 Brandon Pozil
  */
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Scanner;
-import java.util.Set;
 import model.characters.CharacterClass;
 import model.characters.Characters;
 import model.items.Armor;
@@ -38,7 +35,6 @@ import static model.utilities.DiceRollUtility.rollD6;
  */
 public class TestController {
 
-    //static Scanner SCANNER = new Scanner(System.in);
     final static int MAX_RETRIES = 4;
 // <editor-fold defaultstate="collapsed" desc="CRUD">
 
