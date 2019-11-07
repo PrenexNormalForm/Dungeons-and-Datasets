@@ -10,12 +10,13 @@ characters this cannot be truly made abstract or it will break the builder.
 
 Contributors:
 Brandon Pozil
+Jonathan Bacon
  */
 public class Item {
     //these items must be static for the gson writer to work with a master class
     private static String NAME;
-    private static int ITEM_COST;
-    private static int ITEM_WEIGHT;
+    private static int COST;
+    private static int WEIGHT;
     //empty constructor to make the child classes happy
     public Item(){
 
@@ -27,11 +28,11 @@ public class Item {
     }
 
     public int getCost() {
-        return this.ITEM_COST;
+        return this.COST;
     }
 
     public int getWeight() {
-        return this.ITEM_WEIGHT;
+        return this.WEIGHT;
     }
 
     // =================== SETTERS ===============================//
@@ -40,10 +41,10 @@ public class Item {
     }
 
     public void setCost(int _cost) {
-        this.ITEM_COST = _cost;
+        this.COST = _cost;
     }
 
     public void setWeight(int _weight) {
-        this.ITEM_WEIGHT = _weight;
+        this.WEIGHT = _weight;
     }
 }

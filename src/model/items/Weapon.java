@@ -16,17 +16,17 @@ Brandon Pozil
 public class Weapon extends Item {
     //values here must be public for gson to save items
     protected String NAME;
-    protected int ITEM_COST;
-    protected int ITEM_WEIGHT;
+    protected int COST;
+    protected int WEIGHT;
     protected String WEAPON_TYPE;
     protected String DAMAGE_ATTACK_ROLL;
     protected String DAMAGE_TYPE;
     protected String WEAPON_PROPERTIES;
 
-    public Weapon(String _name, int _itemCost, int _itemWeight, String _weaponType, String _damageAttackRoll, String _damageType, String _weaponProperties) {
+    public Weapon(String _name, int _cost, int _weight, String _weaponType, String _damageAttackRoll, String _damageType, String _weaponProperties) {
         this.NAME = _name;
-        this.ITEM_COST = _itemCost;
-        this.ITEM_WEIGHT = _itemWeight;
+        this.COST = _cost;
+        this.WEIGHT = _weight;
         this.WEAPON_TYPE = _weaponType;
         this.DAMAGE_ATTACK_ROLL = _damageAttackRoll;
         this.DAMAGE_TYPE = _damageType;
@@ -41,12 +41,12 @@ public class Weapon extends Item {
 
     @Override
     public int getCost(){
-        return this.ITEM_COST;
+        return this.COST;
     }
 
     @Override
     public int getWeight(){
-        return this.ITEM_WEIGHT;
+        return this.WEIGHT;
     }
 
     public String getWeaponType(){
@@ -73,12 +73,12 @@ public class Weapon extends Item {
 
     @Override
     public void setCost(int _cost){
-        this.ITEM_COST = _cost;
+        this.COST = _cost;
     }
 
     @Override
     public void setWeight(int _weight){
-        this.ITEM_WEIGHT = _weight;
+        this.WEIGHT = _weight;
     }
     public void setWeaponType(String _type){
         this.WEAPON_TYPE = _type;

@@ -91,6 +91,10 @@ public class Characters {
     }
 
     // =================== GETTERS ===============================//
+    public UUID getID(){
+        return this.ID;
+    }
+
     public CharacterClass getCharacterClass() {
         return this.characterClass;
     }
