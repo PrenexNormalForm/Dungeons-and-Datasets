@@ -1,4 +1,4 @@
-package model.items;
+package model.items.properties;
 
 import java.util.EnumSet;
 

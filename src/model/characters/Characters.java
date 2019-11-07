@@ -86,7 +86,7 @@ public class Characters {
         this.inventory.addItem(_item);
     }
 
-    public void removeItem(Item _item) {
+    public void removeItem(String _item) {
         this.inventory.removeItem(_item);
     }
 
