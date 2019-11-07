@@ -1,6 +1,6 @@
 package view;
 /*
-Last updated November 6, 2019
+Last updated November 7, 2019
 
 This is the view controller for the primary application window.
 
@@ -11,7 +11,6 @@ Eva Moniz
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -29,11 +28,15 @@ import javafx.scene.web.WebView;
 import model.characters.CharacterData;
 import model.utilities.Resources;
 /**
+ * This is the view controller for the primary application window.
  *
  * @author Eva Moniz
  */
 public class MainViewController {
 
+    private static final int MAX_DICE_REPETITIONS = 10;
+
+    //JFX components defined in the FXML
     @FXML
     private TabPane tabs;
     @FXML
@@ -46,22 +49,25 @@ public class MainViewController {
     private Spinner diceRepetitionSpinner;
 
     /**
-     * Stores the open character views mapped by uuid
+     * Stores the open character views mapped by UUID.
      */
     private Map<UUID, CharacterViewController> openCharacters;
 
+    /**
+     * Initializes the JFX component.
+     */
     @FXML
     private void initialize() {
-        //initialize openCharacters to an empty map
+        //Initialize openCharacters to an empty map.
         this.openCharacters = new HashMap<>();
 
-        // Set default open tab to the welcome tab
+        //Set the welcome tab as the tab open upon launching the program.
         this.tabs.getSelectionModel().select(this.welcomeTab);
 
-        // Set behavior for "plus" tab
+        //Assign the behavior associated with the "plus" tab.
         this.newCharacterTab.setOnSelectionChanged(e -> this.plusTabSelected(e));
 
-        // Set the welcome tab to display the welcome page
+        //CJonfigure the welcome tab to display the welcome page.
         try {
             WebEngine engine = this.welcomeWebView.getEngine();
             String urlString = Resources.getResourceUrl(Constants.WELCOME_PAGE).toString();
@@ -70,11 +76,19 @@ public class MainViewController {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        // Set dice repetiton spinner to only allow values 1 to 10
-        SpinnerValueFactory spinnerValFac = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1);
+        //Set dice repetiton spinner to only allow values 1 to MAX_DICE_REPETITIONS.
+        SpinnerValueFactory spinnerValFac = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                1, MainViewController.MAX_DICE_REPETITIONS, 1);
         this.diceRepetitionSpinner.setValueFactory(spinnerValFac);
     }
 
+    /**
+     * Receives and handles character data from the backend. This will update an
+     * already-opened view or create a new view depending on the UUID of the
+     * character.
+     *
+     * @param _characterData The CharacterData object to display.
+     */
     public void receiveCharacterData(CharacterData _characterData) {
         //Create the character tab if it doesn't already exist.
         if (!this.openCharacters.containsKey(_characterData.getUuid())) {
@@ -88,13 +102,21 @@ public class MainViewController {
                 return;
             }
         }
-        //Update the associated character view.
+        //Route the character data to the appropriate controller by UUID.
         CharacterViewController character = this.openCharacters.get(_characterData.getUuid());
         character.receiveCharacterData(_characterData);
     }
 
+    /**
+     * Creates a new tab associated with the given character UUID.
+     *
+     * @param _uuid The character uuid
+     * @return The controller for the tab content
+     * @throws MalformedURLException
+     * @throws IOException
+     */
     private CharacterViewController createCharacterTab(UUID _uuid) throws MalformedURLException, IOException {
-        //Load Character view fxml.
+        //Load the character view fxml.
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Resources.getFxmlUrl(Constants.CHARACTER_FXML));
         Node characterNode = loader.load();
@@ -105,15 +127,20 @@ public class MainViewController {
         Tab tab = new Tab("", characterNode);
         int tabPos = this.tabs.getTabs().size() - 1;
         this.tabs.getTabs().add(tabPos, tab);
-        this.tabs.getSelectionModel().select(tab);
+        characterViewController.setTab(tab);
 
         //Select the tab.
-        characterViewController.setTab(tab);
+        this.tabs.getSelectionModel().select(tab);
 
         return characterViewController;
     }
 
-    private void plusTabSelected(Event e) {
+    /**
+     * Handle the selection of the "plus" tab, which creates a new character.
+     *
+     * @param _e The selection event
+     */
+    private void plusTabSelected(Event _e) {
         if (this.newCharacterTab.isSelected()) {
             DNDSApplication.getViewConnector().inputCreateCharacter();
         }

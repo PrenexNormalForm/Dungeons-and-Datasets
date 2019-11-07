@@ -12,11 +12,8 @@ Eva Moniz
  */
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 import model.items.Item;
-
-import java.util.List;
 
 /**
  * The Characters class (God forbid you actually call it Character) that will a

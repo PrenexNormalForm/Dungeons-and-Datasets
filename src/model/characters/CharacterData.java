@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.characters.Characters;
 
 /**
  * This immutable data type represents a snapshot of the collection of
@@ -31,7 +30,7 @@ public class CharacterData {
      */
     private final UUID uuid;
     /**
-     * The string data representing the character
+     * The viewable data representing the character
      */
     private final Map<CharacterProperty, Object> data;
 
