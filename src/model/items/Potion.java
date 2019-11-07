@@ -10,11 +10,11 @@ Contributors:
 Jonathan Bacon
 */
 public class Potion extends Item{
-    public String NAME;
-    public int COST;
-    public int WEIGHT;
-    public String PROPERTY;
-    public int VALUE;
+    protected String NAME;
+    protected int COST;
+    protected int WEIGHT;
+    protected String PROPERTY;
+    protected int VALUE;
 
     public Potion(String _name, int _cost, int _weight, String _property, int _value){
         this.NAME = _name;

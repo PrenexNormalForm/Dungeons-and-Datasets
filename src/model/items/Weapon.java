@@ -15,13 +15,13 @@ Brandon Pozil
 
 public class Weapon extends Item {
     //values here must be public for gson to save items
-    public String NAME;
-    public int ITEM_COST;
-    public int ITEM_WEIGHT;
-    public String WEAPON_TYPE;
-    public String DAMAGE_ATTACK_ROLL;
-    public String DAMAGE_TYPE;
-    public String WEAPON_PROPERTIES;
+    protected String NAME;
+    protected int ITEM_COST;
+    protected int ITEM_WEIGHT;
+    protected String WEAPON_TYPE;
+    protected String DAMAGE_ATTACK_ROLL;
+    protected String DAMAGE_TYPE;
+    protected String WEAPON_PROPERTIES;
 
     public Weapon(String _name, int _itemCost, int _itemWeight, String _weaponType, String _damageAttackRoll, String _damageType, String _weaponProperties) {
         this.NAME = _name;

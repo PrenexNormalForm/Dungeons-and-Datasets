@@ -12,10 +12,10 @@ Jonathan Bacon
 
 public class Armor extends Item {
     //items here must be public for gson to save them
-    public String NAME;
-    public int ITEM_COST;
-    public int ITEM_WEIGHT;
-    public int ARMOR_CLASS;
+    protected String NAME;
+    protected int ITEM_COST;
+    protected int ITEM_WEIGHT;
+    protected int ARMOR_CLASS;
     private static final int HIGHEST_AC = 29;
 
     public Armor(String _name, int _itemCost, int _itemWeight, int _armorClass) {
