@@ -17,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +30,7 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.util.Pair;
 import model.characters.CharacterClass;
 import model.characters.CharacterData;
 import model.characters.CharacterProperty;
@@ -113,9 +115,6 @@ public class CharacterViewController {
 
     @FXML
     private void initialize() {
-        //////////////////////////////////////////////////////////////
-        ///////////TODO: genericize this standard property-editing initialization code
-        //////////////////////////////////////////////////////////////
         //Initialize the content of the character view.
         this.classChoiceBox.getItems().addAll(CharacterClass.values());
         this.levelSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
@@ -126,18 +125,34 @@ public class CharacterViewController {
         this.wisdomSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
         this.charismaSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
 
-        //Connect event listening code.
+        this.forPropertyLink(this::initializePropertyLinkage);
+    }
+
+    private void initializePropertyLinkage(Object _linkedObject, CharacterProperty _property) {
         ViewConnector viewConnector = DNDSApplication.getViewConnector();
-        this.classChoiceBox.getSelectionModel().selectedItemProperty().addListener(
-                ($, $$, newVal) -> this.onClassSelection((CharacterClass) newVal));
-        this.levelSpinner.valueProperty().addListener(
-                ($, $$, val) -> viewConnector.inputCharacterProperty(this.uuid, CharacterProperty.LEVEL, val));
-        this.createTextFieldListener(nameTextField,
-                str -> viewConnector.inputCharacterProperty(this.uuid, CharacterProperty.NAME, str));
+        //Create input listeners depending on the type of input control.
+        if (_linkedObject.getClass().isAssignableFrom(Spinner.class)) {
+            Spinner spinner = (Spinner) _linkedObject;
+            //Create the listener for spinner input of a property.
+            spinner.valueProperty().addListener(
+                    ($, $$, val) -> viewConnector.inputCharacterProperty(this.uuid, _property, val)
+            );
+        } else if (_linkedObject.getClass().isAssignableFrom(ChoiceBox.class)) {
+            ChoiceBox choiceBox = (ChoiceBox) _linkedObject;
+            //Create the listener for choicebox input of a property.
+            choiceBox.getSelectionModel().selectedItemProperty().addListener(
+                    ($, $$, val) -> viewConnector.inputCharacterProperty(this.uuid, _property, val)
+            );
+        } else if (_linkedObject.getClass().isAssignableFrom(TextField.class)) {
+            TextField textField = (TextField) _linkedObject;
+            //Create the listeners for textfield input of a property.
+            this.createTextFieldListener(textField,
+                    str -> viewConnector.inputCharacterProperty(this.uuid, _property, str));
+        }
     }
 
     private void createTextFieldListener(TextField field, Consumer<String> consumer) {
-        //Add listener to update value upon the text field losing focus.
+        //Add listener to pass text to the consumer upon the text field losing focus.
         field.focusedProperty().addListener((focus, oldValue, newValue) -> {
             if (oldValue.booleanValue() && !newValue.booleanValue()) {
                 consumer.accept(field.getText());
@@ -155,38 +170,52 @@ public class CharacterViewController {
         System.out.println(this + ": Received character data " + _data);
 
         //Update easy text-based properties automatically.
-        for (Field field : this.getClass().getDeclaredFields()) {
-            try {
-                LinkedProperty listenAnnotation = field.getAnnotation(LinkedProperty.class);
-                if (listenAnnotation != null) {
-                    Object listeningObject = field.get(this);
-                    CharacterProperty listenedProperty = listenAnnotation.value();
-                    Object propertyValue = _data.getProperty(listenedProperty);
-                    this.updatePropertyLinkedObject(listeningObject, listenedProperty, propertyValue);
-                }
-            } catch (IllegalArgumentException | ReflectiveOperationException | SecurityException ex) {
-                Logger.getLogger(CharacterViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        this.forPropertyLink((obj, property) -> {
+            this.updatePropertyLinkedObject(obj, property, _data.getProperty(property));
+        });
     }
 
-    private void updatePropertyLinkedObject(Object _object, CharacterProperty _property, Object _propertyValue)
-            throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    private void updatePropertyLinkedObject(Object _object, CharacterProperty _property, Object _propertyValue) {
         if (_object.getClass().isAssignableFrom(Spinner.class)) {
+            //If the object is a spinner, update its spinner value.
             Spinner spinner = (Spinner) _object;
             spinner.getValueFactory().setValue(_propertyValue);
         } else if (_object.getClass().isAssignableFrom(ChoiceBox.class)) {
+            //If the object is a choice box, update the choice selection.
             ChoiceBox choiceBox = (ChoiceBox) _object;
             choiceBox.getSelectionModel().select(_propertyValue);
         } else {
-            Method setTextMethod = _object.getClass().getMethod("setText", String.class);
-            setTextMethod.invoke(_object, _propertyValue.toString());
+            //By default, attempt to find a setText method in the object and pass
+            //the property value to it.
+            try {
+                Method setTextMethod = _object.getClass().getMethod("setText", String.class);
+                setTextMethod.invoke(_object, _propertyValue.toString());
+            } catch (ReflectiveOperationException | SecurityException | IllegalArgumentException ex) {
+                Logger.getLogger(CharacterViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     private void onClassSelection(CharacterClass newValue) {
         ViewConnector viewConnector = DNDSApplication.getViewConnector();
         viewConnector.inputCharacterProperty(this.uuid, CharacterProperty.CLASS, newValue);
+    }
+
+    private void forPropertyLink(BiConsumer<Object, CharacterProperty> consumer) {
+        for (Field field : this.getClass().getDeclaredFields()) {
+            try {
+                LinkedProperty listenAnnotation = field.getAnnotation(LinkedProperty.class);
+                if (listenAnnotation != null) {
+                    Object listeningObject = field.get(this);
+                    CharacterProperty listenedProperty = listenAnnotation.value();
+                    if (listeningObject != null) {
+                        consumer.accept(listeningObject, listenedProperty);
+                    }
+                }
+            } catch (IllegalArgumentException | ReflectiveOperationException | SecurityException ex) {
+                Logger.getLogger(CharacterViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     /**
