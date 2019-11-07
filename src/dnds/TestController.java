@@ -69,7 +69,7 @@ public class TestController {
         int intelligence = (int) map.get("intelligence");
         int wisdom = (int) map.get("wisdom");
         int charisma = (int) map.get("charisma");
-        return new Characters(klass, name, strength, dexterity, constitution, intelligence, wisdom, charisma);
+        return new Characters(CharacterClass.BARBARIAN, name, strength, dexterity, constitution, intelligence, wisdom, charisma);
     }
 
     //method for gathering input about character creation
@@ -89,6 +89,7 @@ public class TestController {
         map.putAll(stats);
         return map;
     }
+
     //helper method for dice rolling
     private static HashMap rollHelper(Scanner _kb, HashMap _stats) {
         System.out.println("Would you like to manually role or have us roll? (manuel or auto)");

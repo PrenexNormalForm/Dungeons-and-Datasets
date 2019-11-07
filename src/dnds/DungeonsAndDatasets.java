@@ -10,6 +10,7 @@ Jonathan Bacon
 Brandon Pozil
 Eva Moniz
  */
+
 import view.DNDSApplication;
 import javafx.application.Application;
 import java.io.IOException;
@@ -20,7 +21,6 @@ import java.io.IOException;
 public class DungeonsAndDatasets {
 
     public static void main(String[] args) throws IOException {
-       //Application.launch(DNDSApplication.class, args);
-       TestCases.testChoice();
+        Application.launch(DNDSApplication.class, args);
     }
 }
