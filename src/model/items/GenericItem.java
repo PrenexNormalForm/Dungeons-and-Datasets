@@ -11,9 +11,9 @@ package model.items;
  */
 public class GenericItem extends Item{
     //items here must be public for gson to save them
-   public String NAME;
-   public int ITEM_COST;
-   public int ITEM_WEIGHT;
+   protected String NAME;
+   protected int ITEM_COST;
+   protected int ITEM_WEIGHT;
 
     public GenericItem(String _name, int _itemCost, int _itemWeight) {
         this.NAME = _name;
