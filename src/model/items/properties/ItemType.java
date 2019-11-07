@@ -1,4 +1,4 @@
-package model.items;
+package model.items.properties;
 
 /*
 Last Updated: November 5, 2019
@@ -9,12 +9,9 @@ Brandon Pozil
 Jonathan Bacon
 */
 
-/**
- * An Enum to represent item Types.
- *
- */
 public enum ItemType {
     WEAPON,
     ARMOR,
-    ITEM;
+    ITEM,
+    POTION;
 }

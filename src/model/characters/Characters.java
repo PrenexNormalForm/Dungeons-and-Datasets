@@ -1,7 +1,6 @@
 package model.characters;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 import model.items.Item;
 
@@ -28,8 +27,8 @@ Jonathan Bacon
 
 public class Characters {
     private UUID ID;
-    private String CLASS;
     private String NAME;
+    private String CLASS;
     private Stats STATS;
     private Inventory INVENTORY;
     private static final String DEFAULT_NAME = "YEEEEEHAWWWWWW";
@@ -79,7 +78,7 @@ public class Characters {
         this.INVENTORY.addItem(_item);
     }
 
-    public void removeItem(Item _item){
+    public void removeItem(String _item){
         this.INVENTORY.removeItem(_item);
     }
     // =================== GETTERS ===============================//

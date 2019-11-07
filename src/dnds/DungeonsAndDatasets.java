@@ -21,8 +21,6 @@ public class DungeonsAndDatasets {
 
     public static void main(String[] args) throws IOException {
        //Application.launch(DNDSApplication.class, args);
-       //TestCases.test01();
-       //TestCases.test02();
-       TestCases.test03();
+       TestCases.testChoice();
     }
 }
