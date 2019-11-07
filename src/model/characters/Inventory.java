@@ -15,7 +15,7 @@ Jonathan Bacon
 Inventory class is used to create and manage a players inventory
 */
 public class Inventory {
-    private HashMap<String,Item> BAG;
+    private HashMap<String,Object> BAG;
     private int MAX_BAG_SIZE;
     private int WEIGHT_CAPACITY;
     //default values for bag size
@@ -43,14 +43,14 @@ public class Inventory {
     }
 
     //method used for removing item from inventory
-    protected void removeItem(Item _item) {
+    protected void removeItem(String _item) {
         this.BAG.remove(_item);
     }
 
     @Override
     public String toString(){
         String toReturn = "";
-        if(this.BAG.size() == 0){
+        if(this.BAG.isEmpty()){
             toReturn += "\nInventory:\n" + "Bag is empty";
 
         } else {
@@ -64,7 +64,7 @@ public class Inventory {
     }
 
     // =================== GETTERS ===============================//
-    protected HashMap getBag(){
+    protected HashMap<String, Object> getBag(){
         return this.BAG;
     }
 }

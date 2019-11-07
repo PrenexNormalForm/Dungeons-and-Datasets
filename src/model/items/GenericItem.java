@@ -1,28 +1,24 @@
-package model.items;
 /*
-Last Updated: September 26, 2019
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package model.items;
 
-The Armor class that will be used to store information about Armor throughout
-a campaign.
-
-Contributors:
-Brandon Pozil
-Jonathan Bacon
-*/
-
-public class Armor extends Item {
+/**
+ *
+ * @author jodba5
+ */
+public class GenericItem extends Item{
     //items here must be public for gson to save them
-    protected String NAME;
-    protected int ITEM_COST;
-    protected int ITEM_WEIGHT;
-    protected int ARMOR_CLASS;
-    private static final int HIGHEST_AC = 29;
+   protected String NAME;
+   protected int ITEM_COST;
+   protected int ITEM_WEIGHT;
 
-    public Armor(String _name, int _itemCost, int _itemWeight, int _armorClass) {
+    public GenericItem(String _name, int _itemCost, int _itemWeight) {
         this.NAME = _name;
         this.ITEM_COST = _itemCost;
         this.ITEM_WEIGHT = _itemWeight;
-        this.ARMOR_CLASS = _armorClass;
     }
 
      // =================== GETTERS ===============================//
@@ -35,10 +31,6 @@ public class Armor extends Item {
     @Override
     public int getCost(){
         return this.ITEM_COST;
-    }
-
-    public int getArmorClass() {
-        return ARMOR_CLASS;
     }
 
     @Override
@@ -60,9 +52,5 @@ public class Armor extends Item {
     @Override
     public void setWeight(int _weight){
         this.ITEM_WEIGHT = _weight;
-    }
-
-    public void setArmorClass(int _armorClass) {
-        this.ARMOR_CLASS = _armorClass;
     }
 }
