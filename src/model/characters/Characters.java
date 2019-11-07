@@ -25,7 +25,7 @@ import model.items.Item;
 public class Characters {
 
     private static final int MAX_LEVEL = 20;
-    private static final int DEFAULT_LEVEL = 7;
+    private static final int DEFAULT_LEVEL = 1;
     private static final String DEFAULT_NAME = "default name";
 
     private UUID uuid;
@@ -49,8 +49,9 @@ public class Characters {
      * @param _charisma - indicates the charisma of the character
      */
     public Characters(CharacterClass _class, String _name, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma) {
-        this();
+        this.uuid = UUID.randomUUID();
         this.characterClass = _class;
+        this.level = DEFAULT_LEVEL;
         this.name = _name;
         this.stats = new Stats(_strength, _dex, _constitution, _intelligence, _wisdom, _charisma);
         this.inventory = new Inventory(_strength);
@@ -66,6 +67,7 @@ public class Characters {
         this.uuid = UUID.randomUUID();
         this.setLevel(Characters.DEFAULT_LEVEL);
         this.characterClass = CharacterClass.BARBARIAN;
+        this.level = DEFAULT_LEVEL;
         this.name = DEFAULT_NAME;
         this.stats = new Stats();
         this.inventory = new Inventory(getStrength());
@@ -78,7 +80,7 @@ public class Characters {
      */
     @Override
     public String toString() {
-        return "\nName:" + this.getName() + "\nClass:" + this.getCharacterClass() + this.stats.toString() + this.inventory.toString();
+        return "\nName:" + this.getName() + "\nClass:" + this.getCharacterClass() + "\nLevel:" + this.level + this.stats.toString() + this.inventory.toString();
     }
 
     // =================== Inventory Managers ===============================//
@@ -91,8 +93,8 @@ public class Characters {
     }
 
     // =================== GETTERS ===============================//
-    public UUID getID(){
-        return this.ID;
+    public UUID getUuid(){
+        return this.uuid;
     }
 
     public CharacterClass getCharacterClass() {
