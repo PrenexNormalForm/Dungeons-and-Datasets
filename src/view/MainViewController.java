@@ -90,8 +90,10 @@ public class MainViewController {
      * @param _characterData The CharacterData object to display.
      */
     public void receiveCharacterData(CharacterData _characterData) {
+        boolean isNewCharacter = false;
         //Create the character tab if it doesn't already exist.
         if (!this.openCharacters.containsKey(_characterData.getUuid())) {
+            isNewCharacter = true;
             try {
                 CharacterViewController character;
                 character = this.createCharacterTab(_characterData.getUuid());
@@ -104,7 +106,7 @@ public class MainViewController {
         }
         //Route the character data to the appropriate controller by UUID.
         CharacterViewController character = this.openCharacters.get(_characterData.getUuid());
-        character.receiveCharacterData(_characterData);
+        character.receiveCharacterData(_characterData, isNewCharacter);
     }
 
     /**

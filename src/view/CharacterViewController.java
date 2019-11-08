@@ -1,6 +1,6 @@
 package view;
 /*
-Last updated November 7, 2019
+Last updated November 8, 2019
 
 This is the view controller for a character sheet. There is a separate instance
 for each opened character sheet.
@@ -22,10 +22,12 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCode;
 import model.characters.CharacterClass;
 import model.characters.CharacterData;
@@ -52,6 +54,10 @@ public class CharacterViewController {
      * The UUID of the character.
      */
     private UUID uuid;
+    /**
+     * True if character data has been sent to this view at least once.
+     */
+    private boolean hasReceivedInitialData = false;
 
     //JFX Controls defined in FXML
     @FXML
@@ -190,17 +196,23 @@ public class CharacterViewController {
     }
 
     /**
-     * Receives and displays updated character data.
+     * Receives and displays updated character data. Input controls (text
+     * fields, spinners, etc.) will not be updated unless _updateInputControls
+     * is true. This is to prevent infinite feedback loops.
      *
      * @param _data The character data to display
+     * @param _updateInputControls Whether input controls should update their
+     * values to reflect the data
      */
-    protected void receiveCharacterData(CharacterData _data) {
+    protected void receiveCharacterData(CharacterData _data, boolean _updateInputControls) {
         System.out.println(this + ": Received character data " + _data);
 
         //Update controls with their linked properties
         this.forPropertyLink((obj, property) -> {
-            this.updatePropertyLinkedControl(obj, property, _data.getProperty(property));
+            this.updatePropertyLinkedControl(obj, property, _data.getProperty(property), _updateInputControls);
         });
+
+        this.hasReceivedInitialData = true;
     }
 
     /**
@@ -209,25 +221,30 @@ public class CharacterViewController {
      * @param _control The control to update
      * @param _property The character property linked to the control
      * @param _propertyValue The value of the property
+     * @param _updateInputControls Whether input controls should be updated
+     * (usually this is not necessary)
      */
-    private void updatePropertyLinkedControl(Object _control, CharacterProperty _property, Object _propertyValue) {
-        if (_control.getClass().isAssignableFrom(Spinner.class)) {
+    private void updatePropertyLinkedControl(Object _control, CharacterProperty _property, Object _propertyValue, boolean _updateInputControls) {
+        if (Spinner.class.isAssignableFrom(_control.getClass()) && _updateInputControls) {
             //If the object is a spinner, update its spinner value.
             Spinner spinner = (Spinner) _control;
             spinner.getValueFactory().setValue(_propertyValue);
-        } else if (_control.getClass().isAssignableFrom(ChoiceBox.class)) {
+        } else if (ChoiceBox.class.isAssignableFrom(_control.getClass()) && _updateInputControls) {
             //If the object is a choice box, update the choice selection.
             ChoiceBox choiceBox = (ChoiceBox) _control;
             choiceBox.getSelectionModel().select(_propertyValue);
-        } else {
-            //By default, attempt to find a setText method in the object and pass
-            //the property value to it.
-            try {
-                Method setTextMethod = _control.getClass().getMethod("setText", String.class);
-                setTextMethod.invoke(_control, _propertyValue.toString());
-            } catch (ReflectiveOperationException | SecurityException | IllegalArgumentException ex) {
-                Logger.getLogger(CharacterViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        } else if (TextInputControl.class.isAssignableFrom(_control.getClass()) && _updateInputControls) {
+            //If the object is a text input, update the text.
+            TextInputControl textControl = (TextInputControl) _control;
+            textControl.setText(_propertyValue.toString());
+        } else if (Labeled.class.isAssignableFrom(_control.getClass())) {
+            //If the object is a labeled object, update the label.
+            Labeled labeledControl = (Labeled) _control;
+            labeledControl.setText(_propertyValue.toString());
+        } else if (Tab.class.isAssignableFrom(_control.getClass())) {
+            //If the object is a tab, update the tab title.
+            Tab tab = (Tab) _control;
+            tab.setText(_propertyValue.toString());
         }
     }
 
@@ -240,16 +257,20 @@ public class CharacterViewController {
     private void forPropertyLink(BiConsumer<Object, CharacterProperty> _consumer) {
         for (Field field : this.getClass().getDeclaredFields()) {
             try {
-                LinkedProperty listenAnnotation = field.getAnnotation(LinkedProperty.class);
-                if (listenAnnotation != null) {
-                    Object listeningObject = field.get(this);
-                    CharacterProperty listenedProperty = listenAnnotation.value();
-                    if (listeningObject != null) {
-                        _consumer.accept(listeningObject, listenedProperty);
+                LinkedProperty annotation = field.getAnnotation(LinkedProperty.class
+                );
+                if (annotation != null) {
+                    Object linkedControl = field.get(this);
+                    CharacterProperty linkedProperty = annotation.value();
+                    if (linkedControl != null) {
+                        _consumer.accept(linkedControl, linkedProperty);
+
                     }
                 }
             } catch (IllegalArgumentException | ReflectiveOperationException | SecurityException ex) {
-                Logger.getLogger(CharacterViewController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CharacterViewController.class
+                        .getName()).log(Level.SEVERE, null, ex);
+
             }
         }
     }
@@ -261,10 +282,13 @@ public class CharacterViewController {
     @Retention(RetentionPolicy.RUNTIME)
     private static @interface LinkedProperty {
 
+        /**
+         * The character property linked to the control
+         */
         CharacterProperty value();
     }
 
-    //=========================SETTERS==========================================
+//=========================SETTERS==========================================
     protected void setTab(Tab _tab) {
         this.tab = _tab;
     }
