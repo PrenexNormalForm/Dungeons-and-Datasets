@@ -21,6 +21,7 @@ import java.io.IOException;
 public class DungeonsAndDatasets {
 
     public static void main(String[] args) throws IOException {
-        Application.launch(DNDSApplication.class, args);
+        //Application.launch(DNDSApplication.class, args);
+        TestCases.testChoice();
     }
 }

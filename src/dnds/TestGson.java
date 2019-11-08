@@ -45,7 +45,7 @@ public class TestGson {
         writer.close();
     }
     //method for loading a character from its save
-    public static Characters loadCharacter(String _toDecode) throws FileNotFoundException, IOException{
+ public static Characters loadCharacter(String _toDecode) throws FileNotFoundException, IOException{
         FileReader reader = new FileReader(DIR+_toDecode+SAVE_APPEND);
         StringBuilder builder = new StringBuilder();
         int i;
@@ -56,10 +56,13 @@ public class TestGson {
         System.out.println("Readout");
         System.out.println(builder.toString());
         System.out.println("Building character");
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .serializeNulls()
+                .create();
         Characters loaded = gson.fromJson(builder.toString(), Characters.class);
         return loaded;
-
     }
     //method to check if the save folder is in place
     public static void checkForSaveFolder(){
