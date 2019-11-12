@@ -13,15 +13,15 @@ Jonathan Bacon
 public class Armor extends Item {
     //items here must be public for gson to save them
     protected String NAME;
-    protected int ITEM_COST;
-    protected int ITEM_WEIGHT;
+    protected int COST;
+    protected int WEIGHT;
     protected int ARMOR_CLASS;
     private static final int HIGHEST_AC = 29;
 
-    public Armor(String _name, int _itemCost, int _itemWeight, int _armorClass) {
+    public Armor(String _name, int _cost, int _weight, int _armorClass) {
         this.NAME = _name;
-        this.ITEM_COST = _itemCost;
-        this.ITEM_WEIGHT = _itemWeight;
+        this.COST = _cost;
+        this.WEIGHT = _weight;
         this.ARMOR_CLASS = _armorClass;
     }
 
@@ -34,7 +34,7 @@ public class Armor extends Item {
 
     @Override
     public int getCost(){
-        return this.ITEM_COST;
+        return this.COST;
     }
 
     public int getArmorClass() {
@@ -43,7 +43,7 @@ public class Armor extends Item {
 
     @Override
     public int getWeight(){
-        return this.ITEM_WEIGHT;
+        return this.WEIGHT;
     }
 
      // =================== SETTERS ===============================//
@@ -54,12 +54,12 @@ public class Armor extends Item {
 
     @Override
     public void setCost(int _cost){
-        this.ITEM_COST = _cost;
+        this.COST = _cost;
     }
 
     @Override
     public void setWeight(int _weight){
-        this.ITEM_WEIGHT = _weight;
+        this.WEIGHT = _weight;
     }
 
     public void setArmorClass(int _armorClass) {

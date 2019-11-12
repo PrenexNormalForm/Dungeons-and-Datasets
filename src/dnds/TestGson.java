@@ -65,7 +65,6 @@ public class TestGson {
                 .create();
         Characters loaded = gson.fromJson(builder.toString(), Characters.class);
         return loaded;
-
     }
 
     //method to check if the save folder is in place
