@@ -1,6 +1,6 @@
 package controller;
 /*
-Last updated November 7, 2019
+Last updated November 14, 2019
 
 This abstract class defines the interface for the connecter between the
 controller and the view.

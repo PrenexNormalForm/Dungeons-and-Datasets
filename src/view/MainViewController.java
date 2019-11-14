@@ -1,6 +1,6 @@
 package view;
 /*
-Last updated November 7, 2019
+Last updated November 14, 2019
 
 This is the view controller for the primary application window.
 
