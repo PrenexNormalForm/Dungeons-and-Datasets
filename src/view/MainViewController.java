@@ -190,6 +190,8 @@ public class MainViewController {
      */
     public void displayMessage(String _message) {
         this.chat.add(_message);
+        //Scroll to the bottom
+        this.chatListView.scrollTo(this.chat.size() - 1);
     }
 
     /**
