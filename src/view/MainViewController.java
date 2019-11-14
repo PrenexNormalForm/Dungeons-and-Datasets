@@ -15,10 +15,14 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
@@ -36,6 +40,11 @@ public class MainViewController {
 
     private static final int MAX_DICE_REPETITIONS = 10;
 
+    /**
+     * The list of strings contained in the chat box of the window.
+     */
+    private ObservableList<String> chat;
+
     //JFX components defined in the FXML
     @FXML
     private TabPane tabs;
@@ -47,6 +56,20 @@ public class MainViewController {
     private Tab newCharacterTab;
     @FXML
     private Spinner diceRepetitionSpinner;
+    @FXML
+    private ListView chatListView;
+    @FXML
+    private Button d4Button;
+    @FXML
+    private Button d6Button;
+    @FXML
+    private Button d8Button;
+    @FXML
+    private Button d10Button;
+    @FXML
+    private Button d12Button;
+    @FXML
+    private Button d20Button;
 
     /**
      * Stores the open character views mapped by UUID.
@@ -80,6 +103,18 @@ public class MainViewController {
         SpinnerValueFactory spinnerValFac = new SpinnerValueFactory.IntegerSpinnerValueFactory(
                 1, MainViewController.MAX_DICE_REPETITIONS, 1);
         this.diceRepetitionSpinner.setValueFactory(spinnerValFac);
+
+        //Initialize the chat list view. Create the observable list and assign it.
+        this.chat = FXCollections.observableArrayList();
+        this.chatListView.setItems(this.chat);
+
+        //Add event listeners to buttons;
+        this.d4Button.setOnAction(e -> this.rollDieButton(4));
+        this.d6Button.setOnAction(e -> this.rollDieButton(6));
+        this.d8Button.setOnAction(e -> this.rollDieButton(8));
+        this.d10Button.setOnAction(e -> this.rollDieButton(10));
+        this.d12Button.setOnAction(e -> this.rollDieButton(12));
+        this.d20Button.setOnAction(e -> this.rollDieButton(20));
     }
 
     /**
@@ -146,5 +181,25 @@ public class MainViewController {
         if (this.newCharacterTab.isSelected()) {
             DNDSApplication.getViewConnector().inputCreateCharacter();
         }
+    }
+
+    /**
+     * Display the given message string in the chat box.
+     *
+     * @param _message The message to display.
+     */
+    public void displayMessage(String _message) {
+        this.chat.add(_message);
+    }
+
+    /**
+     * Listening method for the dice roll buttons.
+     *
+     * @param _die The number of sides on the die
+     */
+    public void rollDieButton(int _die) {
+        //Get the number of repetitions from the spinner and send the input to the controller.
+        int repetitions = (Integer) this.diceRepetitionSpinner.getValue();
+        DNDSApplication.getViewConnector().rollDie(repetitions, _die);
     }
 }

@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import model.characters.CharacterData;
 import model.characters.CharacterProperty;
 import model.characters.Characters;
+import model.utilities.DiceRollUtility;
 
 /**
  * The primary controller class for the program. This class should not be
@@ -74,6 +75,30 @@ public class Controller {
     private static void updateCharacterView(Characters _character) {
         CharacterData data = new CharacterData(_character);
         Controller.viewConnector.sendCharacterData(data);
+    }
+
+    /**
+     * Receives input to roll a die. The method then sends the result back to
+     * the view as a string.
+     *
+     * @param _repetitions The number of times to roll the die
+     * @param _die The number of sides on the die
+     */
+    static void rollDie(int _repetitions, int _die) {
+        int[] rolls = DiceRollUtility.rollDice(_repetitions, _die);
+        String rollString = "Rolled ";
+        for (int i = 0; i < _repetitions; i++) {
+            //Add a comma and space between rolls.
+            if (i > 0) {
+                rollString += ", ";
+            }
+            //Append the ith roll to the string.
+            rollString += rolls[i];
+        }
+        rollString += ".";
+
+        //Send the rollString as a message to the view.
+        Controller.viewConnector.displayMessage(rollString);
     }
 
     //===============SETTERS====================================================

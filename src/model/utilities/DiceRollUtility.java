@@ -52,6 +52,21 @@ public class DiceRollUtility {
     }
 
     /**
+     * Rolls a die with a given number of sides a given number of times.
+     *
+     * @param _repetitions The number of times to roll the die
+     * @param _num_sides The number of sides on the die
+     * @return An array of _repetitions rolls of the die
+     */
+    public static int[] rollDice(int _repetitions, int _num_sides) {
+        int[] rolls = new int[_repetitions];
+        for (int i = 0; i < _repetitions; i++) {
+            rolls[i] = ThreadLocalRandom.current().nextInt(_num_sides) + 1;
+        }
+        return rolls;
+    }
+
+    /**
      * Method for returning a random number between 1 and the type of die
      * selected for the roll.
      *

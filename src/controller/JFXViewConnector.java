@@ -67,4 +67,25 @@ public class JFXViewConnector extends ViewConnector {
         Controller.updateCharacterProperty(_uuid, _property, _value);
     }
 
+    /**
+     * Notify the controller that the user has requested a dice roll.
+     *
+     * @param _repetitions The number of times to roll
+     * @param _die The die to roll
+     */
+    @Override
+    public void rollDie(int _repetitions, int _die) {
+        Controller.rollDie(_repetitions, _die);
+    }
+
+    /**
+     * Send a message to the view to display in chat.
+     *
+     * @param _message The message to display
+     */
+    @Override
+    public void displayMessage(String _message) {
+        Platform.runLater(() -> this.fxController.displayMessage(_message));
+    }
+
 }
