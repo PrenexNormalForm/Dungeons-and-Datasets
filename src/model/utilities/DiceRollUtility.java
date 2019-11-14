@@ -1,6 +1,6 @@
 package model.utilities;
 /*
-Last updated: October 1, 2019
+Last updated: November 14, 2019
 
 The Dice Roll Utility for rolling die in case a player or Dungeon Monster
 has forgotten their die or if they like this one better. I like this one
@@ -8,6 +8,7 @@ better.
 
 Contributors:
 Brandon Pozil
+Eva Moniz
  */
 
 /**
