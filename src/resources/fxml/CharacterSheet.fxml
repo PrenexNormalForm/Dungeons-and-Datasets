@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox prefHeight="509.0" prefWidth="714.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CharacterViewController">
+   <children>
+      <TabPane prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
+        <tabs>
+            <Tab text="Info">
+              <content>
+                <AnchorPane>
+                     <children>
+                        <GridPane hgap="8.0" layoutX="14.0" layoutY="14.0" vgap="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="30.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Character Name" />
+                              <TextField fx:id="nameTextField" GridPane.columnIndex="1" />
+                              <Label text="Race" GridPane.rowIndex="3" />
+                              <Label text="Class" GridPane.rowIndex="1" />
+                              <TextField fx:id="raceTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label text="Level" GridPane.rowIndex="2" />
+                              <Label text="Alignment" GridPane.rowIndex="4" />
+                              <TextField fx:id="alignmentTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <ChoiceBox fx:id="classChoiceBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Spinner fx:id="levelSpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                           </children>
+                           <padding>
+                              <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                           </padding>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+          <Tab text="Stats">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <GridPane hgap="8.0" vgap="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <columnConstraints>
+                              <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="30.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Strength" />
+                              <Label text="Intelligence" GridPane.rowIndex="3" />
+                              <Label text="Dexterity" GridPane.rowIndex="1" />
+                              <Label text="Constitution" GridPane.rowIndex="2" />
+                              <Label text="Wisdom" GridPane.rowIndex="4" />
+                              <Spinner fx:id="constitutionSpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label text="Charisma" GridPane.rowIndex="5" />
+                              <Spinner fx:id="strengthSpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
+                              <Spinner fx:id="dexteritySpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Spinner fx:id="intelligenceSpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Spinner fx:id="wisdomSpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Spinner fx:id="charismaSpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                           </children>
+                           <padding>
+                              <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                           </padding>
+                        </GridPane>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Inventory">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab text="Backstory">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <Separator orientation="VERTICAL" prefHeight="200.0" />
+      <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="177.0" spacing="8.0" HBox.hgrow="NEVER">
+         <children>
+            <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/silhouette.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="nameLabel" alignment="CENTER" text="Character Name" />
+            <HBox alignment="CENTER">
+               <children>
+                  <Label text="Level " />
+                  <Label fx:id="levelLabel" text="1" />
+                  <Label text=" " />
+                  <Label fx:id="classLabel" text="Fighter" />
+               </children>
+            </HBox>
+            <GridPane alignment="TOP_CENTER" hgap="8.0" minHeight="-Infinity">
+              <columnConstraints>
+                <ColumnConstraints fillWidth="false" hgrow="NEVER" />
+                <ColumnConstraints fillWidth="false" hgrow="NEVER" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Strength" />
+                  <Label fx:id="strengthLabel" text="10" GridPane.columnIndex="1" />
+                  <Label text="Dexterity" GridPane.rowIndex="1" />
+                  <Label fx:id="dexterityLabel" text="10" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Constitution" GridPane.rowIndex="2" />
+                  <Label fx:id="constitutionLabel" text="10" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				  <Label text="Intelligence" GridPane.rowIndex="3" />
+                  <Label fx:id="intelligenceLabel" text="10" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label text="Wisdom" GridPane.rowIndex="4" />
+                  <Label fx:id="wisdomLabel" text="10" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label text="Charisma" GridPane.rowIndex="5" />
+                  <Label fx:id="charismaLabel" text="10" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+               </children>
+            </GridPane>
+         </children>
+         <padding>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </padding>
+      </VBox>
+   </children>
+</HBox>
