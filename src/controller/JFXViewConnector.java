@@ -8,6 +8,7 @@ Contributors:
 Eva Moniz
  */
 
+import java.io.File;
 import model.characters.CharacterProperty;
 import java.util.UUID;
 import javafx.application.Platform;
@@ -74,7 +75,7 @@ public class JFXViewConnector extends ViewConnector {
      * @param _die The die to roll
      */
     @Override
-    public void rollDie(int _repetitions, int _die) {
+    public void inputRollDye(int _repetitions, int _die) {
         Controller.rollDie(_repetitions, _die);
     }
 
@@ -86,6 +87,29 @@ public class JFXViewConnector extends ViewConnector {
     @Override
     public void displayMessage(String _message) {
         Platform.runLater(() -> this.fxController.displayMessage(_message));
+    }
+
+    /**
+     * Save a character to the given file path.
+     *
+     * @param _characterUUID The character to store
+     * @param _file The path where the character should be saved
+     * @return Whether the character was saved successfully
+     */
+    @Override
+    public void inputSaveAs(UUID _characterUUID, File _file) {
+        Controller.saveCharacter(_characterUUID, _file);
+    }
+
+    /**
+     * Load a character from the given file path.
+     *
+     * @param _file The string identifying the character
+     * @return The path where the character file can be found
+     */
+    @Override
+    public void inputLoadFile(File _file) {
+        Controller.loadCharacter(_file);
     }
 
 }

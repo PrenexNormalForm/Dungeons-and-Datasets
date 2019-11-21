@@ -8,6 +8,7 @@ Contributors:
 Eva Moniz
  */
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +31,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import model.characters.CharacterData;
 import model.utilities.Resources;
 /**
@@ -44,6 +48,10 @@ public class MainViewController {
      * The list of strings contained in the chat box of the window.
      */
     private ObservableList<String> chat;
+    /**
+     * The UUID of the currently selected character tab.
+     */
+    private UUID selectedCharacter;
 
     //JFX components defined in the FXML
     @FXML
@@ -166,6 +174,9 @@ public class MainViewController {
         this.tabs.getTabs().add(tabPos, tab);
         characterViewController.setTab(tab);
 
+        //Keep track of the currently opened character with selection change events
+        tab.setOnSelectionChanged(e -> this.characterTabSelectionChanged(tab, _uuid));
+
         //Select the tab.
         this.tabs.getSelectionModel().select(tab);
 
@@ -180,6 +191,23 @@ public class MainViewController {
     private void plusTabSelected(Event _e) {
         if (this.newCharacterTab.isSelected()) {
             DNDSApplication.getViewConnector().inputCreateCharacter();
+        }
+    }
+
+    /**
+     * Updates the currently selected character field when a character tab is
+     * selected or loses selection.
+     *
+     * @param _tab The tab that has had a selection change
+     * @param _characterUUID The UUID of the tab's character
+     */
+    private void characterTabSelectionChanged(Tab _tab, UUID _characterUUID) {
+        if (_tab.isSelected()) {
+            //Select the character if the tab is selected.
+            this.selectedCharacter = _characterUUID;
+        } else if (this.selectedCharacter.equals(_characterUUID)) {
+            //Deselect the character if the tab no longer has selection.
+            this.selectedCharacter = null;
         }
     }
 
@@ -199,9 +227,50 @@ public class MainViewController {
      *
      * @param _die The number of sides on the die
      */
-    public void rollDieButton(int _die) {
+    private void rollDieButton(int _die) {
         //Get the number of repetitions from the spinner and send the input to the controller.
         int repetitions = (Integer) this.diceRepetitionSpinner.getValue();
-        DNDSApplication.getViewConnector().rollDie(repetitions, _die);
+        DNDSApplication.getViewConnector().inputRollDye(repetitions, _die);
+    }
+
+    /**
+     * Opens a save file dialog and sends the resulting filename to the
+     * controller.
+     *
+     * @param _e The event that causes the save
+     */
+    @FXML
+    private void saveAs(ActionEvent _e) {
+        if (this.selectedCharacter == null) {
+            //Can't save a character that doesn't exist!
+            return;
+        }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save as...");
+        fileChooser.getExtensionFilters().add(
+                new ExtensionFilter(Constants.FILE_TYPES_STRING, Constants.FILE_TYPES)
+        );
+        File file = fileChooser.showSaveDialog(DNDSApplication.getPrimaryStage());
+        if (file != null) {
+            DNDSApplication.getViewConnector().inputSaveAs(this.selectedCharacter, file);
+        }
+    }
+
+    /**
+     * Opens an open file dialog and sends the resulting file to the controller.
+     *
+     * @param _e The event that causes the open dialog
+     */
+    @FXML
+    private void open(ActionEvent _e) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open file...");
+        fileChooser.getExtensionFilters().add(
+                new ExtensionFilter(Constants.FILE_TYPES_STRING, Constants.FILE_TYPES)
+        );
+        File file = fileChooser.showOpenDialog(DNDSApplication.getPrimaryStage());
+        if (file != null) {
+            DNDSApplication.getViewConnector().inputLoadFile(file);
+        }
     }
 }

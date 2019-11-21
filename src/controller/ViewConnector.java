@@ -9,6 +9,7 @@ Contributors:
 Eva Moniz
  */
 
+import java.io.File;
 import java.util.UUID;
 import model.characters.CharacterData;
 import model.characters.CharacterProperty;
@@ -51,7 +52,23 @@ public abstract class ViewConnector {
      * @param _repetitions The repetitions requested by the user
      * @param _die The die to roll requested by the user
      */
-    public abstract void rollDie(int _repetitions, int _die);
+    public abstract void inputRollDye(int _repetitions, int _die);
+
+    /**
+     * Notifies the controller that the user has requested to save a character.
+     *
+     * @param _characterUUID The character to save
+     * @param _filePath The file path to save the character to
+     */
+    public abstract void inputSaveAs(UUID _characterUUID, File _file);
+
+    /**
+     * Notifies the controller that the user has requested to load a character
+     * file.
+     *
+     * @param _filePath The file path of the saved character
+     */
+    public abstract void inputLoadFile(File _file);
 
     /**
      * Sends a message for the view to display in the chat.
