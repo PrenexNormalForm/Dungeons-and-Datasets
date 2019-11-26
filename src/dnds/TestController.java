@@ -69,7 +69,7 @@ public class TestController {
         int intelligence = (int) map.get("intelligence");
         int wisdom = (int) map.get("wisdom");
         int charisma = (int) map.get("charisma");
-        return new Characters(CharacterClass.BARBARIAN, name, strength, dexterity, constitution, intelligence, wisdom, charisma);
+        return new Characters(CharacterClass.BARBARIAN, name, "human", "neutral", strength, dexterity, constitution, intelligence, wisdom, charisma);
     }
 
     //method for gathering input about character creation

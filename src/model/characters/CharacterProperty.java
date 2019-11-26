@@ -22,6 +22,8 @@ Eva Moniz
  */
 public enum CharacterProperty {
     NAME("name", String.class),
+    RACE("race", String.class),
+    ALIGN("align", String.class),
     LEVEL("level", int.class),
     CLASS("characterClass", CharacterClass.class),
     STRENGTH("strength", int.class),

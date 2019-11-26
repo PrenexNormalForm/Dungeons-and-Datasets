@@ -1,11 +1,12 @@
 package view;
 /*
-Last updated November 8, 2019
+Last updated November 26, 2019
 
 This is the view controller for a character sheet. There is a separate instance
 for each opened character sheet.
 
 Contributors:
+Jonathan Bacon
 Eva Moniz
  */
 
@@ -44,6 +45,7 @@ public class CharacterViewController {
      * The maximum value for a spinner control.
      */
     private static final int SPINNER_MAX = 20;
+    private static final int SPINNER_MIN = 3;
 
     /**
      * The tab that the character view is enclosed in.
@@ -64,6 +66,7 @@ public class CharacterViewController {
     @LinkedProperty(CharacterProperty.NAME)
     private TextField nameTextField;
     @FXML
+    @LinkedProperty(CharacterProperty.RACE)
     private TextField raceTextField;
     @FXML
     @LinkedProperty(CharacterProperty.CLASS)
@@ -72,6 +75,7 @@ public class CharacterViewController {
     @LinkedProperty(CharacterProperty.LEVEL)
     private Spinner levelSpinner;
     @FXML
+    @LinkedProperty(CharacterProperty.ALIGN)
     private TextField alignmentTextField;
     @FXML
     @LinkedProperty(CharacterProperty.NAME)
@@ -129,16 +133,17 @@ public class CharacterViewController {
 
         //Create spinner value factories for the various spinners.
         //https://github.com/EnterpriseQualityCoding
-        this.levelSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
-        this.strengthSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
-        this.dexteritySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
-        this.constitutionSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
-        this.intelligenceSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
-        this.wisdomSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
-        this.charismaSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CharacterViewController.SPINNER_MAX));
+        this.levelSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(CharacterViewController.SPINNER_MIN, CharacterViewController.SPINNER_MAX));
+        this.strengthSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(CharacterViewController.SPINNER_MIN, CharacterViewController.SPINNER_MAX));
+        this.dexteritySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(CharacterViewController.SPINNER_MIN, CharacterViewController.SPINNER_MAX));
+        this.constitutionSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(CharacterViewController.SPINNER_MIN, CharacterViewController.SPINNER_MAX));
+        this.intelligenceSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(CharacterViewController.SPINNER_MIN, CharacterViewController.SPINNER_MAX));
+        this.wisdomSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(CharacterViewController.SPINNER_MIN, CharacterViewController.SPINNER_MAX));
+        this.charismaSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(CharacterViewController.SPINNER_MIN, CharacterViewController.SPINNER_MAX));
 
         //Initialize controls that are linked to character properties.
         this.forPropertyLink(this::initializePropertyLinkedControl);
+        
     }
 
     /**

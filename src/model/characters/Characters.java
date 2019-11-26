@@ -27,11 +27,15 @@ public class Characters {
     private static final int MAX_LEVEL = 20;
     private static final int DEFAULT_LEVEL = 7;
     private static final String DEFAULT_NAME = "default name";
+    private static final String DEFAULT_RACE = "human";
+    private static final String DEFAULT_ALIGN = "neutral";
 
     private UUID uuid;
     private CharacterClass characterClass;
     private int level;
     private String name;
+    private String race;
+    private String align;
     private Stats stats;
     private Inventory inventory;
 
@@ -48,10 +52,12 @@ public class Characters {
      * @param _wisdom - indicates the wisdom of the character
      * @param _charisma - indicates the charisma of the character
      */
-    public Characters(CharacterClass _class, String _name, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma) {
+    public Characters(CharacterClass _class, String _name, String _race, String _align, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma) {
         this();
         this.characterClass = _class;
         this.name = _name;
+        this.race = _race;
+        this.align = _align;
         this.stats = new Stats(_strength, _dex, _constitution, _intelligence, _wisdom, _charisma);
         this.inventory = new Inventory(_strength);
     }
@@ -67,6 +73,8 @@ public class Characters {
         this.setLevel(Characters.DEFAULT_LEVEL);
         this.characterClass = CharacterClass.BARBARIAN;
         this.name = DEFAULT_NAME;
+        this.race = DEFAULT_RACE;
+        this.align = DEFAULT_ALIGN;
         this.stats = new Stats();
         this.inventory = new Inventory(getStrength());
     }
@@ -135,6 +143,14 @@ public class Characters {
         return this.uuid;
     }
 
+    public String getRace(){
+        return this.race;
+    }
+
+    public String getAlign(){
+        return this.align;
+    }
+
     // =================== SETTERS ===============================//
     public void setCharacterClass(CharacterClass _class) {
         this.characterClass = _class;
@@ -173,5 +189,13 @@ public class Characters {
 
     public void setCharisma(int _charisma) {
         this.stats.setCharisma(_charisma);
+    }
+
+    public void setRace(String _race){
+        this.race = _race;
+    }
+
+    public void setAlign(String _align){
+        this.align = _align;
     }
 }
