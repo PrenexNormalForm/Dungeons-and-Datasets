@@ -49,7 +49,7 @@ public class Stats {
 
     @Override
     public String toString(){
-        return "\nStrength:" + this.STRENGTH + "\nDex:" + this.DEXTERITY + "\nConstitution:" + this.CONSTITUTION + "\nIntelligence:" + this.INTELLIGENCE + "\nWisdom:" + this.WISDOM + "\nCharisma:" + this.CHARISMA;
+        return "\nStats:\n" + "Strength:" + this.STRENGTH + "\nDex:" + this.DEXTERITY + "\nConstitution:" + this.CONSTITUTION + "\nIntelligence:" + this.INTELLIGENCE + "\nWisdom:" + this.WISDOM + "\nCharisma:" + this.CHARISMA;
     }
 
     // =================== GETTERS ===============================//
