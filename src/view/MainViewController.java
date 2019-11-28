@@ -5,14 +5,17 @@ Last updated November 14, 2019
 This is the view controller for the primary application window.
 
 Contributors:
+Jonathan Bacon
 Eva Moniz
  */
 
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,11 +27,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
@@ -59,13 +64,19 @@ public class MainViewController {
     @FXML
     private Tab welcomeTab;
     @FXML
-    private WebView welcomeWebView;
+    private Tab settingsTab;
     @FXML
     private Tab newCharacterTab;
     @FXML
     private Spinner diceRepetitionSpinner;
     @FXML
     private ListView chatListView;
+    @FXML
+    private Label mottoLbl;
+    @FXML
+    private Button welcomeCloseBtn;
+    @FXML
+    private Button settingsApplyBtn;
     @FXML
     private Button d4Button;
     @FXML
@@ -82,7 +93,7 @@ public class MainViewController {
     /**
      * Stores the open character views mapped by UUID.
      */
-    private Map<UUID, CharacterViewController> openCharacters;
+    private static Map<UUID, CharacterViewController> openCharacters;
 
     /**
      * Initializes the JFX component.
@@ -94,18 +105,11 @@ public class MainViewController {
 
         //Set the welcome tab as the tab open upon launching the program.
         this.tabs.getSelectionModel().select(this.welcomeTab);
+        this.mottoLbl.setText("Motto - \" We are the best \"");
 
         //Assign the behavior associated with the "plus" tab.
         this.newCharacterTab.setOnSelectionChanged(e -> this.plusTabSelected(e));
 
-        //CJonfigure the welcome tab to display the welcome page.
-        try {
-            WebEngine engine = this.welcomeWebView.getEngine();
-            String urlString = Resources.getResourceUrl(Constants.WELCOME_PAGE).toString();
-            engine.load(urlString);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         //Set dice repetiton spinner to only allow values 1 to MAX_DICE_REPETITIONS.
         SpinnerValueFactory spinnerValFac = new SpinnerValueFactory.IntegerSpinnerValueFactory(
@@ -123,6 +127,17 @@ public class MainViewController {
         this.d10Button.setOnAction(e -> this.rollDieButton(10));
         this.d12Button.setOnAction(e -> this.rollDieButton(12));
         this.d20Button.setOnAction(e -> this.rollDieButton(20));
+        this.welcomeCloseBtn.setOnAction(e -> this.closeTab(e, this.welcomeTab));
+        this.tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
+    }
+    /**
+     * a method used for checking if a character tab has been closed and then remove its index
+     * from the opened characters hashmap
+     * @param _e
+     * @param _tab
+     */
+    private void closeTab(Event _e, Tab _tab){
+        _tab.getTabPane().getTabs().remove(_tab);
     }
 
     /**
@@ -262,7 +277,7 @@ public class MainViewController {
      * @param _e The event that causes the open dialog
      */
     @FXML
-    private void open(ActionEvent _e) {
+    private void load(ActionEvent _e) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open file...");
         fileChooser.getExtensionFilters().add(
@@ -273,4 +288,11 @@ public class MainViewController {
             DNDSApplication.getViewConnector().inputLoadFile(file);
         }
     }
+   /**
+     * This handles removing closed characters from the openCharacters map
+     */
+    public static void removeCharacter(UUID _uuid){
+        MainViewController.openCharacters.remove(_uuid);
+    }
+
 }

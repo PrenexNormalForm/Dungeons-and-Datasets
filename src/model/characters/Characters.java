@@ -13,7 +13,6 @@ Eva Moniz
 
 import java.util.HashMap;
 import java.util.UUID;
-import model.items.Item;
 
 /**
  * The Characters class (God forbid you actually call it Character) that will a
@@ -37,7 +36,8 @@ public class Characters {
     private String race;
     private String align;
     private Stats stats;
-    private Inventory inventory;
+    private String inventory;
+    private String backstory;
 
     /**
      * The overridden constructor for creating a basic character (Will update
@@ -52,14 +52,15 @@ public class Characters {
      * @param _wisdom - indicates the wisdom of the character
      * @param _charisma - indicates the charisma of the character
      */
-    public Characters(CharacterClass _class, String _name, String _race, String _align, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma) {
+    public Characters(CharacterClass _class, String _name, String _race, String _align, String _inventory, String _backstory, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma) {
         this();
         this.characterClass = _class;
         this.name = _name;
         this.race = _race;
         this.align = _align;
         this.stats = new Stats(_strength, _dex, _constitution, _intelligence, _wisdom, _charisma);
-        this.inventory = new Inventory(_strength);
+        this.inventory = _inventory;
+        this.backstory = _backstory;
     }
 
     /**
@@ -76,7 +77,8 @@ public class Characters {
         this.race = DEFAULT_RACE;
         this.align = DEFAULT_ALIGN;
         this.stats = new Stats();
-        this.inventory = new Inventory(getStrength());
+        this.inventory = "";
+        this.backstory = "";
     }
 
     /**
@@ -86,16 +88,7 @@ public class Characters {
      */
     @Override
     public String toString() {
-        return "\nName:" + this.getName() + "\nClass:" + this.getCharacterClass() + this.stats.toString() + this.inventory.toString();
-    }
-
-    // =================== Inventory Managers ===============================//
-    public void addItem(Item _item) {
-        this.inventory.addItem(_item);
-    }
-
-    public void removeItem(String _item) {
-        this.inventory.removeItem(_item);
+        return "\nName:" + this.getName() + "\nClass:" + this.getCharacterClass() + "Alignment:\n" + this.align + this.stats.toString() + "Inventory:\n" + this.inventory + "Backstory:\n" + this.backstory;
     }
 
     // =================== GETTERS ===============================//
@@ -135,10 +128,6 @@ public class Characters {
         return this.stats.getCharisma();
     }
 
-    public HashMap getBag() {
-        return this.inventory.getBag();
-    }
-
     public UUID getUUID() {
         return this.uuid;
     }
@@ -149,6 +138,14 @@ public class Characters {
 
     public String getAlign(){
         return this.align;
+    }
+
+    public String getBackstory(){
+        return this.backstory;
+    }
+
+    public String getInventory(){
+        return this.inventory;
     }
 
     // =================== SETTERS ===============================//
@@ -197,5 +194,13 @@ public class Characters {
 
     public void setAlign(String _align){
         this.align = _align;
+    }
+
+    public void setBackstory(String _backstory){
+        this.backstory = _backstory;
+    }
+
+    public void setInventory(String _inventory){
+        this.inventory = _inventory;
     }
 }
