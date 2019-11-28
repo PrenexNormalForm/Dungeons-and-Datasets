@@ -44,14 +44,16 @@ public class DNDSApplication extends Application {
     private String title = "Dungeons & DataSheets";
 
     private static JFXViewConnector viewConnector;
+    private static Stage primaryStage;
 
     /**
      * Starts the application, and the logic thread.
      *
-     * @param primaryStage the application window
+     * @param _primaryStage the application window
      */
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage _primaryStage) {
+        DNDSApplication.primaryStage = _primaryStage;
 
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -60,7 +62,7 @@ public class DNDSApplication extends Application {
 
             DNDSApplication.setViewConnector(new JFXViewConnector(loader.getController()));
 
-            this.stage = primaryStage;
+            this.stage = _primaryStage;
             this.stage.setTitle(title);
             this.stage.setMinHeight(DNDSApplication.MIN_WINDOW_HEIGHT);
             this.stage.setMinWidth(DNDSApplication.MIN_WINDOW_WIDTH);
@@ -81,5 +83,9 @@ public class DNDSApplication extends Application {
     private static void setViewConnector(JFXViewConnector _viewConnector) {
         DNDSApplication.viewConnector = _viewConnector;
         controller.Controller.setViewConnector(_viewConnector);
+    }
+
+    protected static Stage getPrimaryStage() {
+        return DNDSApplication.primaryStage;
     }
 }

@@ -11,8 +11,13 @@ Eva Moniz
  */
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,6 +78,9 @@ public class CharacterData {
     }
 
     public <T> T getProperty(CharacterProperty _property) {
+        if (!this.data.containsKey(_property)) {
+            throw new IllegalArgumentException("Invalid property!");
+        }
         return (T) this.data.get(_property);
     }
 

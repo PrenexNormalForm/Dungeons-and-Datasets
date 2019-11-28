@@ -13,7 +13,6 @@ Eva Moniz
 
 import java.util.HashMap;
 import java.util.UUID;
-import model.items.Item;
 
 /**
  * The Characters class (God forbid you actually call it Character) that will a
@@ -25,15 +24,20 @@ import model.items.Item;
 public class Characters {
 
     private static final int MAX_LEVEL = 20;
-    private static final int DEFAULT_LEVEL = 1;
+    private static final int DEFAULT_LEVEL = 7;
     private static final String DEFAULT_NAME = "default name";
+    private static final String DEFAULT_RACE = "human";
+    private static final String DEFAULT_ALIGN = "neutral";
 
     private UUID uuid;
     private CharacterClass characterClass;
     private int level;
     private String name;
+    private String race;
+    private String align;
     private Stats stats;
-    private Inventory inventory;
+    private String inventory;
+    private String backstory;
 
     /**
      * The overridden constructor for creating a basic character (Will update
@@ -48,13 +52,15 @@ public class Characters {
      * @param _wisdom - indicates the wisdom of the character
      * @param _charisma - indicates the charisma of the character
      */
-    public Characters(CharacterClass _class, String _name, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma) {
-        this.uuid = UUID.randomUUID();
+    public Characters(CharacterClass _class, String _name, String _race, String _align, String _inventory, String _backstory, int _strength, int _dex, int _constitution, int _intelligence, int _wisdom, int _charisma) {
+        this();
         this.characterClass = _class;
-        this.level = DEFAULT_LEVEL;
         this.name = _name;
+        this.race = _race;
+        this.align = _align;
         this.stats = new Stats(_strength, _dex, _constitution, _intelligence, _wisdom, _charisma);
-        this.inventory = new Inventory(_strength);
+        this.inventory = _inventory;
+        this.backstory = _backstory;
     }
 
     /**
@@ -67,10 +73,12 @@ public class Characters {
         this.uuid = UUID.randomUUID();
         this.setLevel(Characters.DEFAULT_LEVEL);
         this.characterClass = CharacterClass.BARBARIAN;
-        this.level = DEFAULT_LEVEL;
         this.name = DEFAULT_NAME;
+        this.race = DEFAULT_RACE;
+        this.align = DEFAULT_ALIGN;
         this.stats = new Stats();
-        this.inventory = new Inventory(getStrength());
+        this.inventory = "";
+        this.backstory = "";
     }
 
     /**
@@ -80,23 +88,10 @@ public class Characters {
      */
     @Override
     public String toString() {
-        return "\nName:" + this.getName() + "\nClass:" + this.getCharacterClass() + "\nLevel:" + this.level + this.stats.toString() + this.inventory.toString();
-    }
-
-    // =================== Inventory Managers ===============================//
-    public void addItem(Item _item) {
-        this.inventory.addItem(_item);
-    }
-
-    public void removeItem(String _item) {
-        this.inventory.removeItem(_item);
+        return "\nName:" + this.getName() + "\nClass:" + this.getCharacterClass() + "Alignment:\n" + this.align + this.stats.toString() + "Inventory:\n" + this.inventory + "Backstory:\n" + this.backstory;
     }
 
     // =================== GETTERS ===============================//
-    public UUID getUuid(){
-        return this.uuid;
-    }
-
     public CharacterClass getCharacterClass() {
         return this.characterClass;
     }
@@ -133,12 +128,24 @@ public class Characters {
         return this.stats.getCharisma();
     }
 
-    public HashMap getBag() {
-        return this.inventory.getBag();
-    }
-
     public UUID getUUID() {
         return this.uuid;
+    }
+
+    public String getRace(){
+        return this.race;
+    }
+
+    public String getAlign(){
+        return this.align;
+    }
+
+    public String getBackstory(){
+        return this.backstory;
+    }
+
+    public String getInventory(){
+        return this.inventory;
     }
 
     // =================== SETTERS ===============================//
@@ -179,5 +186,21 @@ public class Characters {
 
     public void setCharisma(int _charisma) {
         this.stats.setCharisma(_charisma);
+    }
+
+    public void setRace(String _race){
+        this.race = _race;
+    }
+
+    public void setAlign(String _align){
+        this.align = _align;
+    }
+
+    public void setBackstory(String _backstory){
+        this.backstory = _backstory;
+    }
+
+    public void setInventory(String _inventory){
+        this.inventory = _inventory;
     }
 }
