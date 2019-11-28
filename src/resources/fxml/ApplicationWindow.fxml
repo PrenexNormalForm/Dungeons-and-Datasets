@@ -11,12 +11,12 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.web.WebView?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="772.0" prefWidth="800.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainViewController">
    <children>
@@ -25,8 +25,8 @@
           <Menu mnemonicParsing="false" text="File">
             <items>
                   <MenuItem mnemonicParsing="false" text="Save" />
-                  <MenuItem mnemonicParsing="false" text="Save as..." />
-                  <MenuItem mnemonicParsing="false" text="Open" />
+                  <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" onAction="#saveAs" text="Save as..." />
+                  <MenuItem fx:id="loadMenuItem" mnemonicParsing="false" onAction="#load" text="Load" />
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
@@ -35,11 +35,26 @@
       </MenuBar>
       <TabPane fx:id="tabs" prefHeight="315.0" prefWidth="600.0" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS">
         <tabs>
-          <Tab fx:id="settingsTab" closable="false" style="-fx-font-size: 16px;" text="Settings" />
-          <Tab fx:id="serverTab" closable="false" style="-fx-font-size: 16px;" text="Server" />
-            <Tab fx:id="welcomeTab" style="-fx-font-size: 16px;" text="Welcome">
+          <Tab id="settingsTab" fx:id="settingsTab" closable="false" style="-fx-font-size: 16px;" text="Settings">
                <content>
-                  <WebView fx:id="welcomeWebView" prefHeight="200.0" prefWidth="200.0" />
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="nameTextField" layoutX="109.0" layoutY="19.0" />
+                        <Label layoutX="14.0" layoutY="25.0" text="Chat Name" />
+                        <Button id="settingsApplyBtn" layoutX="723.0" layoutY="412.0" mnemonicParsing="false" text="Apply" />
+                     </children>
+                  </AnchorPane>
+               </content></Tab>
+            <Tab id="welcomeTab" fx:id="welcomeTab" closable="false" style="-fx-font-size: 16px;" text="Welcome">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="259.0" layoutY="58.0" text="Welcome to Dungeons and DataSheets!" />
+                        <Label id="mottoLbl" fx:id="mottoLbl" layoutX="259.0" layoutY="95.0" text="Motto - " />
+                        <Button id="welcomeCloseBtn" fx:id="welcomeCloseBtn" layoutX="725.0" layoutY="412.0" mnemonicParsing="false" text="Close" />
+                        <TextArea editable="false" focusTraversable="false" layoutX="21.0" layoutY="143.0" pickOnBounds="false" prefHeight="200.0" prefWidth="762.0" text="Hello! To get started on a new character click the plus button above and design your character! &#10;If you wish to load an existing character click the file button and click the load option" />
+                     </children>
+                  </AnchorPane>
                </content>
             </Tab>
             <Tab fx:id="newCharacterTab" closable="false" style="-fx-font-size: 16px;" text="+">

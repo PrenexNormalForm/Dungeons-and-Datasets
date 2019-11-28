@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -21,7 +22,7 @@
    <children>
       <TabPane prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
         <tabs>
-            <Tab text="Info">
+            <Tab closable="false" text="Info">
               <content>
                 <AnchorPane>
                      <children>
@@ -31,25 +32,29 @@
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="30.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                           </rowConstraints>
                            <children>
-                              <Label text="Character Name" />
-                              <TextField fx:id="nameTextField" GridPane.columnIndex="1" />
-                              <Label text="Race" GridPane.rowIndex="3" />
-                              <Label text="Class" GridPane.rowIndex="1" />
-                              <TextField fx:id="raceTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <Label text="Level" GridPane.rowIndex="2" />
-                              <Label text="Alignment" GridPane.rowIndex="4" />
-                              <TextField fx:id="alignmentTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <ChoiceBox fx:id="classChoiceBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Spinner fx:id="levelSpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label text="Character Name" GridPane.rowIndex="2" />
+                              <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label text="Race" GridPane.rowIndex="5" />
+                              <Label text="Class" GridPane.rowIndex="3" />
+                              <TextField fx:id="raceTextField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Label text="Level" GridPane.rowIndex="4" />
+                              <Label text="Alignment" GridPane.rowIndex="6" />
+                              <TextField fx:id="alignmentTextField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <ChoiceBox fx:id="classChoiceBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Spinner fx:id="levelSpinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Button mnemonicParsing="false" onAction="#closeCharacter" text="Close Character" />
                            </children>
                            <padding>
                               <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
@@ -100,12 +105,18 @@
           </Tab>
           <Tab text="Inventory">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="inventoryTextField" alignment="TOP_LEFT" prefHeight="515.0" prefWidth="455.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+                     </children></AnchorPane>
             </content>
           </Tab>
             <Tab text="Backstory">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="backstoryTextField" alignment="TOP_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="483.0" prefWidth="429.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+                     </children></AnchorPane>
               </content>
             </Tab>
         </tabs>
