@@ -15,6 +15,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -39,9 +40,15 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="nameTextField" layoutX="109.0" layoutY="19.0" />
-                        <Label layoutX="14.0" layoutY="25.0" text="Chat Name" />
-                        <Button id="settingsApplyBtn" layoutX="723.0" layoutY="412.0" mnemonicParsing="false" text="Apply" />
+                        <Button id="settingsApplyBtn" fx:id="applySettingsButton" layoutX="723.0" layoutY="412.0" mnemonicParsing="false" onAction="#applySettings" text="Apply" />
+                        <Pane layoutX="36.0" layoutY="14.0" prefHeight="281.0" prefWidth="325.0" AnchorPane.bottomAnchor="168.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="439.0" AnchorPane.topAnchor="14.0">
+                           <children>
+                              <Label layoutX="116.0" layoutY="14.0" text="Chat Settings" />
+                              <TextField fx:id="nameTextField" layoutX="116.0" layoutY="52.0" />
+                              <Label layoutX="14.0" layoutY="58.0" text="Username" />
+                              <Button fx:id="joinChatButton" layoutX="179.0" layoutY="104.0" mnemonicParsing="false" onAction="#joinChat" text="Join Chat Server" />
+                           </children>
+                        </Pane>
                      </children>
                   </AnchorPane>
                </content></Tab>
@@ -50,9 +57,9 @@
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
                         <Label layoutX="259.0" layoutY="58.0" text="Welcome to Dungeons and DataSheets!" />
-                        <Label id="mottoLbl" fx:id="mottoLbl" layoutX="259.0" layoutY="95.0" text="Motto - " />
-                        <Button id="welcomeCloseBtn" fx:id="welcomeCloseBtn" layoutX="725.0" layoutY="412.0" mnemonicParsing="false" text="Close" />
-                        <TextArea editable="false" focusTraversable="false" layoutX="21.0" layoutY="143.0" pickOnBounds="false" prefHeight="200.0" prefWidth="762.0" text="Hello! To get started on a new character click the plus button above and design your character! &#10;If you wish to load an existing character click the file button and click the load option" />
+                        <Label id="mottoLbl" fx:id="mottoLabel" layoutX="259.0" layoutY="95.0" text="Motto - Unavailable at this time" />
+                        <Button id="welcomeCloseBtn" fx:id="welcomeCloseButton" layoutX="725.0" layoutY="412.0" mnemonicParsing="false" text="Close" />
+                        <TextArea editable="false" focusTraversable="false" layoutX="21.0" layoutY="143.0" pickOnBounds="false" prefHeight="200.0" prefWidth="762.0" text="Hello! To get started on a new character click the plus button above and design your character! If you wish to load an existing character click the file button and click the load option&#10;&#10;To use the chat function go into settings set your username and either start a server or join a local one! If you want to join a server not on the local network enter in the IP and port of that server and click the connect button." wrapText="true" />
                      </children>
                   </AnchorPane>
                </content>
@@ -94,7 +101,7 @@
       </HBox>
       <VBox fx:id="chatPane" prefHeight="175.0" prefWidth="800.0">
          <children>
-            <ListView fx:id="chatListView" prefHeight="200.0" prefWidth="784.0" />
+            <ListView fx:id="chatListView" prefHeight="200.0" prefWidth="200.0" />
             <HBox spacing="8.0">
                <children>
                   <Label prefHeight="58.0" prefWidth="106.0" text="Send Message:">
@@ -103,7 +110,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="messageTextField" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="messageButton" mnemonicParsing="false" text="Send" />
+                  <Button fx:id="messageButton" mnemonicParsing="false" onAction="#addComment" text="Send" />
                </children>
                <padding>
                   <Insets bottom="8.0" top="8.0" />

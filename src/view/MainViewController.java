@@ -12,6 +12,7 @@ Eva Moniz
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -34,6 +38,7 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
+import javafx.scene.control.TextField;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
@@ -48,7 +53,9 @@ import model.utilities.Resources;
 public class MainViewController {
 
     private static final int MAX_DICE_REPETITIONS = 10;
-
+    private boolean chatRunning;
+    private String name = "";
+    private static  ListProperty<String> chatProperty = new SimpleListProperty<>();
     /**
      * The list of strings contained in the chat box of the window.
      */
@@ -89,6 +96,16 @@ public class MainViewController {
     private Button d12Button;
     @FXML
     private Button d20Button;
+    @FXML
+    private Button welcomeCloseButton;
+    @FXML
+    private Label mottoLabel;
+    @FXML
+    private TextField messageTextField;
+    @FXML
+    private TextField nameTextField;
+    @FXML
+    private Button joinChatButton;
 
     /**
      * Stores the open character views mapped by UUID.
@@ -100,12 +117,13 @@ public class MainViewController {
      */
     @FXML
     private void initialize() {
+        this.chatRunning = false;
         //Initialize openCharacters to an empty map.
-        this.openCharacters = new HashMap<>();
+        this.openCharacters = new HashMap<UUID, CharacterViewController>();
 
         //Set the welcome tab as the tab open upon launching the program.
         this.tabs.getSelectionModel().select(this.welcomeTab);
-        this.mottoLbl.setText("Motto - \" We are the best \"");
+        //this.mottoLabel.setText("Motto - \" We are the best \"");
 
         //Assign the behavior associated with the "plus" tab.
         this.newCharacterTab.setOnSelectionChanged(e -> this.plusTabSelected(e));
@@ -119,6 +137,7 @@ public class MainViewController {
         //Initialize the chat list view. Create the observable list and assign it.
         this.chat = FXCollections.observableArrayList();
         this.chatListView.setItems(this.chat);
+        this.chatListView.itemsProperty().bind(chatProperty);
 
         //Add event listeners to buttons;
         this.d4Button.setOnAction(e -> this.rollDieButton(4));
@@ -127,7 +146,7 @@ public class MainViewController {
         this.d10Button.setOnAction(e -> this.rollDieButton(10));
         this.d12Button.setOnAction(e -> this.rollDieButton(12));
         this.d20Button.setOnAction(e -> this.rollDieButton(20));
-        this.welcomeCloseBtn.setOnAction(e -> this.closeTab(e, this.welcomeTab));
+        this.welcomeCloseButton.setOnAction(e -> this.closeTab(e, this.welcomeTab));
         this.tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
     }
     /**
@@ -293,6 +312,58 @@ public class MainViewController {
      */
     public static void removeCharacter(UUID _uuid){
         MainViewController.openCharacters.remove(_uuid);
+    }
+
+    @FXML
+    private void applySettings(ActionEvent _e) throws IOException{
+        String temp = "";
+        if(!this.name.isEmpty()){
+            temp = this.name;
+        }
+
+        this.name = this.nameTextField.getText();
+        if(chatRunning){
+            nameUpdated(temp,this.name);
+        }
+    }
+
+    @FXML
+    private void joinChat() throws IOException{
+        if(this.chatRunning){
+            ChatLog.addComment("Chat already joined");
+        } else if (this.name == "" && this.nameTextField.getText().trim().isEmpty()){
+            ChatLog.addComment("Please select a username in settings");
+        } else{
+            this.name = this.nameTextField.getText();
+            model.chat.GroupChat.startServer();
+            this.chatRunning = true;
+            updateChat();
+        }
+    }
+
+    public static void updateChat(){
+        //gets the chatlog
+        ArrayList<String> log = ChatLog.getLog();
+        //sets the bound chat property to a new observable array list
+        MainViewController.chatProperty.set(FXCollections.observableArrayList(log));
+    }
+
+    @FXML
+    private void addComment() throws IOException{
+        if(this.chatRunning){
+            System.out.println("Sending");
+            model.chat.GroupChat.sendMessage(this.name + ": " + this.messageTextField.getText());
+            //clears the comment box
+            this.messageTextField.setText("");
+        }
+    }
+
+    private void joinMessage() throws IOException{
+        model.chat.GroupChat.sendMessage(this.name + " has joined the chat!");
+    }
+
+    private void nameUpdated(String _old, String _new) throws IOException{
+        model.chat.GroupChat.sendMessage(_old + " has chnaged their name to " + _new);
     }
 
 }
