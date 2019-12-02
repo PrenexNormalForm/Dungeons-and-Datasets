@@ -1,4 +1,5 @@
 package view;
+
 /*
 Last updated November 14, 2019
 
@@ -9,18 +10,22 @@ Jonathan Bacon
 Eva Moniz
  */
 
+import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -38,8 +43,11 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentEvent.EventType;
 import model.characters.CharacterData;
 import model.utilities.Resources;
+
 /**
  * This is the view controller for the primary application window.
  *
@@ -50,7 +58,7 @@ public class MainViewController {
     private static final int MAX_DICE_REPETITIONS = 10;
     private boolean chatRunning;
     private String name = "";
-    private static  ListProperty<String> chatProperty = new SimpleListProperty<>();
+    private static ListProperty<String> chatProperty = new SimpleListProperty<>();
     /**
      * The list of strings contained in the chat box of the window.
      */
@@ -123,16 +131,19 @@ public class MainViewController {
         //Assign the behavior associated with the "plus" tab.
         this.newCharacterTab.setOnSelectionChanged(e -> this.plusTabSelected(e));
 
-
         //Set dice repetiton spinner to only allow values 1 to MAX_DICE_REPETITIONS.
         SpinnerValueFactory spinnerValFac = new SpinnerValueFactory.IntegerSpinnerValueFactory(
                 1, MainViewController.MAX_DICE_REPETITIONS, 1);
         this.diceRepetitionSpinner.setValueFactory(spinnerValFac);
 
         //Initialize the chat list view. Create the observable list and assign it.
-        this.chat = FXCollections.observableArrayList();
-        this.chatListView.setItems(this.chat);
         this.chatListView.itemsProperty().bind(chatProperty);
+        MainViewController.chatProperty.addListener(new ListChangeListener() {
+    @Override
+    public void onChanged(ListChangeListener.Change change) {
+        chatScroll();
+    }
+});
 
         //Add event listeners to buttons;
         this.d4Button.setOnAction(e -> this.rollDieButton(4));
@@ -144,13 +155,15 @@ public class MainViewController {
         this.welcomeCloseButton.setOnAction(e -> this.closeTab(e, this.welcomeTab));
         this.tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
     }
+
     /**
-     * a method used for checking if a character tab has been closed and then remove its index
-     * from the opened characters hashmap
+     * a method used for checking if a character tab has been closed and then
+     * remove its index from the opened characters hashmap
+     *
      * @param _e
      * @param _tab
      */
-    private void closeTab(Event _e, Tab _tab){
+    private void closeTab(Event _e, Tab _tab) {
         _tab.getTabPane().getTabs().remove(_tab);
     }
 
@@ -302,51 +315,55 @@ public class MainViewController {
             DNDSApplication.getViewConnector().inputLoadFile(file);
         }
     }
-   /**
+
+    /**
      * This handles removing closed characters from the openCharacters map
      */
-    public static void removeCharacter(UUID _uuid){
+    public static void removeCharacter(UUID _uuid) {
         MainViewController.openCharacters.remove(_uuid);
     }
 
     @FXML
-    private void applySettings(ActionEvent _e) throws IOException{
-        String temp = "";
-        if(!this.name.isEmpty()){
-            temp = this.name;
-        }
+    private void applySettings(ActionEvent _e) throws IOException {
+        if (!this.name.isEmpty()) {
+            String name = this.nameTextField.getText();
+            if (chatRunning) {
+                model.chat.GroupChat.updateName(name);
+            }
+        } else {
 
-        this.name = this.nameTextField.getText();
-        if(chatRunning){
-            nameUpdated(temp,this.name);
         }
     }
 
     @FXML
-    private void joinChat() throws IOException{
-        if(this.chatRunning){
+    private void joinChat() throws IOException {
+        if (this.chatRunning) {
             ChatLog.addComment("Chat already joined");
-        } else if (this.name == "" && this.nameTextField.getText().trim().isEmpty()){
+        } else if (this.name == "" && this.nameTextField.getText().trim().isEmpty()) {
             ChatLog.addComment("Please select a username in settings");
-        } else{
+        } else {
             this.name = this.nameTextField.getText();
-            model.chat.GroupChat.startServer();
-            joinMessage();
+            model.chat.GroupChat.startServer(this.name);
             this.chatRunning = true;
             updateChat();
         }
     }
 
-    public static void updateChat(){
+    public static void updateChat() {
         //gets the chatlog
         ArrayList<String> log = ChatLog.getLog();
         //sets the bound chat property to a new observable array list
         MainViewController.chatProperty.set(FXCollections.observableArrayList(log));
     }
 
+    //method that scrolls the chat to the bottom when recieving new chats
+    private void chatScroll() {
+        Platform.runLater( () -> this.chatListView.scrollTo(chatListView.getItems().size()));
+    }
+
     @FXML
-    private void addComment() throws IOException{
-        if(this.chatRunning){
+    private void addComment() throws IOException {
+        if (this.chatRunning) {
             System.out.println("Sending");
             model.chat.GroupChat.sendMessage(this.name + ": " + this.messageTextField.getText());
             //clears the comment box
@@ -354,12 +371,8 @@ public class MainViewController {
         }
     }
 
-    private void joinMessage() throws IOException{
-        model.chat.GroupChat.sendMessage(this.name + " has joined the chat!");
+    @FXML
+    private void onEnter(ActionEvent _e) throws IOException {
+        addComment();
     }
-
-    private void nameUpdated(String _old, String _new) throws IOException{
-        model.chat.GroupChat.sendMessage(_old + " has chnaged their name to " + _new);
-    }
-
 }

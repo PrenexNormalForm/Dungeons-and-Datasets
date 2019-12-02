@@ -109,7 +109,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="messageTextField" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="messageTextField" onAction="#onEnter" HBox.hgrow="ALWAYS" />
                   <Button fx:id="messageButton" mnemonicParsing="false" onAction="#addComment" text="Send" />
                </children>
                <padding>

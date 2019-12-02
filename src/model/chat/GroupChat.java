@@ -17,20 +17,23 @@ public class GroupChat {
 
     private static final String TERMINATE = "Bye";
     static volatile boolean FINISHED = false;
+    static volatile String NAME = "";
     static int PORT = 4567;
     static String GROUP = "238.245.3.7";
     static int DEFAULT_TIME = 5;
     static InetAddress ADDRESS;
     static MulticastSocket SOCKET;
 
-    public static void startServer () {
+    public static void startServer (String _username) {
         try {
+            GroupChat.NAME = _username;
             GroupChat.ADDRESS = InetAddress.getByName(GroupChat.GROUP);
             GroupChat.SOCKET = new MulticastSocket(GroupChat.PORT);
             GroupChat.SOCKET.setTimeToLive(GroupChat.DEFAULT_TIME);
             GroupChat.SOCKET.joinGroup(GroupChat.ADDRESS);
             Thread t = new Thread(new ReadThread(GroupChat.SOCKET, GroupChat.ADDRESS, GroupChat.PORT));
             t.start();
+            joinMessage();
         } catch (SocketException se) {
             System.out.println("Error creating socket");
             se.printStackTrace();
@@ -48,6 +51,10 @@ public class GroupChat {
     public static void sendMessage (String _userInput) throws IOException {
             message(_userInput);
         }
+    //message to announce people joining
+    private static void joinMessage() throws IOException{
+        message(GroupChat.NAME + " has joined the chat!");
+    }
     //generic messaging method
     private static void message(String _message) throws IOException{
         //pulls the message into a byte buffer
@@ -56,5 +63,10 @@ public class GroupChat {
         DatagramPacket datagram = new DatagramPacket(buffer, buffer.length, GroupChat.ADDRESS, PORT);
         //sends the packet via the group chat socket
         GroupChat.SOCKET.send(datagram);
+    }
+    // method for updating the username
+    public static void updateName(String _new) throws IOException{
+        message(GroupChat.NAME + " has changed their name to " + _new);
+        GroupChat.NAME = _new;
     }
 }
