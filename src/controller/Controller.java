@@ -124,9 +124,9 @@ public class Controller {
      * @param _repetitions The number of times to roll the die
      * @param _die The number of sides on the die
      */
-    static void rollDie(int _repetitions, int _die) {
+    static String rollDie(int _repetitions, int _die) {
         int[] rolls = DiceRollUtility.rollDice(_repetitions, _die);
-        String rollString = _repetitions + "D" + _die + "Rolled ";
+        String rollString = _repetitions + " D" + _die + " Rolled ";
         for (int i = 0; i < _repetitions; i++) {
             //Add a comma and space between rolls.
             if (i > 0) {
@@ -138,7 +138,8 @@ public class Controller {
         rollString += ".";
 
         //Send the rollString as a message to the view.
-        Controller.viewConnector.displayMessage(rollString);
+        //Controller.viewConnector.displayMessage(rollString);
+        return rollString;
     }
 
     /**

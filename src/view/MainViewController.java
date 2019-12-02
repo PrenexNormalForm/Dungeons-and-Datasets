@@ -9,7 +9,6 @@ Contributors:
 Jonathan Bacon
 Eva Moniz
  */
-
 import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +45,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentEvent.EventType;
 import model.characters.CharacterData;
+import model.chat.GroupChat;
 import model.utilities.Resources;
 
 /**
@@ -129,7 +129,7 @@ public class MainViewController {
         //this.mottoLabel.setText("Motto - \" We are the best \"");
 
         //Assign the behavior associated with the "plus" tab.
-        this.newCharacterTab.setOnSelectionChanged(e -> this.plusTabSelected(e));
+        this.newCharacterTab.setOnSelectionChanged(e -> this.plusTabSelected());
 
         //Set dice repetiton spinner to only allow values 1 to MAX_DICE_REPETITIONS.
         SpinnerValueFactory spinnerValFac = new SpinnerValueFactory.IntegerSpinnerValueFactory(
@@ -139,31 +139,75 @@ public class MainViewController {
         //Initialize the chat list view. Create the observable list and assign it.
         this.chatListView.itemsProperty().bind(chatProperty);
         MainViewController.chatProperty.addListener(new ListChangeListener() {
-    @Override
-    public void onChanged(ListChangeListener.Change change) {
-        chatScroll();
-    }
-});
-
-        //Add event listeners to buttons;
-        this.d4Button.setOnAction(e -> this.rollDieButton(4));
-        this.d6Button.setOnAction(e -> this.rollDieButton(6));
-        this.d8Button.setOnAction(e -> this.rollDieButton(8));
-        this.d10Button.setOnAction(e -> this.rollDieButton(10));
-        this.d12Button.setOnAction(e -> this.rollDieButton(12));
-        this.d20Button.setOnAction(e -> this.rollDieButton(20));
-        this.welcomeCloseButton.setOnAction(e -> this.closeTab(e, this.welcomeTab));
+            @Override
+            public void onChanged(ListChangeListener.Change change) {
+                chatScroll();
+            }
+        });
+        //method used for setting dice button listeners
+        setDice();
+        //sets the welcome tabs close button listener
+        this.welcomeCloseButton.setOnAction(e -> this.closeTab(this.welcomeTab));
+        //disables the small X's on each tab
         this.tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
+    }
+
+    /**
+     * Method used for setting up dice listeners
+     */
+    private void setDice(){
+        //Add event listeners to buttons;
+        this.d4Button.setOnAction(e -> {
+            try {
+                this.rollDieButton(4);
+            } catch (IOException ex) {
+                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        this.d6Button.setOnAction(e -> {
+            try {
+                this.rollDieButton(6);
+            } catch (IOException ex) {
+                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        this.d8Button.setOnAction(e -> {
+            try {
+                this.rollDieButton(8);
+            } catch (IOException ex) {
+                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        this.d10Button.setOnAction(e -> {
+            try {
+                this.rollDieButton(10);
+            } catch (IOException ex) {
+                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        this.d12Button.setOnAction(e -> {
+            try {
+                this.rollDieButton(12);
+            } catch (IOException ex) {
+                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        this.d20Button.setOnAction(e -> {
+            try {
+                this.rollDieButton(20);
+            } catch (IOException ex) {
+                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
 
     /**
      * a method used for checking if a character tab has been closed and then
      * remove its index from the opened characters hashmap
      *
-     * @param _e
      * @param _tab
      */
-    private void closeTab(Event _e, Tab _tab) {
+    private void closeTab(Tab _tab) {
         _tab.getTabPane().getTabs().remove(_tab);
     }
 
@@ -228,9 +272,8 @@ public class MainViewController {
     /**
      * Handle the selection of the "plus" tab, which creates a new character.
      *
-     * @param _e The selection event
      */
-    private void plusTabSelected(Event _e) {
+    private void plusTabSelected() {
         if (this.newCharacterTab.isSelected()) {
             DNDSApplication.getViewConnector().inputCreateCharacter();
         }
@@ -269,20 +312,25 @@ public class MainViewController {
      *
      * @param _die The number of sides on the die
      */
-    private void rollDieButton(int _die) {
+    private void rollDieButton(int _die) throws IOException {
         //Get the number of repetitions from the spinner and send the input to the controller.
         int repetitions = (Integer) this.diceRepetitionSpinner.getValue();
-        DNDSApplication.getViewConnector().inputRollDye(repetitions, _die);
+        String roll = DNDSApplication.getViewConnector().inputRollDye(repetitions, _die);
+        //if statement to see if a message with the roll needs to be sent to chat
+        if(chatRunning){
+            GroupChat.playerMessage(roll);
+        } else {
+            ChatLog.addComment(roll);
+        }
     }
 
     /**
      * Opens a save file dialog and sends the resulting filename to the
      * controller.
      *
-     * @param _e The event that causes the save
      */
     @FXML
-    private void saveAs(ActionEvent _e) {
+    private void saveAs() {
         if (this.selectedCharacter == null) {
             //Can't save a character that doesn't exist!
             return;
@@ -301,10 +349,9 @@ public class MainViewController {
     /**
      * Opens an open file dialog and sends the resulting file to the controller.
      *
-     * @param _e The event that causes the open dialog
      */
     @FXML
-    private void load(ActionEvent _e) {
+    private void load() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open file...");
         fileChooser.getExtensionFilters().add(
@@ -322,9 +369,13 @@ public class MainViewController {
     public static void removeCharacter(UUID _uuid) {
         MainViewController.openCharacters.remove(_uuid);
     }
-
+    /**
+     * This handles applying settings
+     *
+     * @throws IOException
+     */
     @FXML
-    private void applySettings(ActionEvent _e) throws IOException {
+    private void applySettings() throws IOException {
         if (!this.name.isEmpty()) {
             String name = this.nameTextField.getText();
             if (chatRunning) {
@@ -334,21 +385,33 @@ public class MainViewController {
 
         }
     }
-
+    /**
+     * This handles the joining chat
+     *
+     * @throws IOException
+     */
     @FXML
     private void joinChat() throws IOException {
+        //checks if the chat is currently running
         if (this.chatRunning) {
             ChatLog.addComment("Chat already joined");
+        //if chat isnt running check if current name is empty or the name box is empty
         } else if (this.name == "" && this.nameTextField.getText().trim().isEmpty()) {
             ChatLog.addComment("Please select a username in settings");
+        //if either name or namebox has something in it set name and join chat
         } else {
             this.name = this.nameTextField.getText();
+            //calls to the groupchat to start the server with the passed in name
             model.chat.GroupChat.startServer(this.name);
+            //sets the chat running status to true
             this.chatRunning = true;
+            //updates the UI window
             updateChat();
         }
     }
-
+    /**
+     * This method updates the linked property of chat
+     */
     public static void updateChat() {
         //gets the chatlog
         ArrayList<String> log = ChatLog.getLog();
@@ -356,23 +419,35 @@ public class MainViewController {
         MainViewController.chatProperty.set(FXCollections.observableArrayList(log));
     }
 
-    //method that scrolls the chat to the bottom when recieving new chats
+    /**
+     * This method scrolls the chat to the bottom when receiving new chats
+     */
     private void chatScroll() {
-        Platform.runLater( () -> this.chatListView.scrollTo(chatListView.getItems().size()));
+        //tells the UI to run this command when the thread is available
+        Platform.runLater(() -> this.chatListView.scrollTo(chatListView.getItems().size()));
     }
-
+    /**
+     * This method handles sending comments/messages to the chat
+     *
+     * @throws IOException
+     */
     @FXML
     private void addComment() throws IOException {
+        //checks to see if the chat is running
         if (this.chatRunning) {
-            System.out.println("Sending");
+            //sends the message that has been typed in the comment box
             model.chat.GroupChat.sendMessage(this.name + ": " + this.messageTextField.getText());
             //clears the comment box
             this.messageTextField.setText("");
         }
     }
-
+    /**
+     * This is a method used for the chat box to submit messages when the enter key is pressed
+     *
+     * @throws IOException
+     */
     @FXML
-    private void onEnter(ActionEvent _e) throws IOException {
+    private void onEnter() throws IOException {
         addComment();
     }
 }

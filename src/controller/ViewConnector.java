@@ -52,7 +52,7 @@ public abstract class ViewConnector {
      * @param _repetitions The repetitions requested by the user
      * @param _die The die to roll requested by the user
      */
-    public abstract void inputRollDye(int _repetitions, int _die);
+    public abstract String inputRollDye(int _repetitions, int _die);
 
     /**
      * Notifies the controller that the user has requested to save a character.

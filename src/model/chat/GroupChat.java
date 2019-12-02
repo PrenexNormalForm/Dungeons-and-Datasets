@@ -14,16 +14,24 @@ network. This will take an array of bytes and pass it to a datagram that will
 then be multicasted to everyone who is "logged in" at the static IP address.
  */
 public class GroupChat {
-
-    private static final String TERMINATE = "Bye";
+    /*These two are volatile so that the thread does not store a local
+      version of them and instead checks the master version
+    */
     static volatile boolean FINISHED = false;
     static volatile String NAME = "";
+    //Port is set to 4567 because it is a UDP port
     static int PORT = 4567;
+    //Group is set to 238.245.3.7 because this is a multicast IP address
     static String GROUP = "238.245.3.7";
+    //This variable is used to indicate time to live for the listener
     static int DEFAULT_TIME = 5;
     static InetAddress ADDRESS;
     static MulticastSocket SOCKET;
 
+    /**
+     * This handles starting the chat server and setting
+     * @param _username
+     */
     public static void startServer (String _username) {
         try {
             GroupChat.NAME = _username;
@@ -51,11 +59,26 @@ public class GroupChat {
     public static void sendMessage (String _userInput) throws IOException {
             message(_userInput);
         }
-    //message to announce people joining
+    /**
+     * This handles the joining message sending
+     * @throws IOException
+     */
     private static void joinMessage() throws IOException{
         message(GroupChat.NAME + " has joined the chat!");
     }
-    //generic messaging method
+    /**
+     * This handles messages which should be prepended with the username
+     * @param _message
+     * @throws IOException
+     */
+    public static void playerMessage(String _message) throws IOException{
+        message(GroupChat.NAME + ": " + _message);
+    }
+    /**
+     * This handles the generic message sending process
+     * @param _message
+     * @throws IOException
+     */
     private static void message(String _message) throws IOException{
         //pulls the message into a byte buffer
         byte[] buffer = _message.getBytes();
@@ -64,7 +87,11 @@ public class GroupChat {
         //sends the packet via the group chat socket
         GroupChat.SOCKET.send(datagram);
     }
-    // method for updating the username
+    /**
+     * This handles updating the username in chat
+     * @param _new
+     * @throws IOException
+     */
     public static void updateName(String _new) throws IOException{
         message(GroupChat.NAME + " has changed their name to " + _new);
         GroupChat.NAME = _new;

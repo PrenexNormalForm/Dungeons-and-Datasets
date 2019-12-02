@@ -75,8 +75,8 @@ public class JFXViewConnector extends ViewConnector {
      * @param _die The die to roll
      */
     @Override
-    public void inputRollDye(int _repetitions, int _die) {
-        Controller.rollDie(_repetitions, _die);
+    public String inputRollDye(int _repetitions, int _die) {
+        return Controller.rollDie(_repetitions, _die);
     }
 
     /**
