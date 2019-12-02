@@ -24,10 +24,11 @@ import java.util.UUID;
 public class Characters {
 
     private static final int MAX_LEVEL = 20;
-    private static final int DEFAULT_LEVEL = 7;
+    private static final int DEFAULT_LEVEL = 1;
     private static final String DEFAULT_NAME = "default name";
     private static final String DEFAULT_RACE = "human";
     private static final String DEFAULT_ALIGN = "neutral";
+    private static final CharacterClass DEFAULT_CLASS = CharacterClass.FIGHTER;
 
     private UUID uuid;
     private CharacterClass characterClass;
@@ -72,7 +73,7 @@ public class Characters {
     public Characters() {
         this.uuid = UUID.randomUUID();
         this.setLevel(Characters.DEFAULT_LEVEL);
-        this.characterClass = CharacterClass.BARBARIAN;
+        this.characterClass = DEFAULT_CLASS;
         this.name = DEFAULT_NAME;
         this.race = DEFAULT_RACE;
         this.align = DEFAULT_ALIGN;

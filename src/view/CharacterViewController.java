@@ -14,14 +14,12 @@ import controller.ViewConnector;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -47,6 +45,7 @@ public class CharacterViewController {
      * The maximum value for a spinner control.
      */
     private static final int SPINNER_MAX = 20;
+    private static final int LEVEL_SPINNER_MIN = 1;
     private static final int SPINNER_MIN = 3;
 
     /**
@@ -141,7 +140,7 @@ public class CharacterViewController {
 
         //Create spinner value factories for the various spinners.
         //https://github.com/EnterpriseQualityCoding
-        this.levelSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(CharacterViewController.SPINNER_MIN, CharacterViewController.SPINNER_MAX));
+        this.levelSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(CharacterViewController.LEVEL_SPINNER_MIN, CharacterViewController.SPINNER_MAX));
         this.strengthSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(CharacterViewController.SPINNER_MIN, CharacterViewController.SPINNER_MAX));
         this.dexteritySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(CharacterViewController.SPINNER_MIN, CharacterViewController.SPINNER_MAX));
         this.constitutionSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(CharacterViewController.SPINNER_MIN, CharacterViewController.SPINNER_MAX));
@@ -217,7 +216,8 @@ public class CharacterViewController {
      * values to reflect the data
      */
     protected void receiveCharacterData(CharacterData _data, boolean _updateInputControls) {
-        System.out.println(this + ": Received character data " + _data);
+        //this line prints out when character data is changed/recieved
+        //System.out.println(this + ": Received character data " + _data);
 
         //Update controls with their linked properties
         this.forPropertyLink((obj, property) -> {
