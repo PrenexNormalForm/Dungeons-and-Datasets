@@ -183,6 +183,7 @@ public class GroupChat {
      * @throws IOException
      */
     private void updateRoom(String _room) throws IOException{
+        leaveMessage(this.NAME);
         //updates the room with the provided room data
         this.ROOM = GroupChat.ROOM_TAG + _room;
     }

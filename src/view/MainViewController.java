@@ -385,7 +385,6 @@ public class MainViewController {
             if(!this.name.equals(getName())){
                 oldName = this.name;
                 this.name = getName();
-                this.GROUPCHAT.updateName(this.name);
                 nameChanged = true;
             }
             if(!this.ROOM.equals(this.roomTextField.getText())){
@@ -397,10 +396,12 @@ public class MainViewController {
                 needsUpdate = true;
             }
             if(needsUpdate && nameChanged){
+                this.GROUPCHAT.updateName(this.name);
                 this.GROUPCHAT.update(this.GROUP, this.ROOM, oldName);
             } else if (needsUpdate){
                 this.GROUPCHAT.update(this.GROUP, this.ROOM, this.name);
             } else if (nameChanged){
+                this.GROUPCHAT.updateName(this.name);
                 this.GROUPCHAT.nameChangedMessage(oldName);
             }
         }
