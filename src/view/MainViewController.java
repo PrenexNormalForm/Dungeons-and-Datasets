@@ -52,9 +52,9 @@ public class MainViewController {
     private boolean chatRunning;
     private String name = "";
     private static ListProperty<String> chatProperty = new SimpleListProperty<>();
-    private GroupChat GROUPCHAT;
-    private int GROUP = -1;
-    private String ROOM = "";
+    private GroupChat groupChat;
+    private int group = -1;
+    private String room = "";
     /**
      * The list of strings contained in the chat box of the window.
      */
@@ -146,60 +146,33 @@ public class MainViewController {
                 chatScroll();
             }
         });
-        //method used for setting dice button listeners
+
+        //Create dice button listeners.
         setDice();
-        //sets the welcome tabs close button listener
-        this.welcomeCloseButton.setOnAction(e -> this.closeTab(this.welcomeTab));
-        //disables the small X's on each tab
-        this.tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
     }
 
     /**
-     * Method used for setting up dice listeners
+     * Creates event listeners for die buttons.
      */
-    private void setDice(){
+    private void setDice() {
         //Add event listeners to buttons;
         this.d4Button.setOnAction(e -> {
-            try {
-                this.rollDieButton(4);
-            } catch (IOException ex) {
-                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.rollDieButton(4);
         });
         this.d6Button.setOnAction(e -> {
-            try {
-                this.rollDieButton(6);
-            } catch (IOException ex) {
-                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.rollDieButton(6);
         });
         this.d8Button.setOnAction(e -> {
-            try {
-                this.rollDieButton(8);
-            } catch (IOException ex) {
-                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.rollDieButton(8);
         });
         this.d10Button.setOnAction(e -> {
-            try {
-                this.rollDieButton(10);
-            } catch (IOException ex) {
-                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.rollDieButton(10);
         });
         this.d12Button.setOnAction(e -> {
-            try {
-                this.rollDieButton(12);
-            } catch (IOException ex) {
-                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.rollDieButton(12);
         });
         this.d20Button.setOnAction(e -> {
-            try {
-                this.rollDieButton(20);
-            } catch (IOException ex) {
-                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.rollDieButton(20);
         });
     }
 
@@ -258,12 +231,16 @@ public class MainViewController {
         //Create a new tab and insert it into the second-to-last position in the
         //tab pane, just behind the 'plus' tab.
         Tab tab = new Tab("", characterNode);
+        tab.setClosable(true);
         int tabPos = this.tabs.getTabs().size() - 1;
         this.tabs.getTabs().add(tabPos, tab);
         characterViewController.setTab(tab);
 
         //Keep track of the currently opened character with selection change events
         tab.setOnSelectionChanged(e -> this.characterTabSelectionChanged(tab, _uuid));
+
+        //When the tab is closed, tell the backend to close the character
+        tab.setOnClosed(_e -> characterViewController.closeCharacter());
 
         //Select the tab.
         this.tabs.getSelectionModel().select(tab);
@@ -314,13 +291,17 @@ public class MainViewController {
      *
      * @param _die The number of sides on the die
      */
-    private void rollDieButton(int _die) throws IOException {
+    private void rollDieButton(int _die) {
         //Get the number of repetitions from the spinner and send the input to the controller.
         int repetitions = (Integer) this.diceRepetitionSpinner.getValue();
         String roll = DNDSApplication.getViewConnector().inputRollDye(repetitions, _die);
         //if statement to see if a message with the roll needs to be sent to chat
-        if(chatRunning){
-            this.GROUPCHAT.playerMessage(roll);
+        if (chatRunning) {
+            try {
+                this.groupChat.playerMessage(roll);
+            } catch (IOException ex) {
+                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             ChatLog.addComment(roll);
         }
@@ -371,6 +352,7 @@ public class MainViewController {
     public static void removeCharacter(UUID _uuid) {
         MainViewController.openCharacters.remove(_uuid);
     }
+
     /**
      * This handles applying settings
      *
@@ -382,31 +364,30 @@ public class MainViewController {
         Boolean needsUpdate = false;
         String oldName = "";
         if (chatRunning) {
-            if(!this.name.equals(getName())){
+            if (!this.name.equals(getName())) {
                 oldName = this.name;
                 this.name = getName();
-                this.GROUPCHAT.updateName(this.name);
+                this.groupChat.updateName(this.name);
                 nameChanged = true;
             }
-            if(!this.ROOM.equals(this.roomTextField.getText())){
-                this.ROOM = this.roomTextField.getText();
+            if (!this.room.equals(this.roomTextField.getText())) {
+                this.room = this.roomTextField.getText();
                 needsUpdate = true;
             }
-            if(!(this.GROUP == getGroup())){
-                this.GROUP = getGroup();
+            if (!(this.group == getGroup())) {
+                this.group = getGroup();
                 needsUpdate = true;
             }
-            if(needsUpdate && nameChanged){
-                this.GROUPCHAT.update(this.GROUP, this.ROOM, oldName);
-            } else if (needsUpdate){
-                this.GROUPCHAT.update(this.GROUP, this.ROOM, this.name);
-            } else if (nameChanged){
-                this.GROUPCHAT.nameChangedMessage(oldName);
+            if (needsUpdate && nameChanged) {
+                this.groupChat.update(this.group, this.room, oldName);
+            } else if (needsUpdate) {
+                this.groupChat.update(this.group, this.room, this.name);
+            } else if (nameChanged) {
+                this.groupChat.nameChangedMessage(oldName);
             }
         }
 
-
-        }
+    }
 
     /**
      * This handles the joining chat
@@ -420,11 +401,11 @@ public class MainViewController {
             ChatLog.addComment("Chat already joined");
         } else {
             this.name = getName();
-            this.GROUP = getGroup();
-            this.ROOM = this.roomTextField.getText();
-            this.GROUPCHAT = new GroupChat(this.name, this.GROUP, this.ROOM);
+            this.group = getGroup();
+            this.room = this.roomTextField.getText();
+            this.groupChat = new GroupChat(this.name, this.group, this.room);
             //calls to the groupchat to start the server with the passed in name
-            this.GROUPCHAT.start();
+            this.groupChat.start();
             //sets the chat running status to true
             this.chatRunning = true;
             //updates the UI window
@@ -433,16 +414,16 @@ public class MainViewController {
     }
 
     @FXML
-    private void stopChat() throws IOException{
-        this.GROUPCHAT.stop();
+    private void stopChat() throws IOException {
+        this.groupChat.stop();
         this.chatRunning = false;
     }
 
     /**
      * This handles getting the name from the settings box
      */
-    private String getName(){
-        if(this.name == "" && this.nameTextField.getText().trim().isEmpty()){
+    private String getName() {
+        if (this.name == "" && this.nameTextField.getText().trim().isEmpty()) {
             return "DEFAULT";
         } else {
             return this.nameTextField.getText();
@@ -452,12 +433,12 @@ public class MainViewController {
     /**
      * This handles getting the group from the settings box
      */
-    private int getGroup(){
-        if(this.GROUP == -1 && this.groupTextField.getText().trim().isEmpty()){
+    private int getGroup() {
+        if (this.group == -1 && this.groupTextField.getText().trim().isEmpty()) {
             return -1;
-        } else if (isStringInt(this.groupTextField.getText())){
+        } else if (isStringInt(this.groupTextField.getText())) {
             return Integer.parseInt(this.groupTextField.getText());
-        } else{
+        } else {
             return -1;
         }
     }
@@ -465,17 +446,14 @@ public class MainViewController {
     /**
      * This method checks if a string can be converted to integer
      */
-    public boolean isStringInt(String s)
-{
-    try
-    {
-        Integer.parseInt(s);
-        return true;
-    } catch (NumberFormatException ex)
-    {
-        return false;
+    public boolean isStringInt(String s) {
+        try {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
     }
-}
 
     /**
      * This method updates the linked property of chat
@@ -491,9 +469,9 @@ public class MainViewController {
      * This method scrolls the chat to the bottom when receiving new chats
      */
     private void chatScroll() {
-        //tells the UI to run this command when the thread is available
-        Platform.runLater(() -> this.chatListView.scrollTo(chatListView.getItems().size()));
+        this.chatListView.scrollTo(chatListView.getItems().size());
     }
+
     /**
      * This method handles sending comments/messages to the chat
      *
@@ -504,13 +482,15 @@ public class MainViewController {
         //checks to see if the chat is running
         if (this.chatRunning) {
             //sends the message that has been typed in the comment box
-            this.GROUPCHAT.playerMessage(this.messageTextField.getText());
+            this.groupChat.playerMessage(this.messageTextField.getText());
             //clears the comment box
             this.messageTextField.setText("");
         }
     }
+
     /**
-     * This is a method used for the chat box to submit messages when the enter key is pressed
+     * This is a method used for the chat box to submit messages when the enter
+     * key is pressed
      *
      * @throws IOException
      */

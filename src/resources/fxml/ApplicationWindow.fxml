@@ -25,8 +25,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Save" />
-                  <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" onAction="#saveAs" text="Save as..." />
+                  <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" onAction="#saveAs" text="Save" />
                   <MenuItem fx:id="loadMenuItem" mnemonicParsing="false" onAction="#load" text="Load" />
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
@@ -57,13 +56,12 @@
                      </children>
                   </AnchorPane>
                </content></Tab>
-            <Tab id="welcomeTab" fx:id="welcomeTab" closable="false" style="-fx-font-size: 16px;" text="Welcome">
+            <Tab id="welcomeTab" fx:id="welcomeTab" style="-fx-font-size: 16px;" text="Welcome">
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
                         <Label layoutX="259.0" layoutY="58.0" text="Welcome to Dungeons and DataSheets!" />
                         <Label id="mottoLbl" fx:id="mottoLabel" layoutX="259.0" layoutY="95.0" text="Motto - Unavailable at this time" />
-                        <Button id="welcomeCloseBtn" fx:id="welcomeCloseButton" layoutX="725.0" layoutY="412.0" mnemonicParsing="false" text="Close" />
                         <TextArea editable="false" focusTraversable="false" layoutX="21.0" layoutY="143.0" pickOnBounds="false" prefHeight="200.0" prefWidth="762.0" text="Hello! To get started on a new character click the plus button above and design your character! If you wish to load an existing character click the file button and click the load option&#10;&#10;To use the chat function go into settings set your username and click join chat server! If you wish to change your name or room at any time just change it in the settings and click apply! if you wish to change groups leave the server you are in by pressing the leave chat server button and join your desired chat." wrapText="true" />
                      </children>
                   </AnchorPane>

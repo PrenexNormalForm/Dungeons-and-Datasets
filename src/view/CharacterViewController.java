@@ -27,6 +27,7 @@ import javafx.scene.control.Labeled;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCode;
@@ -125,10 +126,10 @@ public class CharacterViewController {
     private Spinner charismaSpinner;
     @FXML
     @LinkedProperty(CharacterProperty.BACKSTORY)
-    private TextField backstoryTextField;
+    private TextArea backstoryTextArea;
     @FXML
     @LinkedProperty(CharacterProperty.INVENTORY)
-    private TextField inventoryTextField;
+    private TextArea inventoryTextArea;
 
     /**
      * Initializes the content of a new character view.
@@ -161,24 +162,25 @@ public class CharacterViewController {
      */
     private void initializePropertyLinkedControl(Object _control, CharacterProperty _property) {
         ViewConnector viewConnector = DNDSApplication.getViewConnector();
+        Class controlClass = _control.getClass();
 
         //Create input listeners depending on the type of input control.
-        if (_control.getClass().isAssignableFrom(Spinner.class)) {
+        if (Spinner.class.isAssignableFrom(controlClass)) {
             Spinner spinner = (Spinner) _control;
             //Create the listener for spinner input of a property.
             spinner.valueProperty().addListener(
                     ($, $$, val) -> viewConnector.inputCharacterProperty(this.uuid, _property, val)
             );
-        } else if (_control.getClass().isAssignableFrom(ChoiceBox.class)) {
+        } else if (ChoiceBox.class.isAssignableFrom(controlClass)) {
             ChoiceBox choiceBox = (ChoiceBox) _control;
             //Create the listener for choicebox input of a property.
             choiceBox.getSelectionModel().selectedItemProperty().addListener(
                     ($, $$, val) -> viewConnector.inputCharacterProperty(this.uuid, _property, val)
             );
-        } else if (_control.getClass().isAssignableFrom(TextField.class)) {
-            TextField textField = (TextField) _control;
+        } else if (TextInputControl.class.isAssignableFrom(controlClass)) {
+            TextInputControl textInputControl = (TextInputControl) _control;
             //Create the listeners for textfield input of a property.
-            this.createTextFieldListeners(textField,
+            this.createTextInputListeners(textInputControl,
                     str -> viewConnector.inputCharacterProperty(this.uuid, _property, str));
         }
     }
@@ -188,22 +190,25 @@ public class CharacterViewController {
      * consumer with the text value of the text field. This consumer is called
      * when the user presses enter or the textfield loses focus.
      *
-     * @param _textField The text field to assign listeners to
+     * @param _textInputControl The text field to assign listeners to
      * @param _consumer The consumer function to pass the text field entry
      */
-    private void createTextFieldListeners(TextField _textField, Consumer<String> _consumer) {
+    private void createTextInputListeners(TextInputControl _textInputControl, Consumer<String> _consumer) {
         //Add listener to pass text to the consumer upon the text field losing focus.
-        _textField.focusedProperty().addListener((focus, oldValue, newValue) -> {
+        _textInputControl.focusedProperty().addListener((focus, oldValue, newValue) -> {
             if (oldValue && !newValue) {
-                _consumer.accept(_textField.getText());
+                _consumer.accept(_textInputControl.getText());
             }
         });
         //Add listener to text field to unfocus upon pressing the enter key.
-        _textField.setOnKeyPressed(e -> {
-            if (e.getCode().equals(KeyCode.ENTER)) {
-                _textField.getParent().requestFocus();
-            }
-        });
+        //Only do this if the control is not a text area (which allows multiple lines.
+        if (!TextArea.class.isAssignableFrom(_textInputControl.getClass())) {
+            _textInputControl.setOnKeyPressed(e -> {
+                if (e.getCode().equals(KeyCode.ENTER)) {
+                    _textInputControl.getParent().requestFocus();
+                }
+            });
+        }
     }
 
     /**
@@ -286,14 +291,13 @@ public class CharacterViewController {
             }
         }
     }
+
     /**
-     * This handles closing the character and removing its UUID from the openCharacters map
-     * @param _e
+     * This handles closing the character and removing its UUID from the
+     * openCharacters map
      */
-    @FXML
-    private void closeCharacter(ActionEvent _e){
+    protected void closeCharacter() {
         MainViewController.removeCharacter(this.uuid);
-        this.tab.getTabPane().getTabs().remove(this.tab);
     }
 
     /**
@@ -309,7 +313,8 @@ public class CharacterViewController {
         CharacterProperty value();
     }
 //=========================GETTERS==========================================\\
-    protected UUID getUUID(){
+
+    protected UUID getUUID() {
         return this.uuid;
     }
 
