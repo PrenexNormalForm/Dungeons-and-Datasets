@@ -1,47 +1,69 @@
 package model.chat;
+/*
+Last Updated: December 3, 2019
+
+Contributors:
+Jonathan Bacon
+Brandon Pozil
+
+A group chat object for use with people connected to a UDP Multicast port and
+communicate over it.
+ */
 
 import java.net.*;
 import java.io.*;
-import java.util.*;
 
-/*
-Last Updated: November 19, 2019
-
-Contributors: Brandon Pozil
-
-A protoype chat application for use with people connected to a single WiFi
-network. This will take an array of bytes and pass it to a datagram that will
-then be multicasted to everyone who is "logged in" at the static IP address.
+/**
+ * This is the GroupChat object class which acts as a sender and listener for messages
+ *
  */
 public class GroupChat {
-    /*These two are volatile so that the thread does not store a local
-      version of them and instead checks the master version
-    */
-    static volatile boolean FINISHED = false;
-    static volatile String NAME = "";
+    //The name is volatile so that the object threads does not store a local version
+    private volatile String NAME = "";
     //Port is set to 4567 because it is a UDP port
-    static int PORT = 4567;
+    private static final int DEFAULT_PORT = 18;
+    private int PORT;
     //Group is set to 238.245.3.7 because this is a multicast IP address
-    static String GROUP = "238.245.3.7";
+    private static final String DEFAULT_GROUP = "238.245.3.0";
+    private static final String GROUP_TAG = "238.245.3.";
+    private static final int GROUP_MIN = 0;
+    private static final int GROUP_MAX = 255;
+    private String GROUP;
     //This variable is used to indicate time to live for the listener
     static int DEFAULT_TIME = 5;
-    static InetAddress ADDRESS;
-    static MulticastSocket SOCKET;
+    private int TIME;
+    private InetAddress ADDRESS;
+    private MulticastSocket SOCKET;
+    private static final String ROOM_TAG = " ROOM:";
+    private String ROOM;
+    private Thread READ_THREAD;
 
     /**
-     * This handles starting the chat server and setting
+     * This handles creating a GroupChat object
      * @param _username
+     * @param _group
+     * @param _room
      */
-    public static void startServer (String _username) {
-        try {
-            GroupChat.NAME = _username;
-            GroupChat.ADDRESS = InetAddress.getByName(GroupChat.GROUP);
-            GroupChat.SOCKET = new MulticastSocket(GroupChat.PORT);
-            GroupChat.SOCKET.setTimeToLive(GroupChat.DEFAULT_TIME);
-            GroupChat.SOCKET.joinGroup(GroupChat.ADDRESS);
-            Thread t = new Thread(new ReadThread(GroupChat.SOCKET, GroupChat.ADDRESS, GroupChat.PORT));
-            t.start();
-            joinMessage();
+    public GroupChat(String _username, int _group, String _room){
+        this.NAME = _username;
+        this.PORT = GroupChat.DEFAULT_PORT;
+        this.GROUP = groupCheck(_group);
+        this.TIME = GroupChat.DEFAULT_TIME;
+        this.ROOM = GroupChat.ROOM_TAG + _room;
+        createThread();
+
+    }
+
+    /**
+     * This handles creation of read Thread
+     */
+    private void createThread(){
+        try{
+            this.ADDRESS = InetAddress.getByName(this.GROUP);
+            this.SOCKET = new MulticastSocket(this.PORT);
+            this.SOCKET.setTimeToLive(this.TIME);
+            this.SOCKET.joinGroup(this.ADDRESS);
+            this.READ_THREAD = new Thread(new ReadThread(this.SOCKET, this.ADDRESS, this.PORT, this.ROOM));
         } catch (SocketException se) {
             System.out.println("Error creating socket");
             se.printStackTrace();
@@ -50,50 +72,153 @@ public class GroupChat {
             ie.printStackTrace();
         }
     }
-    //method used to read in input from the read thread
-    public static void readInput(String _message){
+
+    /**
+     * This handles starting the chat thread
+     * @throws IOExcepton
+     */
+    public void start() throws IOException{
+        this.READ_THREAD.start();
+        joinMessage();
+    }
+
+    /**
+     * This handles stopping the chat thread
+     * @throws IOException
+     */
+    public void stop() throws IOException{
+        this.READ_THREAD.stop();
+    }
+
+
+    /**
+     * This verifies that the given integer is a valid port
+     * @param _group
+     */
+    private String groupCheck(int _group){
+        if(_group < GroupChat.GROUP_MIN && _group > GroupChat.GROUP_MAX){
+            return GroupChat.DEFAULT_GROUP;
+        } else{
+            return GroupChat.GROUP_TAG + _group;
+        }
+    }
+    /**
+     * Handles reading input
+     * @param _message
+     * @param _room
+     */
+    public static void readInput(String _message, String _room){
+        _message = _message.replaceAll(_room, "");
         //adds the comment into the chatlog
         view.ChatLog.addComment(_message);
     }
-    //method used to send messages with the users name attached
-    public static void sendMessage (String _userInput) throws IOException {
+    /**
+     * Handles sending messages
+     * @param _userInput
+     * @throws IOException
+     */
+    public void sendMessage (String _userInput) throws IOException {
             message(_userInput);
         }
+    /**
+     * This handles the name change message
+     * @param _old
+     * @throws IOException
+     */
+    public void nameChangedMessage(String _old) throws IOException{
+        message(_old + " has changed their name to " + this.NAME);
+    }
+
     /**
      * This handles the joining message sending
      * @throws IOException
      */
-    private static void joinMessage() throws IOException{
-        message(GroupChat.NAME + " has joined the chat!");
+    private void joinMessage() throws IOException{
+        message(this.NAME + " has joined the chat!");
     }
+    /**
+     * This handles the leaving message sending
+     * @param _name
+     * @throws IOException
+     */
+    private void leaveMessage(String _name) throws IOException{
+        message(_name + " has left the chat!");
+    }
+
     /**
      * This handles messages which should be prepended with the username
      * @param _message
      * @throws IOException
      */
-    public static void playerMessage(String _message) throws IOException{
-        message(GroupChat.NAME + ": " + _message);
+    public void playerMessage(String _message) throws IOException{
+        message(this.NAME + ": " + _message);
     }
     /**
      * This handles the generic message sending process
      * @param _message
      * @throws IOException
      */
-    private static void message(String _message) throws IOException{
+    private void message(String _message) throws IOException{
+        _message += this.ROOM;
         //pulls the message into a byte buffer
         byte[] buffer = _message.getBytes();
         //creates a datagram packet using the new byte buffer and the address and port
-        DatagramPacket datagram = new DatagramPacket(buffer, buffer.length, GroupChat.ADDRESS, PORT);
+        DatagramPacket datagram = new DatagramPacket(buffer, buffer.length, this.ADDRESS, this.PORT);
         //sends the packet via the group chat socket
-        GroupChat.SOCKET.send(datagram);
+        this.SOCKET.send(datagram);
     }
     /**
      * This handles updating the username in chat
      * @param _new
      * @throws IOException
      */
-    public static void updateName(String _new) throws IOException{
-        message(GroupChat.NAME + " has changed their name to " + _new);
-        GroupChat.NAME = _new;
+    public void updateName(String _new) throws IOException{
+        //updates the username with the new one
+        this.NAME = _new;
     }
+
+    /**
+     * This handles the updating the chat room
+     * @param _room
+     * @throws IOException
+     */
+    private void updateRoom(String _room) throws IOException{
+        //updates the room with the provided room data
+        this.ROOM = GroupChat.ROOM_TAG + _room;
+    }
+
+    /**
+     * This handles the updating groups
+     * @param _group
+     */
+    private void updateGroup(int _group){
+        //updates the group variable with the given group if its in the correct range
+        this.GROUP = groupCheck(_group);
+    }
+
+    /**
+     * This handles updating the thread
+     * @param _group
+     * @param _room
+     * @param _name
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public void update(int _group, String _room, String _name) throws IOException, InterruptedException{
+        updateRoom(_room);
+        updateGroup(_group);
+        //sends a leaving message with the provided name
+        leaveMessage(_name);
+        //calls the method to stop the read thread
+        stop();
+        //gives time for the thread to fully stop
+        Thread.sleep(1000);
+        //creates a new read thread
+        createThread();
+        //starts the new read thread
+        this.READ_THREAD.start();
+        //sends a joining message to the new chat
+        joinMessage();
+    }
+
 }

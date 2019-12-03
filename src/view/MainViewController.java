@@ -1,7 +1,7 @@
 package view;
 
 /*
-Last updated November 14, 2019
+Last updated December 3, 2019
 
 This is the view controller for the primary application window.
 
@@ -9,13 +9,11 @@ Contributors:
 Jonathan Bacon
 Eva Moniz
  */
-import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -26,8 +24,6 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -42,8 +38,6 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentEvent.EventType;
 import model.characters.CharacterData;
 import model.chat.GroupChat;
 import model.utilities.Resources;
@@ -51,7 +45,6 @@ import model.utilities.Resources;
 /**
  * This is the view controller for the primary application window.
  *
- * @author Eva Moniz
  */
 public class MainViewController {
 
@@ -59,6 +52,9 @@ public class MainViewController {
     private boolean chatRunning;
     private String name = "";
     private static ListProperty<String> chatProperty = new SimpleListProperty<>();
+    private GroupChat GROUPCHAT;
+    private int GROUP = -1;
+    private String ROOM = "";
     /**
      * The list of strings contained in the chat box of the window.
      */
@@ -108,7 +104,13 @@ public class MainViewController {
     @FXML
     private TextField nameTextField;
     @FXML
+    private TextField groupTextField;
+    @FXML
+    private TextField roomTextField;
+    @FXML
     private Button joinChatButton;
+    @FXML
+    private Button leaveChatButton;
 
     /**
      * Stores the open character views mapped by UUID.
@@ -318,7 +320,7 @@ public class MainViewController {
         String roll = DNDSApplication.getViewConnector().inputRollDye(repetitions, _die);
         //if statement to see if a message with the roll needs to be sent to chat
         if(chatRunning){
-            GroupChat.playerMessage(roll);
+            this.GROUPCHAT.playerMessage(roll);
         } else {
             ChatLog.addComment(roll);
         }
@@ -375,16 +377,37 @@ public class MainViewController {
      * @throws IOException
      */
     @FXML
-    private void applySettings() throws IOException {
-        if (!this.name.isEmpty()) {
-            String name = this.nameTextField.getText();
-            if (chatRunning) {
-                model.chat.GroupChat.updateName(name);
+    private void applySettings() throws IOException, InterruptedException {
+        Boolean nameChanged = false;
+        Boolean needsUpdate = false;
+        String oldName = "";
+        if (chatRunning) {
+            if(!this.name.equals(getName())){
+                oldName = this.name;
+                this.name = getName();
+                this.GROUPCHAT.updateName(this.name);
+                nameChanged = true;
             }
-        } else {
+            if(!this.ROOM.equals(this.roomTextField.getText())){
+                this.ROOM = this.roomTextField.getText();
+                needsUpdate = true;
+            }
+            if(!(this.GROUP == getGroup())){
+                this.GROUP = getGroup();
+                needsUpdate = true;
+            }
+            if(needsUpdate && nameChanged){
+                this.GROUPCHAT.update(this.GROUP, this.ROOM, oldName);
+            } else if (needsUpdate){
+                this.GROUPCHAT.update(this.GROUP, this.ROOM, this.name);
+            } else if (nameChanged){
+                this.GROUPCHAT.nameChangedMessage(oldName);
+            }
+        }
+
 
         }
-    }
+
     /**
      * This handles the joining chat
      *
@@ -395,20 +418,65 @@ public class MainViewController {
         //checks if the chat is currently running
         if (this.chatRunning) {
             ChatLog.addComment("Chat already joined");
-        //if chat isnt running check if current name is empty or the name box is empty
-        } else if (this.name == "" && this.nameTextField.getText().trim().isEmpty()) {
-            ChatLog.addComment("Please select a username in settings");
-        //if either name or namebox has something in it set name and join chat
         } else {
-            this.name = this.nameTextField.getText();
+            this.name = getName();
+            this.GROUP = getGroup();
+            this.ROOM = this.roomTextField.getText();
+            this.GROUPCHAT = new GroupChat(this.name, this.GROUP, this.ROOM);
             //calls to the groupchat to start the server with the passed in name
-            model.chat.GroupChat.startServer(this.name);
+            this.GROUPCHAT.start();
             //sets the chat running status to true
             this.chatRunning = true;
             //updates the UI window
             updateChat();
         }
     }
+
+    @FXML
+    private void stopChat() throws IOException{
+        this.GROUPCHAT.stop();
+        this.chatRunning = false;
+    }
+
+    /**
+     * This handles getting the name from the settings box
+     */
+    private String getName(){
+        if(this.name == "" && this.nameTextField.getText().trim().isEmpty()){
+            return "DEFAULT";
+        } else {
+            return this.nameTextField.getText();
+        }
+    }
+
+    /**
+     * This handles getting the group from the settings box
+     */
+    private int getGroup(){
+        if(this.GROUP == -1 && this.groupTextField.getText().trim().isEmpty()){
+            return -1;
+        } else if (isStringInt(this.groupTextField.getText())){
+            return Integer.parseInt(this.groupTextField.getText());
+        } else{
+            return -1;
+        }
+    }
+
+    /**
+     * This method checks if a string can be converted to integer
+     */
+    public boolean isStringInt(String s)
+{
+    try
+    {
+        Integer.parseInt(s);
+        return true;
+    } catch (NumberFormatException ex)
+    {
+        return false;
+    }
+}
+
     /**
      * This method updates the linked property of chat
      */
@@ -436,7 +504,7 @@ public class MainViewController {
         //checks to see if the chat is running
         if (this.chatRunning) {
             //sends the message that has been typed in the comment box
-            model.chat.GroupChat.sendMessage(this.name + ": " + this.messageTextField.getText());
+            this.GROUPCHAT.playerMessage(this.messageTextField.getText());
             //clears the comment box
             this.messageTextField.setText("");
         }
