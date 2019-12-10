@@ -308,6 +308,7 @@ public class CharacterViewController {
          */
         CharacterProperty value();
     }
+
 //=========================GETTERS==========================================\\
     protected UUID getUUID(){
         return this.uuid;

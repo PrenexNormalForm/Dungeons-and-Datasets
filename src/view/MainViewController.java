@@ -1,7 +1,7 @@
 package view;
 
 /*
-Last updated December 3, 2019
+Last updated December 10, 2019
 
 This is the view controller for the primary application window.
 
@@ -12,10 +12,12 @@ Eva Moniz
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -48,6 +50,8 @@ import model.utilities.Resources;
  */
 public class MainViewController {
 
+    private static final int LOWER_QUOTE_BOUND = 1;
+    private static final int UPPER_QUOTE_BOUND = 3;
     private static final int MAX_DICE_REPETITIONS = 10;
     private boolean chatRunning;
     private String name = "";
@@ -55,6 +59,7 @@ public class MainViewController {
     private GroupChat GROUPCHAT;
     private int GROUP = -1;
     private String ROOM = "";
+    private static final String monsterUUID = "99999999-8cf0-11bd-b23e-10b96e4ef00d";
     /**
      * The list of strings contained in the chat box of the window.
      */
@@ -80,8 +85,6 @@ public class MainViewController {
     @FXML
     private Label mottoLbl;
     @FXML
-    private Button welcomeCloseBtn;
-    @FXML
     private Button settingsApplyBtn;
     @FXML
     private Button d4Button;
@@ -96,8 +99,6 @@ public class MainViewController {
     @FXML
     private Button d20Button;
     @FXML
-    private Button welcomeCloseButton;
-    @FXML
     private Label mottoLabel;
     @FXML
     private TextField messageTextField;
@@ -111,6 +112,10 @@ public class MainViewController {
     private Button joinChatButton;
     @FXML
     private Button leaveChatButton;
+    @FXML
+    private TextField DnDSearchField;
+    @FXML
+    private Label monsterFoundLabel;
 
     /**
      * Stores the open character views mapped by UUID.
@@ -128,7 +133,7 @@ public class MainViewController {
 
         //Set the welcome tab as the tab open upon launching the program.
         this.tabs.getSelectionModel().select(this.welcomeTab);
-        //this.mottoLabel.setText("Motto - \" We are the best \"");
+        this.mottoLabel.setText("Inspirational Quote: " + getMotto());
 
         //Assign the behavior associated with the "plus" tab.
         this.newCharacterTab.setOnSelectionChanged(e -> this.plusTabSelected());
@@ -148,8 +153,6 @@ public class MainViewController {
         });
         //method used for setting dice button listeners
         setDice();
-        //sets the welcome tabs close button listener
-        this.welcomeCloseButton.setOnAction(e -> this.closeTab(this.welcomeTab));
         //disables the small X's on each tab
         this.tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
     }
@@ -157,49 +160,25 @@ public class MainViewController {
     /**
      * Method used for setting up dice listeners
      */
-    private void setDice(){
+    private void setDice() {
         //Add event listeners to buttons;
         this.d4Button.setOnAction(e -> {
-            try {
-                this.rollDieButton(4);
-            } catch (IOException ex) {
-                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.rollDieButton(4);
         });
         this.d6Button.setOnAction(e -> {
-            try {
-                this.rollDieButton(6);
-            } catch (IOException ex) {
-                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.rollDieButton(6);
         });
         this.d8Button.setOnAction(e -> {
-            try {
-                this.rollDieButton(8);
-            } catch (IOException ex) {
-                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.rollDieButton(8);
         });
         this.d10Button.setOnAction(e -> {
-            try {
-                this.rollDieButton(10);
-            } catch (IOException ex) {
-                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.rollDieButton(10);
         });
         this.d12Button.setOnAction(e -> {
-            try {
-                this.rollDieButton(12);
-            } catch (IOException ex) {
-                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.rollDieButton(12);
         });
         this.d20Button.setOnAction(e -> {
-            try {
-                this.rollDieButton(20);
-            } catch (IOException ex) {
-                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.rollDieButton(20);
         });
     }
 
@@ -211,6 +190,15 @@ public class MainViewController {
      */
     private void closeTab(Tab _tab) {
         _tab.getTabPane().getTabs().remove(_tab);
+    }
+
+    /**
+     * Receives the monster data from the backend
+     *
+     * @param _monster
+     */
+    public void receiveMonsterdata(String _monster) {
+
     }
 
     /**
@@ -289,9 +277,15 @@ public class MainViewController {
      * @param _characterUUID The UUID of the tab's character
      */
     private void characterTabSelectionChanged(Tab _tab, UUID _characterUUID) {
+        if (_characterUUID.toString().equals(MainViewController.monsterUUID)) {
+            this.tabs.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
+        } else {
+            this.tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
+        }
         if (_tab.isSelected()) {
             //Select the character if the tab is selected.
             this.selectedCharacter = _characterUUID;
+
         } else if (this.selectedCharacter.equals(_characterUUID)) {
             //Deselect the character if the tab no longer has selection.
             this.selectedCharacter = null;
@@ -310,17 +304,48 @@ public class MainViewController {
     }
 
     /**
+     * This handles the randomized quote
+     */
+    private String getMotto() {
+        int random = ThreadLocalRandom.current().nextInt(MainViewController.LOWER_QUOTE_BOUND, MainViewController.UPPER_QUOTE_BOUND);
+        switch (random) {
+            case 1:
+                try {
+                    return model.API.Swanson.getSwanson();
+                } catch (IOException | InterruptedException ex) {
+                    Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+                    return "Mr Swanson is unavailable for a quote at this time.";
+                }
+
+            case 2:
+                try {
+                    return model.API.Kanye.getKanye();
+                } catch (IOException | InterruptedException ex) {
+                    Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+                    return "Kanye is unavailable for a quote at this time.";
+                }
+
+            default:
+                return "I've been tampered with";
+        }
+    }
+
+    /**
      * Listening method for the dice roll buttons.
      *
      * @param _die The number of sides on the die
      */
-    private void rollDieButton(int _die) throws IOException {
+    private void rollDieButton(int _die) {
         //Get the number of repetitions from the spinner and send the input to the controller.
         int repetitions = (Integer) this.diceRepetitionSpinner.getValue();
         String roll = DNDSApplication.getViewConnector().inputRollDye(repetitions, _die);
         //if statement to see if a message with the roll needs to be sent to chat
-        if(chatRunning){
-            this.GROUPCHAT.playerMessage(roll);
+        if (chatRunning) {
+            try {
+                this.GROUPCHAT.playerMessage(roll);
+            } catch (IOException ex) {
+                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             ChatLog.addComment(roll);
         }
@@ -371,6 +396,7 @@ public class MainViewController {
     public static void removeCharacter(UUID _uuid) {
         MainViewController.openCharacters.remove(_uuid);
     }
+
     /**
      * This handles applying settings
      *
@@ -382,32 +408,31 @@ public class MainViewController {
         Boolean needsUpdate = false;
         String oldName = "";
         if (chatRunning) {
-            if(!this.name.equals(getName())){
+            if (!this.name.equals(getName())) {
                 oldName = this.name;
                 this.name = getName();
                 nameChanged = true;
             }
-            if(!this.ROOM.equals(this.roomTextField.getText())){
+            if (!this.ROOM.equals(this.roomTextField.getText())) {
                 this.ROOM = this.roomTextField.getText();
                 needsUpdate = true;
             }
-            if(!(this.GROUP == getGroup())){
+            if (!(this.GROUP == getGroup())) {
                 this.GROUP = getGroup();
                 needsUpdate = true;
             }
-            if(needsUpdate && nameChanged){
+            if (needsUpdate && nameChanged) {
                 this.GROUPCHAT.updateName(this.name);
                 this.GROUPCHAT.update(this.GROUP, this.ROOM, oldName);
-            } else if (needsUpdate){
+            } else if (needsUpdate) {
                 this.GROUPCHAT.update(this.GROUP, this.ROOM, this.name);
-            } else if (nameChanged){
+            } else if (nameChanged) {
                 this.GROUPCHAT.updateName(this.name);
                 this.GROUPCHAT.nameChangedMessage(oldName);
             }
         }
 
-
-        }
+    }
 
     /**
      * This handles the joining chat
@@ -433,8 +458,13 @@ public class MainViewController {
         }
     }
 
+    /**
+     * This handles stopping the thread chat
+     *
+     * @throws IOException
+     */
     @FXML
-    private void stopChat() throws IOException{
+    private void stopChat() throws IOException {
         this.GROUPCHAT.stop();
         this.chatRunning = false;
     }
@@ -442,8 +472,8 @@ public class MainViewController {
     /**
      * This handles getting the name from the settings box
      */
-    private String getName(){
-        if(this.name == "" && this.nameTextField.getText().trim().isEmpty()){
+    private String getName() {
+        if (this.name == "" && this.nameTextField.getText().trim().isEmpty()) {
             return "DEFAULT";
         } else {
             return this.nameTextField.getText();
@@ -453,30 +483,30 @@ public class MainViewController {
     /**
      * This handles getting the group from the settings box
      */
-    private int getGroup(){
-        if(this.GROUP == -1 && this.groupTextField.getText().trim().isEmpty()){
+    private int getGroup() {
+        if (this.GROUP == -1 && this.groupTextField.getText().trim().isEmpty()) {
             return -1;
-        } else if (isStringInt(this.groupTextField.getText())){
+        } else if (isStringInt(this.groupTextField.getText())) {
             return Integer.parseInt(this.groupTextField.getText());
-        } else{
+        } else {
             return -1;
         }
     }
 
     /**
      * This method checks if a string can be converted to integer
+     *
+     * @param s
+     * @return
      */
-    public boolean isStringInt(String s)
-{
-    try
-    {
-        Integer.parseInt(s);
-        return true;
-    } catch (NumberFormatException ex)
-    {
-        return false;
+    public boolean isStringInt(String s) {
+        try {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
     }
-}
 
     /**
      * This method updates the linked property of chat
@@ -495,6 +525,7 @@ public class MainViewController {
         //tells the UI to run this command when the thread is available
         Platform.runLater(() -> this.chatListView.scrollTo(chatListView.getItems().size()));
     }
+
     /**
      * This method handles sending comments/messages to the chat
      *
@@ -510,13 +541,92 @@ public class MainViewController {
             this.messageTextField.setText("");
         }
     }
+
     /**
-     * This is a method used for the chat box to submit messages when the enter key is pressed
+     * This is a method used for the chat box to submit messages when the enter
+     * key is pressed
      *
      * @throws IOException
      */
     @FXML
     private void onEnter() throws IOException {
         addComment();
+    }
+
+    /**
+     * This handles the search monster feature.
+     *
+     * @exception IOException
+     * @exception MalformedURLException
+     * @InterruptedException
+     */
+    @FXML
+    private void searchMonster() throws IOException, ProtocolException, MalformedURLException, InterruptedException {
+        if (!this.DnDSearchField.getText().trim().isEmpty()) {
+            String search = this.DnDSearchField.getText();
+            String monster = model.API.DandDMonsterAPI.doesMonsterExist(search);
+            if (monster.equals("")) {
+                this.monsterFoundLabel.setText("Monster not found. Check spelling.");
+            } else {
+                Platform.runLater(() -> {
+                    try {
+                        this.launchMonsterWindow(monster);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+                        this.monsterFoundLabel.setText("An error occured. possible network issues.");
+                    }
+                });
+            }
+        } else {
+            this.monsterFoundLabel.setText("No Search was Entered.");
+        }
+    }
+
+    /**
+     * This handles pulling a random monster
+     *
+     * @exception IOException
+     * @exception ProtocolException
+     * @exception InterruptedException
+     */
+    @FXML
+    private void randomMonster() throws IOException, MalformedURLException, ProtocolException, InterruptedException {
+        String monster = model.API.DandDMonsterAPI.getRandomMonster();
+        Platform.runLater(() -> {
+            try {
+                this.launchMonsterWindow(monster);
+            } catch (IOException ex) {
+                Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+                this.monsterFoundLabel.setText("An error occured. possible network issues.");
+            }
+        });
+    }
+
+    /**
+     * This handles launching a separate monster window.
+     *
+     * @param _monster
+     * @exception MalformedURLException
+     * @exception IOException
+     */
+    private void launchMonsterWindow(String _monster) throws MalformedURLException, IOException {
+        Constants.MONSTER = _monster;
+        //Load the character view fxml.
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Resources.getFxmlUrl(Constants.MONSTER_FXML));
+        Node monsterNode = loader.load();
+        UUID uuid = UUID.fromString(MainViewController.monsterUUID);
+
+        //Create a new tab and insert it into the second-to-last position in the
+        //tab pane, just behind the 'plus' tab.
+        Tab tab = new Tab("Monster", monsterNode);
+        int tabPos = this.tabs.getTabs().size() - 1;
+        this.tabs.getTabs().add(tabPos, tab);
+        //Keep track of the currently opened character with selection change events
+        tab.setOnSelectionChanged(e -> this.characterTabSelectionChanged(tab, uuid));
+
+        //Select the tab.
+        this.tabs.getSelectionModel().select(tab);
+
     }
 }

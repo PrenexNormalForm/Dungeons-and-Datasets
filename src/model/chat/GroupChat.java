@@ -2,12 +2,13 @@ package model.chat;
 /*
 Last Updated: December 3, 2019
 
+A group chat object for use with people connected to a UDP Multicast port and
+communicate over it.
+
 Contributors:
 Jonathan Bacon
 Brandon Pozil
 
-A group chat object for use with people connected to a UDP Multicast port and
-communicate over it.
  */
 
 import java.net.*;
@@ -20,7 +21,7 @@ import java.io.*;
 public class GroupChat {
     //The name is volatile so that the object threads does not store a local version
     private volatile String NAME = "";
-    //Port is set to 4567 because it is a UDP port
+    //Port is set to because it is a UDP port
     private static final int DEFAULT_PORT = 18;
     private int PORT;
     //Group is set to 238.245.3.7 because this is a multicast IP address
@@ -96,12 +97,13 @@ public class GroupChat {
      * @param _group
      */
     private String groupCheck(int _group){
-        if(_group < GroupChat.GROUP_MIN && _group > GroupChat.GROUP_MAX){
+        if(_group < GroupChat.GROUP_MIN || _group > GroupChat.GROUP_MAX){
             return GroupChat.DEFAULT_GROUP;
         } else{
             return GroupChat.GROUP_TAG + _group;
         }
     }
+
     /**
      * Handles reading input
      * @param _message
@@ -112,6 +114,7 @@ public class GroupChat {
         //adds the comment into the chatlog
         view.ChatLog.addComment(_message);
     }
+
     /**
      * Handles sending messages
      * @param _userInput
@@ -120,6 +123,7 @@ public class GroupChat {
     public void sendMessage (String _userInput) throws IOException {
             message(_userInput);
         }
+
     /**
      * This handles the name change message
      * @param _old
@@ -136,6 +140,7 @@ public class GroupChat {
     private void joinMessage() throws IOException{
         message(this.NAME + " has joined the chat!");
     }
+
     /**
      * This handles the leaving message sending
      * @param _name
@@ -153,6 +158,7 @@ public class GroupChat {
     public void playerMessage(String _message) throws IOException{
         message(this.NAME + ": " + _message);
     }
+
     /**
      * This handles the generic message sending process
      * @param _message
@@ -167,6 +173,7 @@ public class GroupChat {
         //sends the packet via the group chat socket
         this.SOCKET.send(datagram);
     }
+
     /**
      * This handles updating the username in chat
      * @param _new

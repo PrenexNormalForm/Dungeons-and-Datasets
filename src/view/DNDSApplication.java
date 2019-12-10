@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 /**
  * The {@code Application} class that controls the view.
  *
- * @author Eva Moniz
  */
 public class DNDSApplication extends Application {
 
@@ -41,7 +40,7 @@ public class DNDSApplication extends Application {
     /**
      * The title of the application
      */
-    private String title = "Dungeons & DataSheets";
+    private final String title = "Dungeons & DataSheets";
 
     private static JFXViewConnector viewConnector;
     private static Stage primaryStage;

@@ -1,8 +1,15 @@
 package model.chat;
+/*
+Last Updated: December 3, 2019
 
+The ReadThread is a threadable class which handles incoming UDP messages and reports them back
+
+Contributors:
+Brandon Pozil
+Jonathan Bacon
+ */
 import java.io.*;
 import java.net.*;
-import javafx.application.Platform;
 
 class ReadThread implements Runnable {
 
@@ -11,18 +18,26 @@ class ReadThread implements Runnable {
     private volatile String room;
     private final int port;
     private static final int MAX_LEN = 1024;
-    private volatile boolean exit;
 
+    /**
+     * This creates a read thread
+     * @param _socket
+     * @param _group
+     * @param _port
+     * @param _room
+     */
     ReadThread(MulticastSocket _socket, InetAddress _group, int _port, String _room) {
         this.socket = _socket;
         this.group = _group;
         this.port = _port;
         this.room = _room;
-        this.exit = false;
     }
 
+    /**
+     * This handles launching the read thread.
+     */
     public void run() {
-        while (!this.exit) {
+        while (true) {
             byte[] buffer = new byte[ReadThread.MAX_LEN];
             DatagramPacket datagram = new DatagramPacket(buffer, buffer.length, group, port);
             String message;
@@ -38,18 +53,5 @@ class ReadThread implements Runnable {
                 System.out.println("Socket closed!");
             }
         }
-    }
-    /**
-     * This handles stopping the read thread
-     */
-    public void stop(){
-        this.exit = false;
-    }
-
-    /**
-     * This handles the changing of rooms
-     */
-    public void updateRoom(String _room){
-        this.room = _room;
     }
 }
