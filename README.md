@@ -1,4 +1,4 @@
-# dungeons-and-datasheets
+# Dungeons & Datasheets
 
 This project requires the following dependencies:
 https://mvnrepository.com/artifact/org.json/json/20140107
