@@ -224,7 +224,7 @@ public class DandDMonsterAPI {
      * method is not used as it's one purpose is to clean the String for the
      * search. The API has type all lowercase, which looks funny compared to the
      * other information that is capitalized like a normal human being would do.
-     * So the String nonsense on line 229 is for capitalizing the first letter
+     * So the String nonsense on line 241 is for capitalizing the first letter
      * only.
      *
      * @param _monsterInfo The entire JSONObject that finds the name, size and
@@ -242,6 +242,14 @@ public class DandDMonsterAPI {
         monsterStats.append(type);
         return monsterStats;
     }
+
+    /**
+     * Much like the method above, this grabs all the monster's stats from a
+     * JSONObject. The way the API has it's data formated is that all the
+     * data below in a JSONObject as opposed to the JSONArray's above it.
+     * @param _monsterStats
+     * @return The string of monster stats.
+     */
 
     public static StringBuffer getMonsterStats(JSONObject _monsterStats) {
         StringBuffer monsterStats = new StringBuffer();

@@ -4,7 +4,7 @@ package model.API;
  *Last Updated: December 3, 2019
  *
  * An interface so that any API adapter needs to clean respective strings
- * and updated getRequest() methods.
+ * and updated getRequest() methods. Just in case something may be different.
  *
  *Contributors: Brandon Pozil, Jon Bacon
  */
